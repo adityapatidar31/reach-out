@@ -1,6 +1,7 @@
 package com.reach.out.Services;
 
 
+import com.reach.out.Dto.LoginRequest;
 import com.reach.out.Dto.SignupRequest;
 import com.reach.out.Model.User;
 import com.reach.out.Repository.UserRepository;
@@ -32,6 +33,18 @@ public class UserServiceImpl implements UserService {
         );
 
         return userRepository.save(user);
+    }
+
+    public User loginUser(LoginRequest loginRequest){
+        User user = userRepository.findByEmail(loginRequest.getEmail())
+                .orElseThrow(() -> new RuntimeException("Invalid email or password"));
+
+        // Match password
+        if (!user.getPassword().equals(loginRequest.getPassword())) {
+            throw new RuntimeException("Invalid email or password");
+        }
+
+        return user;
     }
 }
 
