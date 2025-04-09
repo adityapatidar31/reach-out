@@ -1,6 +1,7 @@
 package com.reach.out.Services;
 
 import com.reach.out.Dto.HelpRequest;
+import com.reach.out.Exceptions.ApiException;
 import com.reach.out.Model.Help;
 import com.reach.out.Model.User;
 import com.reach.out.Repository.HelpRepository;
@@ -24,9 +25,12 @@ public class HelpServiceImpl implements HelpService {
 
     @Override
     public List<Help> getAllHelpRequest(){
-        List<Help> helps=helpRepository.findAll();
+        return helpRepository.findAll();
+    }
 
-        return helps;
+    @Override
+    public Help getHelpById(Long Id){
+        return helpRepository.getHelpById(Id).orElseThrow(()-> new ApiException("Please Provide the valid Help Id"));
     }
 
     @Override
