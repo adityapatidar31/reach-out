@@ -1,9 +1,20 @@
 package com.reach.out.Dto;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+
 public class SignupRequest {
+    @NotBlank(message = "Name is required")
     private String name;
+
+    @NotBlank(message = "Email is required")
+    @Email(message = "Invalid email")
     private String email;
+
+    @NotBlank(message = "Password is required")
     private String password;
+
+    @NotBlank(message = "Confirm password is required")
     private String confirmPassword;
 
     // Getters and setters

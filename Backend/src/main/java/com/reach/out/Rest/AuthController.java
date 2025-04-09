@@ -4,6 +4,7 @@ import com.reach.out.Dto.LoginRequest;
 import com.reach.out.Dto.SignupRequest;
 import com.reach.out.Model.User;
 import com.reach.out.Services.UserService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,7 +24,7 @@ public class AuthController {
     }
 
     @PostMapping("/signUp")
-    public ResponseEntity<Map<String, Object>> signUpUser(@RequestBody SignupRequest signupRequest){
+    public ResponseEntity<Map<String, Object>> signUpUser(@Valid @RequestBody SignupRequest signupRequest){
         Map<String, Object> response=new HashMap<>();
 
         User user=userService.registerUser(signupRequest);
