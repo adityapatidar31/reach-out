@@ -1,5 +1,6 @@
 package com.reach.out.Rest;
 
+import com.reach.out.Rest.Dto.LoginRequest;
 import com.reach.out.Rest.Dto.SignupRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,5 +25,19 @@ public class AuthController {
         response.put("data", data);
 
         return  ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<Map<String,Object>> loginUser(@RequestBody LoginRequest loginRequest){
+
+        Map <String, Object> response=new HashMap<>();
+        Map <String, String> data= new HashMap<>();
+
+        data.put("email", loginRequest.getEmail());
+        data.put("password", loginRequest.getPassword());
+
+        response.put("status","success");
+        response.put("data",data);
+        return ResponseEntity.ok(response);
     }
 }
