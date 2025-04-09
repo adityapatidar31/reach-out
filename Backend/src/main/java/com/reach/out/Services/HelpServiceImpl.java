@@ -1,5 +1,6 @@
 package com.reach.out.Services;
 
+import com.reach.out.Dto.HelpPatchRequest;
 import com.reach.out.Dto.HelpRequest;
 import com.reach.out.Exceptions.ApiException;
 import com.reach.out.Model.Help;
@@ -48,6 +49,15 @@ public class HelpServiceImpl implements HelpService {
         help.setCountry(helpRequest.getCountry());
         help.setPincode(helpRequest.getPincode());
         help.setCreatedBy(createdBy);
+
+        return helpRepository.save(help);
+    }
+
+    @Override
+    public Help updateHelpStatusById(Long id, HelpPatchRequest patchRequest) {
+        Help help = helpRepository.findById(id).orElseThrow(()->new ApiException("Help request not found"));
+
+        help.setStatus(patchRequest.getStatus());
 
         return helpRepository.save(help);
     }

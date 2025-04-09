@@ -1,5 +1,6 @@
 package com.reach.out.Rest;
 
+import com.reach.out.Dto.HelpPatchRequest;
 import com.reach.out.Dto.HelpRequest;
 import com.reach.out.Model.Help;
 import com.reach.out.Services.HelpService;
@@ -56,6 +57,19 @@ public class HelpController {
         return ResponseEntity.ok(response);
     }
 
+    @PatchMapping("/{id}")
+    public ResponseEntity<Map<String,Object>> updateHelpStatusById(
+            @PathVariable Long id,
+            @Valid @RequestBody HelpPatchRequest patchRequest
+    ){
+        Map<String,Object> response= new HashMap<>();
+        Help updatedHelp= helpService.updateHelpStatusById(id, patchRequest);
+
+        response.put("status","success");
+        response.put("data",updatedHelp);
+        return ResponseEntity.ok(response);
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteHelpRequestById(@PathVariable Long id){
         helpService.deleteHelpById(id);
@@ -63,6 +77,6 @@ public class HelpController {
         return ResponseEntity.noContent().build();
     }
 
-    
+
 
 }
