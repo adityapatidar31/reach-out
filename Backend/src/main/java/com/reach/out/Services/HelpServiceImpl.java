@@ -9,6 +9,7 @@ import com.reach.out.enums.HelpStatus;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class HelpServiceImpl implements HelpService {
@@ -19,6 +20,13 @@ public class HelpServiceImpl implements HelpService {
     public HelpServiceImpl(HelpRepository helpRepository, UserRepository userRepository) {
         this.helpRepository = helpRepository;
         this.userRepository = userRepository;
+    }
+
+    @Override
+    public List<Help> getAllHelpRequest(){
+        List<Help> helps=helpRepository.findAll();
+
+        return helps;
     }
 
     @Override
