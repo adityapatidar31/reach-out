@@ -55,4 +55,14 @@ public class HelpController {
         response.put("data",help);
         return ResponseEntity.ok(response);
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteHelpRequestById(@PathVariable Long id){
+        helpService.deleteHelpById(id);
+
+        return ResponseEntity.noContent().build();
+    }
+
+    
+
 }

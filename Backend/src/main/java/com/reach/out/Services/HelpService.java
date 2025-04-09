@@ -9,4 +9,5 @@ public interface HelpService {
     Help createHelp(HelpRequest helpRequest);
     List<Help> getAllHelpRequest();
     Help getHelpById(Long Id);
+    void deleteHelpById(Long Id);
 }

@@ -51,4 +51,9 @@ public class HelpServiceImpl implements HelpService {
 
         return helpRepository.save(help);
     }
+
+    public void deleteHelpById(Long Id){
+        helpRepository.deleteById(Id);
+    }
+
 }
