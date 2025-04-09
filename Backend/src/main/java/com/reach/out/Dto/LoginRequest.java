@@ -1,4 +1,4 @@
-package com.reach.out.Rest.Dto;
+package com.reach.out.Dto;
 
 public class LoginRequest {
     private String email;

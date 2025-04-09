@@ -1,7 +1,7 @@
 package com.reach.out.Rest;
 
-import com.reach.out.Rest.Dto.LoginRequest;
-import com.reach.out.Rest.Dto.SignupRequest;
+import com.reach.out.Dto.LoginRequest;
+import com.reach.out.Dto.SignupRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
