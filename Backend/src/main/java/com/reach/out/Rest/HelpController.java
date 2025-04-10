@@ -77,6 +77,16 @@ public class HelpController {
         return ResponseEntity.noContent().build();
     }
 
+    @GetMapping("/user/{userId}")
+    public  ResponseEntity<Map<String,Object>> getAllHelpRequestByUsedId(@PathVariable Long userId){
+        Map<String,Object> response= new HashMap<>();
+
+        List<Help> allHelpByUserId = helpService.getAllHelpRequestByUserId(userId);
+
+        response.put("status","success");
+        response.put("data",allHelpByUserId);
+        return ResponseEntity.ok(response);
+    }
 
 
 }

@@ -12,4 +12,6 @@ public interface HelpService {
     Help createHelp(HelpRequest helpRequest);
     Help updateHelpStatusById(Long id, HelpPatchRequest patchRequest);
     void deleteHelpById(Long Id);
+    List<Help> getAllHelpRequestByUserId(Long userId);
+
 }

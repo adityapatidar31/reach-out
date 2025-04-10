@@ -64,4 +64,9 @@ public class HelpServiceImpl implements HelpService {
         helpRepository.deleteById(Id);
     }
 
+    @Override
+    public List<Help> getAllHelpRequestByUserId(Long userId) {
+        return helpRepository.findAllByCreatedById(userId);
+    }
+
 }
