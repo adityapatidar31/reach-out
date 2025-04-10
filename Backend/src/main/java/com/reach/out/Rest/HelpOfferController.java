@@ -63,4 +63,13 @@ public class HelpOfferController {
         return ResponseEntity.ok(response);
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteHelpOfferRequestById(
+            @PathVariable Long id
+    ){
+        
+        helpOfferServices.deleteHelpOfferById(id);
+
+        return ResponseEntity.noContent().build();
+    }
 }

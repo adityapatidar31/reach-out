@@ -66,4 +66,10 @@ public class HelpOfferServicesImpl implements HelpOfferServices{
         return helpOfferRepository.save(helpOffer);
     }
 
+    @Override
+    public void deleteHelpOfferById(Long id){
+        HelpOffer helpOffer=helpOfferRepository.findById(id).orElseThrow(()-> new ApiException("Help Offer Request is not found"));
+
+        helpOfferRepository.delete(helpOffer);
+    }
 }
