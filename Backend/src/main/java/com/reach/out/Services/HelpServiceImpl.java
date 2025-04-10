@@ -7,10 +7,8 @@ import com.reach.out.Model.Help;
 import com.reach.out.Model.User;
 import com.reach.out.Repository.HelpRepository;
 import com.reach.out.Repository.UserRepository;
-import com.reach.out.enums.HelpStatus;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
