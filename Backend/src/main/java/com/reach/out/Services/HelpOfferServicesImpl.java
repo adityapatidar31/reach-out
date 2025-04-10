@@ -72,4 +72,10 @@ public class HelpOfferServicesImpl implements HelpOfferServices{
 
         helpOfferRepository.delete(helpOffer);
     }
+
+    @Override
+    public List<HelpOffer> getAllHelpOfferByUserId(Long userId) {
+        return helpOfferRepository.findAllByOfferedById(userId);
+    }
+
 }

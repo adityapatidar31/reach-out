@@ -11,4 +11,5 @@ public interface HelpOfferServices {
     HelpOffer createHelpOfferRequest(HelpOfferRequest helpOfferRequest);
     HelpOffer updateHelpStatusById(Long id,HelpOfferStatusUpdateRequest helpOfferStatusUpdateRequest);
     void deleteHelpOfferById(Long id);
+    List<HelpOffer> getAllHelpOfferByUserId(Long userId);
 }

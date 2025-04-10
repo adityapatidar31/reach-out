@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 @Controller
-@RequestMapping("/api/v1/helpOffer")
+@RequestMapping("/api/v1/help-offer")
 public class HelpOfferController {
     private final HelpOfferServices helpOfferServices;
 
@@ -67,9 +67,19 @@ public class HelpOfferController {
     public ResponseEntity<Void> deleteHelpOfferRequestById(
             @PathVariable Long id
     ){
-        
         helpOfferServices.deleteHelpOfferById(id);
 
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<Map<String,Object>> getAllHelpOfferByUserId(@PathVariable Long userId){
+        Map<String, Object> response= new HashMap<>();
+
+        List<HelpOffer> allHelpOfferedByUser= helpOfferServices.getAllHelpOfferByUserId(userId);
+
+        response.put("status", "success");
+        response.put("data",allHelpOfferedByUser);
+        return ResponseEntity.ok(response);
     }
 }
