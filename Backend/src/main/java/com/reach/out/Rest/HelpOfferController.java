@@ -1,16 +1,14 @@
 package com.reach.out.Rest;
 
 import com.reach.out.Dto.HelpOfferRequest;
+import com.reach.out.Dto.HelpOfferStatusUpdateRequest;
 import com.reach.out.Model.HelpOffer;
 import com.reach.out.Services.HelpOfferServices;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
@@ -48,6 +46,21 @@ public class HelpOfferController {
 
         return ResponseEntity.ok(response);
 
+    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<Map<String, Object>> updateHelpOfferRequestStatus(
+            @PathVariable Long id,
+            @Valid @RequestBody HelpOfferStatusUpdateRequest helpOfferStatusUpdateRequest
+    ){
+        Map<String, Object> response=new HashMap<>();
+
+        HelpOffer updatedHelpOffer= helpOfferServices.updateHelpStatusById(id,helpOfferStatusUpdateRequest);
+
+        response.put("status","success");
+        response.put("data",updatedHelpOffer);
+
+        return ResponseEntity.ok(response);
     }
 
 }

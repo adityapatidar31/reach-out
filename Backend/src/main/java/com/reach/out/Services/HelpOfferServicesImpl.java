@@ -1,6 +1,7 @@
 package com.reach.out.Services;
 
 import com.reach.out.Dto.HelpOfferRequest;
+import com.reach.out.Dto.HelpOfferStatusUpdateRequest;
 import com.reach.out.Exceptions.ApiException;
 import com.reach.out.Model.Help;
 import com.reach.out.Model.HelpOffer;
@@ -12,6 +13,7 @@ import com.reach.out.enums.HelpOfferStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -52,4 +54,16 @@ public class HelpOfferServicesImpl implements HelpOfferServices{
 
         return helpOfferRepository.save(helpOffer);
     }
+
+    @Override
+    public HelpOffer updateHelpStatusById(Long id, HelpOfferStatusUpdateRequest helpOfferStatusUpdateRequest) {
+        HelpOffer helpOffer = helpOfferRepository.findById(id)
+                .orElseThrow(() -> new ApiException("Help offer not found"));
+
+        helpOffer.setStatus(helpOfferStatusUpdateRequest.getStatus());
+        helpOffer.setUpdatedAt(LocalDateTime.now());
+
+        return helpOfferRepository.save(helpOffer);
+    }
+
 }

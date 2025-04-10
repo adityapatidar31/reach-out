@@ -29,6 +29,16 @@ public class HelpOffer {
 
     private LocalDateTime createdAt;
 
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    private LocalDateTime updatedAt;
+
     public HelpOffer() {
         this.createdAt = LocalDateTime.now();
         this.status = HelpOfferStatus.PENDING;
