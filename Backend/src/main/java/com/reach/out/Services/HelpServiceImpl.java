@@ -28,9 +28,11 @@ public class HelpServiceImpl implements HelpService {
     }
 
     @Override
-    public Help getHelpById(Long Id){
-        return helpRepository.getHelpById(Id).orElseThrow(()-> new ApiException("Please Provide the valid Help Id"));
+    public Help getHelpById(Long id) {
+        return helpRepository.getHelpWithUserById(id)
+                .orElseThrow(() -> new ApiException("Please Provide the valid Help Id"));
     }
+
 
     @Override
     public Help createHelp(HelpRequest helpRequest) {
@@ -65,6 +67,7 @@ public class HelpServiceImpl implements HelpService {
     }
 
     public void deleteHelpById(Long Id){
+        // TODO: You need to delete the HelpOffered as well if you delete the Help
         helpRepository.deleteById(Id);
     }
 

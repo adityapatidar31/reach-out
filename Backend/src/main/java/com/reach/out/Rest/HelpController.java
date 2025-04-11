@@ -1,5 +1,6 @@
 package com.reach.out.Rest;
 
+import com.reach.out.Dto.HelpAllResponse;
 import com.reach.out.Dto.HelpPatchRequest;
 import com.reach.out.Dto.HelpRequest;
 import com.reach.out.Model.Help;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/api/v1/help")
@@ -27,10 +29,32 @@ public class HelpController {
 
     @GetMapping("")
     public ResponseEntity<Map<String, Object>> getAllHelpRequest(){
-        Map<String, Object> response= new HashMap<>();
+
+        Map<String, Object> response=new HashMap<>();
+
         List<Help> helps = helpService.getAllHelpRequest();
-        response.put("status","success");
-        response.put("data", helps);
+
+        List<HelpAllResponse> dtos = helps.stream().map(help -> {
+            HelpAllResponse dto = new HelpAllResponse();
+            dto.setId(help.getId());
+            dto.setTitle(help.getTitle());
+            dto.setDescription(help.getDescription());
+            dto.setHelpImageUrl(help.getHelpImageUrl());
+            dto.setArea(help.getArea());
+            dto.setCity(help.getCity());
+            dto.setState(help.getState());
+            dto.setCountry(help.getCountry());
+            dto.setPincode(help.getPincode());
+            dto.setType(help.getType());
+            dto.setStatus(help.getStatus());
+            dto.setReward(help.getReward());
+            dto.setCategories(help.getCategories());
+            dto.setCreatedAt(help.getCreatedAt());
+            return dto;
+        }).collect(Collectors.toList());
+
+        response.put("status", "success");
+        response.put("data", dtos);
 
         return ResponseEntity.ok(response);
     }

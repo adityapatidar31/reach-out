@@ -1,5 +1,6 @@
 package com.reach.out.Model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.reach.out.enums.Category;
 import com.reach.out.enums.HelpStatus;
 import com.reach.out.enums.HelpType;
@@ -60,7 +61,7 @@ public class Help {
     @Column(name = "category", nullable = false)
     private List<Category> categories;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User createdBy;
 

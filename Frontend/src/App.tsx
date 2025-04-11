@@ -5,6 +5,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 import { useEffect, useState } from "react";
 import Navbar from "./components/components/navbar/Navbar";
+import HomePage from "./components/components/pages/HomePage";
 
 const queryClient = new QueryClient();
 
@@ -26,11 +27,11 @@ function App() {
       <BrowserRouter>
         <Navbar setTheme={setTheme} theme={theme} />
         <main className="p-4">
-          {/* <Routes>
+          <Routes>
             <Route path="/" element={<HomePage />} />
-            <Route path="/signup" element={<SignupPage />} />
-            <Route path="/login" element={<LoginPage />} />
-          </Routes> */}
+            {/* <Route path="/signup" element={<SignupPage />} /> */}
+            {/* <Route path="/login" element={<LoginPage />} /> */}
+          </Routes>
         </main>
       </BrowserRouter>
     </QueryClientProvider>

@@ -12,6 +12,10 @@ import java.util.Optional;
 public interface HelpRepository extends JpaRepository<Help, Long> {
     Optional<Help> getHelpById(Long id);
 
+    @Query("SELECT h FROM Help h JOIN FETCH h.createdBy WHERE h.id = :id")
+    Optional<Help> getHelpWithUserById(@Param("id") Long id);
+
+
     @Query("SELECT h FROM Help h WHERE h.createdBy.id = :userId")
     List<Help> findAllByCreatedById(@Param("userId") Long userId);
 }
