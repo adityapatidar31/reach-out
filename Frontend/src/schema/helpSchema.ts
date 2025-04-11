@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { Category, HelpStatus, HelpType } from "@/types/enums";
+import { Category, HelpOfferStatus, HelpStatus, HelpType } from "@/types/enums";
 
 export const helpSchema = z.object({
   id: z.number(),
@@ -56,3 +56,16 @@ export const detailedHelpSchema = z.object({
 });
 
 export type DetailedHelp = z.infer<typeof detailedHelpSchema>;
+
+export const helpOfferSchema = z.object({
+  id: z.number(),
+  helpId: z.number(),
+  userId: z.number(),
+  message: z.string(),
+  status: z.nativeEnum(HelpOfferStatus),
+  createdAt: z.string(),
+});
+
+export const helpOfferNullableSchema = helpOfferSchema.nullable();
+
+export type HelpOffer = z.infer<typeof helpOfferSchema>;

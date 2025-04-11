@@ -32,3 +32,9 @@ export enum Category {
   EVENT = "EVENT",
   GUIDANCE = "GUIDANCE",
 }
+
+export enum HelpOfferStatus {
+  PENDING = "PENDING",
+  ACCEPTED = "ACCEPTED",
+  DECLINED = "DECLINED",
+}

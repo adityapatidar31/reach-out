@@ -8,6 +8,7 @@ import { format } from "date-fns";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { HeartHandshake } from "lucide-react";
 
 function HelpPage() {
   const { id } = useParams();
@@ -62,31 +63,56 @@ function HelpPage() {
           <p className="text-xs text-muted-foreground">
             Created At: {format(new Date(help.createdAt), "PPP p")}
           </p>
+          {/* Creator Info */}
+          <div className="flex items-center gap-4 p-4 border rounded-2xl shadow-sm bg-muted">
+            <Avatar>
+              <AvatarImage src={creator.imageUrl || undefined} />
+              <AvatarFallback>{creator.name[0]}</AvatarFallback>
+            </Avatar>
+            <div>
+              <p className="text-sm font-medium">{creator.name}</p>
+              <p className="text-xs text-muted-foreground">{creator.email}</p>
+            </div>
+          </div>
         </div>
       </div>
 
-      {/* Creator Info */}
-      <div className="flex items-center gap-4 p-4 border rounded-2xl shadow-sm bg-muted">
-        <Avatar>
-          <AvatarImage src={creator.imageUrl || undefined} />
-          <AvatarFallback>{creator.name[0]}</AvatarFallback>
-        </Avatar>
-        <div>
-          <p className="text-sm font-medium">{creator.name}</p>
-          <p className="text-xs text-muted-foreground">{creator.email}</p>
-        </div>
-      </div>
+      {!helpOffer && (
+        <Button className="w-full max-w-xs text-white">Apply for Help</Button>
+      )}
+      {helpOffer && (
+        <div className="mt-8 p-4 border rounded-2xl shadow bg-muted space-y-4">
+          <div className="flex items-center gap-2">
+            <HeartHandshake className="h-5 w-5 text-primary" />
+            <h3 className="text-lg font-semibold">Your Help Offer</h3>
+          </div>
 
-      {/* Part B: Action Button */}
-      <div>
-        {helpOffer?.id ? (
-          <Button disabled variant="outline">
-            ✅ Applied
-          </Button>
-        ) : (
-          <Button>Apply to Help</Button>
-        )}
-      </div>
+          <div className="space-y-3">
+            <div className="flex items-center gap-3">
+              <Avatar>
+                <AvatarImage src={helpOffer.imageUrl || undefined} />
+                <AvatarFallback>A</AvatarFallback>
+              </Avatar>
+              <div>
+                <p className="font-medium text-sm">Aditya</p>
+                <p className="text-xs text-muted-foreground">
+                  Applied on {format(new Date(helpOffer.createdAt), "PPP p")}
+                </p>
+              </div>
+            </div>
+            <div>
+              <p className="text-sm">
+                <span className="font-semibold">Status:</span>{" "}
+                {helpOffer.status}
+              </p>
+              <p className="text-sm">
+                <span className="font-semibold">Message:</span>{" "}
+                {helpOffer.message}
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

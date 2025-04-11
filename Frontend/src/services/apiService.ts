@@ -3,6 +3,7 @@ import {
   DetailedHelp,
   detailedHelpSchema,
   helpArraySchema,
+  helpOfferNullableSchema,
 } from "@/schema/helpSchema";
 import { Help } from "@/schema/helpSchema";
 
@@ -25,6 +26,23 @@ export const getHelpById = async (id: number): Promise<DetailedHelp> => {
   const response = await axios.get(`${BASE_URL}api/v1/help/${id}`);
 
   const parsed = detailedHelpSchema.safeParse(response.data.data);
+
+  if (!parsed.success) {
+    console.error("Validation failed", parsed.error);
+    throw new Error("Invalid help data format");
+  }
+
+  return parsed.data;
+};
+
+export const getHelpOfferByHelpAndUserId = async (
+  helpId: number,
+  userId: number
+) => {
+  const response = await axios.get(
+    `${BASE_URL}api/v1/help-offer/help/${helpId}/user/${userId}`
+  );
+  const parsed = helpOfferNullableSchema.safeParse(response.data.data);
 
   if (!parsed.success) {
     console.error("Validation failed", parsed.error);
