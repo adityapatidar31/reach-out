@@ -5,7 +5,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 import { useEffect, useState } from "react";
 import Navbar from "./components/components/navbar/Navbar";
-import HomePage from "./components/components/pages/HomePage";
+import HomePage from "./components/components/pages/HomePage/HomePage";
 
 const queryClient = new QueryClient();
 
