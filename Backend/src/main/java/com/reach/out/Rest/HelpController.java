@@ -107,8 +107,28 @@ public class HelpController {
 
         List<Help> allHelpByUserId = helpService.getAllHelpRequestByUserId(userId);
 
-        response.put("status","success");
-        response.put("data",allHelpByUserId);
+        List<HelpAllResponse> dtos = allHelpByUserId.stream().map(help -> {
+            HelpAllResponse dto = new HelpAllResponse();
+            dto.setId(help.getId());
+            dto.setTitle(help.getTitle());
+            dto.setDescription(help.getDescription());
+            dto.setHelpImageUrl(help.getHelpImageUrl());
+            dto.setArea(help.getArea());
+            dto.setCity(help.getCity());
+            dto.setState(help.getState());
+            dto.setCountry(help.getCountry());
+            dto.setPincode(help.getPincode());
+            dto.setType(help.getType());
+            dto.setStatus(help.getStatus());
+            dto.setReward(help.getReward());
+            dto.setCategories(help.getCategories());
+            dto.setCreatedAt(help.getCreatedAt());
+            return dto;
+        }).collect(Collectors.toList());
+
+        response.put("status", "success");
+        response.put("data", dtos);
+
         return ResponseEntity.ok(response);
     }
 
