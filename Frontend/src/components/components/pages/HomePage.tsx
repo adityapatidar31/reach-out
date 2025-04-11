@@ -1,25 +1,14 @@
-import { getAllHelpRequest } from "@/services/apiService";
-import { useQuery } from "@tanstack/react-query";
+import { HeartHandshake } from "lucide-react";
 import HelpList from "./HelpList";
 
 function HomePage() {
-  const {
-    data: helps,
-    isLoading,
-    isError,
-  } = useQuery({
-    queryKey: ["helps"],
-    queryFn: getAllHelpRequest,
-  });
-
-  if (isLoading) return <p className="text-center">Loading...</p>;
-  if (isError || !helps)
-    return <p className="text-center text-red-500">Error loading helps</p>;
-
   return (
-    <div className=" py-8">
-      <h1 className="text-3xl font-bold mb-6">Help Requests</h1>
-      <HelpList helps={helps} />
+    <div className="py-8">
+      <div className="flex items-center mb-6 gap-3">
+        <HeartHandshake className="w-6 h-6 text-primary" />
+        <h2 className="text-xl font-semibold text-foreground">Help Requests</h2>
+      </div>
+      <HelpList />
     </div>
   );
 }
