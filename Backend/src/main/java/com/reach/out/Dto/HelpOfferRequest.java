@@ -51,4 +51,5 @@ public class HelpOfferRequest {
     public void setStatus(HelpOfferStatus status) {
         this.status = status;
     }
+
 }

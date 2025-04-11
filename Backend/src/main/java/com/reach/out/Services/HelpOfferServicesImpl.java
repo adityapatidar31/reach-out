@@ -1,6 +1,7 @@
 package com.reach.out.Services;
 
 import com.reach.out.Dto.HelpOfferRequest;
+import com.reach.out.Dto.HelpOfferResponse;
 import com.reach.out.Dto.HelpOfferStatusUpdateRequest;
 import com.reach.out.Exceptions.ApiException;
 import com.reach.out.Model.Help;
@@ -10,36 +11,42 @@ import com.reach.out.Repository.HelpOfferRepository;
 import com.reach.out.Repository.HelpRepository;
 import com.reach.out.Repository.UserRepository;
 import com.reach.out.enums.HelpOfferStatus;
+import com.reach.out.Mapper.HelpOfferMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
-public class HelpOfferServicesImpl implements HelpOfferServices{
+public class HelpOfferServicesImpl implements HelpOfferServices {
 
     private final HelpOfferRepository helpOfferRepository;
     private final HelpRepository helpRepository;
     private final UserRepository userRepository;
+
     @Autowired
     public HelpOfferServicesImpl(
             HelpOfferRepository helpOfferRepository,
             HelpRepository helpRepository,
             UserRepository userRepository
-    ){
-        this.helpRepository=helpRepository;
-        this.helpOfferRepository=helpOfferRepository;
-        this.userRepository=userRepository;
+    ) {
+        this.helpOfferRepository = helpOfferRepository;
+        this.helpRepository = helpRepository;
+        this.userRepository = userRepository;
     }
 
     @Override
-    public List<HelpOffer> getAllHelpOffer() {
-        return helpOfferRepository.findAll();
+    public List<HelpOfferResponse> getAllHelpOffer() {
+        return helpOfferRepository.findAll()
+                .stream()
+                .map(HelpOfferMapper::toResponse)
+                .toList();
     }
 
     @Override
-    public  HelpOffer createHelpOfferRequest(HelpOfferRequest helpOfferRequest){
+    public HelpOfferResponse createHelpOfferRequest(HelpOfferRequest helpOfferRequest) {
         Help help = helpRepository.findById(helpOfferRequest.getHelpId())
                 .orElseThrow(() -> new ApiException("Help request not found"));
 
@@ -51,31 +58,43 @@ public class HelpOfferServicesImpl implements HelpOfferServices{
         helpOffer.setOfferedBy(user);
         helpOffer.setMessage(helpOfferRequest.getMessage());
         helpOffer.setStatus(helpOfferRequest.getStatus() != null ? helpOfferRequest.getStatus() : HelpOfferStatus.PENDING);
+        helpOffer.setCreatedAt(LocalDateTime.now());
 
-        return helpOfferRepository.save(helpOffer);
+        HelpOffer saved = helpOfferRepository.save(helpOffer);
+        return HelpOfferMapper.toResponse(saved);
     }
 
     @Override
-    public HelpOffer updateHelpStatusById(Long id, HelpOfferStatusUpdateRequest helpOfferStatusUpdateRequest) {
+    public HelpOfferResponse updateHelpStatusById(Long id, HelpOfferStatusUpdateRequest helpOfferStatusUpdateRequest) {
         HelpOffer helpOffer = helpOfferRepository.findById(id)
                 .orElseThrow(() -> new ApiException("Help offer not found"));
 
         helpOffer.setStatus(helpOfferStatusUpdateRequest.getStatus());
         helpOffer.setUpdatedAt(LocalDateTime.now());
 
-        return helpOfferRepository.save(helpOffer);
+        HelpOffer updated = helpOfferRepository.save(helpOffer);
+        return HelpOfferMapper.toResponse(updated);
     }
 
     @Override
-    public void deleteHelpOfferById(Long id){
-        HelpOffer helpOffer=helpOfferRepository.findById(id).orElseThrow(()-> new ApiException("Help Offer Request is not found"));
+    public void deleteHelpOfferById(Long id) {
+        HelpOffer helpOffer = helpOfferRepository.findById(id)
+                .orElseThrow(() -> new ApiException("Help Offer Request is not found"));
 
         helpOfferRepository.delete(helpOffer);
     }
 
     @Override
-    public List<HelpOffer> getAllHelpOfferByUserId(Long userId) {
-        return helpOfferRepository.findAllByOfferedById(userId);
+    public List<HelpOfferResponse> getAllHelpOfferByUserId(Long userId) {
+        return helpOfferRepository.findAllByOfferedById(userId)
+                .stream()
+                .map(HelpOfferMapper::toResponse)
+                .toList();
     }
 
+    @Override
+    public Optional<HelpOfferResponse> getOfferByHelpIdAndUserId(Long helpId, Long userId) {
+        return helpOfferRepository.findByHelp_IdAndOfferedBy_Id(helpId, userId)
+                .map(HelpOfferMapper::toResponse);
+    }
 }
