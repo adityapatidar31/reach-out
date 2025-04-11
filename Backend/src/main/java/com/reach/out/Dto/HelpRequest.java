@@ -1,8 +1,11 @@
 package com.reach.out.Dto;
 
+import com.reach.out.enums.Category;
 import com.reach.out.enums.HelpType;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+
+import java.util.List;
 
 public class HelpRequest {
 
@@ -31,12 +34,23 @@ public class HelpRequest {
     private String pincode;
 
     @NotNull(message = "createdBy userId is required for now")
-    private Long createdBy; // <-- Temporary, will be replaced with JWT logic later
+    private Long createdBy;
+
+    @NotBlank(message = "Help image URL is required")
+    private String helpImageUrl;
+
+    @NotBlank(message = "Reward is required")
+    private String reward;
+
+    @NotNull(message = "At least one category is required")
+    private List<Category> categories;
 
     public HelpRequest() {
     }
 
-    public HelpRequest(String title, String description, HelpType type, String area, String city, String state, String country, String pincode, Long createdBy) {
+    public HelpRequest(String title, String description, HelpType type, String area, String city, String state,
+                       String country, String pincode, Long createdBy, String helpImageUrl,
+                       String reward, List<Category> categories) {
         this.title = title;
         this.description = description;
         this.type = type;
@@ -46,9 +60,12 @@ public class HelpRequest {
         this.country = country;
         this.pincode = pincode;
         this.createdBy = createdBy;
+        this.helpImageUrl = helpImageUrl;
+        this.reward = reward;
+        this.categories = categories;
     }
 
-    // Getters & Setters
+    // Getters and setters
 
     public String getTitle() {
         return title;
@@ -120,5 +137,29 @@ public class HelpRequest {
 
     public void setCreatedBy(Long createdBy) {
         this.createdBy = createdBy;
+    }
+
+    public String getHelpImageUrl() {
+        return helpImageUrl;
+    }
+
+    public void setHelpImageUrl(String helpImageUrl) {
+        this.helpImageUrl = helpImageUrl;
+    }
+
+    public String getReward() {
+        return reward;
+    }
+
+    public void setReward(String reward) {
+        this.reward = reward;
+    }
+
+    public List<Category> getCategories() {
+        return categories;
+    }
+
+    public void setCategories(List<Category> categories) {
+        this.categories = categories;
     }
 }

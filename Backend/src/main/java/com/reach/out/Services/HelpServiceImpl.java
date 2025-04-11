@@ -47,6 +47,10 @@ public class HelpServiceImpl implements HelpService {
         help.setCountry(helpRequest.getCountry());
         help.setPincode(helpRequest.getPincode());
         help.setCreatedBy(createdBy);
+        help.setCategories(helpRequest.getCategories());
+        help.setReward(helpRequest.getReward());
+
+        help.setHelpImageUrl(helpRequest.getHelpImageUrl());
 
         return helpRepository.save(help);
     }
