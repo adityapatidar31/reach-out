@@ -4,6 +4,7 @@ import { getAllHelpRequest } from "@/services/apiService";
 import HelpCard from "./HelpCard";
 import HomePageLoader from "./HomePageLoader";
 import NoHelpFound from "./NoHelpFound";
+import HomeError from "./HomeError";
 
 const HelpList = () => {
   const {
@@ -16,7 +17,7 @@ const HelpList = () => {
   });
   if (isLoading) return <HomePageLoader />;
   if (isError || !helps)
-    return <p className="text-center text-red-500">Error loading helps</p>;
+    return <HomeError onRetry={() => window.location.reload()} />;
 
   if (helps.length === 0) return <NoHelpFound onClear={() => {}} />;
 

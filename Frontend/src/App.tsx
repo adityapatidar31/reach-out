@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import Navbar from "./components/components/navbar/Navbar";
 import HomePage from "./components/components/pages/HomePage/HomePage";
 
-const queryClient = new QueryClient();
+export const queryClient = new QueryClient();
 
 function App() {
   const [theme, setTheme] = useState<"light" | "dark">("dark");
