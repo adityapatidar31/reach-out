@@ -1,13 +1,11 @@
 package com.reach.out.Model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.reach.out.enums.Category;
 import com.reach.out.enums.HelpStatus;
 import com.reach.out.enums.HelpType;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 public class Help {

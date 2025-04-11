@@ -1,0 +1,34 @@
+// enums.ts
+export enum HelpType {
+  ASK = "ASK",
+  OFFER = "OFFER",
+}
+
+export enum HelpStatus {
+  OPEN = "OPEN",
+  FULFILLED = "FULFILLED",
+  CANCELLED = "CANCELLED",
+}
+
+export enum Category {
+  CARE = "CARE",
+  PET = "PET",
+  EDUCATION = "EDUCATION",
+  FOOD = "FOOD",
+  MEDICAL = "MEDICAL",
+  SHELTER = "SHELTER",
+  TRANSPORT = "TRANSPORT",
+  TECH = "TECH",
+  SOCIAL = "SOCIAL",
+  CLEANING = "CLEANING",
+  DONATION = "DONATION",
+  SECURITY = "SECURITY",
+  FINANCE = "FINANCE",
+  TRANSLATION = "TRANSLATION",
+  ELDERLY = "ELDERLY",
+  LEGAL = "LEGAL",
+  TRAVEL = "TRAVEL",
+  CHILDCARE = "CHILDCARE",
+  EVENT = "EVENT",
+  GUIDANCE = "GUIDANCE",
+}
