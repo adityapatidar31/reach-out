@@ -25,14 +25,16 @@ function App() {
       <ReactQueryDevtools initialIsOpen={false} />
 
       <BrowserRouter>
-        <Navbar setTheme={setTheme} theme={theme} />
-        <main className="p-4">
-          <Routes>
-            <Route path="/" element={<HomePage />} />
-            {/* <Route path="/signup" element={<SignupPage />} /> */}
-            {/* <Route path="/login" element={<LoginPage />} /> */}
-          </Routes>
-        </main>
+        <div className="max-w-screen-xl mx-auto">
+          <Navbar setTheme={setTheme} theme={theme} />
+          <main className="p-4">
+            <Routes>
+              <Route path="/" element={<HomePage />} />
+              {/* <Route path="/signup" element={<SignupPage />} /> */}
+              {/* <Route path="/login" element={<LoginPage />} /> */}
+            </Routes>
+          </main>
+        </div>
       </BrowserRouter>
     </QueryClientProvider>
   );
