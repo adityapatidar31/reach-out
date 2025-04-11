@@ -15,7 +15,7 @@ import ApplyForHelpModal from "./ApplyForHelpModal";
 function HelpPage() {
   const { id } = useParams();
   const helpId = Number(id);
-  const userId = 4; // hardcoded for now
+  const userId = 1; // hardcoded for now
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -37,7 +37,6 @@ function HelpPage() {
   if (helpError || !help) return <p>Error loading help request.</p>;
 
   const creator = help.createdBy;
-
   return (
     <div className="max-w-4xl mx-auto p-4 space-y-6">
       {/* Part A: Help Details */}

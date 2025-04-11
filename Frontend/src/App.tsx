@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import Navbar from "./components/components/navbar/Navbar";
 import HomePage from "./components/components/pages/HomePage/HomePage";
 import HelpPage from "./components/components/pages/HelpPage/HelpPage";
+import { ToastContainer } from "react-toastify";
 
 export const queryClient = new QueryClient();
 
@@ -24,7 +25,15 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <ReactQueryDevtools initialIsOpen={false} />
-
+      <ToastContainer
+        position="top-center"
+        autoClose={4000}
+        hideProgressBar={false}
+        newestOnTop={true}
+        closeOnClick={false}
+        draggable
+        theme={theme}
+      />
       <BrowserRouter>
         <div className="max-w-screen-xl mx-auto">
           <Navbar setTheme={setTheme} theme={theme} />

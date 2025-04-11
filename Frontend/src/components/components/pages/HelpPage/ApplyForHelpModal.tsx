@@ -9,8 +9,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { useMutation } from "@tanstack/react-query";
 import { createHelpOfferRequest } from "@/services/apiService";
-// import { queryClient } from "@/App";
-// import { toast } from "react-toastify";
+import { queryClient } from "@/App";
+import { toast } from "react-toastify";
 
 type Props = {
   open: boolean;
@@ -26,13 +26,15 @@ const ApplyForHelpModal = ({ open, onClose, helpId, userId }: Props) => {
   const { mutate, isPending } = useMutation({
     mutationFn: () => createHelpOfferRequest(helpId, userId, message),
     onSuccess: () => {
-      // toast.success("Help offer submitted successfully!");
-      // queryClient.invalidateQueries(["helpOffer", helpId, userId]);
+      toast.success("Help offer submitted successfully!");
+      queryClient.invalidateQueries({
+        queryKey: ["help-offer", helpId, userId],
+      });
       onClose();
       setMessage("");
     },
     onError: () => {
-      // toast.error("Failed to submit help offer. Please try again.");
+      toast.error("Failed to submit help offer. Please try again.");
     },
   });
 
@@ -60,7 +62,6 @@ const ApplyForHelpModal = ({ open, onClose, helpId, userId }: Props) => {
           <div className="text-right text-xs text-muted-foreground">
             {message.length}/{maxLength}
           </div>
-
           <div className="flex justify-center">
             <Button
               className="text-white"
