@@ -51,3 +51,13 @@ export const getHelpOfferByHelpAndUserId = async (
 
   return parsed.data;
 };
+
+export const createHelpOfferRequest = async (
+  helpId: number,
+  userId: number,
+  message: string
+) => {
+  const body = { helpId, offeredBy: userId, message };
+  const response = await axios.post(`${BASE_URL}api/v1/help-offer`, body);
+  console.log(response.data);
+};

@@ -9,11 +9,15 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { HeartHandshake } from "lucide-react";
+import { useState } from "react";
+import ApplyForHelpModal from "./ApplyForHelpModal";
 
 function HelpPage() {
   const { id } = useParams();
   const helpId = Number(id);
-  const userId = 3; // hardcoded for now
+  const userId = 4; // hardcoded for now
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const {
     data: help,
@@ -78,7 +82,12 @@ function HelpPage() {
       </div>
 
       {!helpOffer && (
-        <Button className="w-full max-w-xs text-white">Apply for Help</Button>
+        <Button
+          className="w-full max-w-xs text-white"
+          onClick={() => setIsModalOpen(true)}
+        >
+          Apply for Help
+        </Button>
       )}
       {helpOffer && (
         <div className="mt-8 p-4 border rounded-2xl shadow bg-muted space-y-4">
@@ -90,7 +99,7 @@ function HelpPage() {
           <div className="space-y-3">
             <div className="flex items-center gap-3">
               <Avatar>
-                <AvatarImage src={helpOffer.imageUrl || undefined} />
+                {/* <AvatarImage src={helpOffer.imageUrl || undefined} /> */}
                 <AvatarFallback>A</AvatarFallback>
               </Avatar>
               <div>
@@ -113,6 +122,14 @@ function HelpPage() {
           </div>
         </div>
       )}
+
+      {/* Modal for applying */}
+      <ApplyForHelpModal
+        open={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        helpId={helpId}
+        userId={userId}
+      />
     </div>
   );
 }
