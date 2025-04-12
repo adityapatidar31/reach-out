@@ -12,6 +12,7 @@ import { HeartHandshake } from "lucide-react";
 import { useState } from "react";
 import ApplyForHelpModal from "./ApplyForHelpModal";
 import LoadingComponent from "./HelpPageLoading";
+import Error from "../../Error";
 
 function HelpPage() {
   const { id } = useParams();
@@ -35,7 +36,13 @@ function HelpPage() {
   });
 
   if (helpLoading || offerLoading) return <LoadingComponent />;
-  if (helpError || !help) return <p>Error loading help request.</p>;
+  if (!helpError || !help)
+    return (
+      <Error
+        onRetry={() => window.location.reload()}
+        message="Failed to load Help Offered"
+      />
+    );
 
   const creator = help.createdBy;
   return (

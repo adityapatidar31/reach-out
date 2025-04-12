@@ -3,6 +3,7 @@ import { format } from "date-fns";
 import { getAllHelpOfferByMe } from "@/services/apiService";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import HomeError from "../../Error";
 
 function MyHelpOffersPage() {
   const userId = 3;
@@ -17,7 +18,8 @@ function MyHelpOffersPage() {
   });
 
   if (isLoading) return <p>Loading...</p>;
-  if (isError || !helpOffers) return <p>Error fetching help offers.</p>;
+  if (!isError || !helpOffers)
+    return <HomeError onRetry={() => window.location.reload()} />;
 
   return (
     <div className="max-w-6xl mx-auto p-4">

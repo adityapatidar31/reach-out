@@ -4,7 +4,7 @@ import { getAllHelpRequest } from "@/services/apiService";
 import HelpCard from "./HelpCard";
 import HomePageLoader from "./HomePageLoader";
 import NoHelpFound from "./NoHelpFound";
-import HomeError from "./HomeError";
+import Error from "../../Error";
 
 const HelpList = () => {
   const {
@@ -17,7 +17,12 @@ const HelpList = () => {
   });
   if (isLoading) return <HomePageLoader />;
   if (isError || !helps)
-    return <HomeError onRetry={() => window.location.reload()} />;
+    return (
+      <Error
+        onRetry={() => window.location.reload()}
+        message="Failed to load Help Requests"
+      />
+    );
 
   if (helps.length === 0) return <NoHelpFound onClear={() => {}} />;
 
