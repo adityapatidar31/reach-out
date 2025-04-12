@@ -16,4 +16,6 @@ public interface HelpOfferRepository extends JpaRepository<HelpOffer,Long> {
 
     Optional<HelpOffer> findByHelp_IdAndOfferedBy_Id(Long helpId, Long userId);
 
+    List<HelpOffer> findAllByHelpId(Long helpId);
+
 }

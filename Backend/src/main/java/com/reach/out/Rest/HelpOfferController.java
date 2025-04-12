@@ -1,9 +1,6 @@
 package com.reach.out.Rest;
 
-import com.reach.out.Dto.HelpOfferRequest;
-import com.reach.out.Dto.HelpOfferResponse;
-import com.reach.out.Dto.HelpOfferResponseByUser;
-import com.reach.out.Dto.HelpOfferStatusUpdateRequest;
+import com.reach.out.Dto.*;
 import com.reach.out.Response.ApiResponse;
 import com.reach.out.Services.HelpOfferServices;
 import jakarta.validation.Valid;
@@ -98,4 +95,16 @@ public class HelpOfferController {
             return ResponseEntity.ok(new ApiResponse<>(null, "Success"));
         }
     }
+
+    @GetMapping("/help/{helpId}")
+    public ResponseEntity<Map<String, Object>> getAllHelpOfferByHelpId(@PathVariable Long helpId) {
+        Map<String, Object> response = new HashMap<>();
+
+        List<HelpOfferResponseWithUser> offers = helpOfferServices.getAllHelpOfferByHelpId(helpId);
+
+        response.put("status", "success");
+        response.put("data", offers);
+        return ResponseEntity.ok(response);
+    }
+
 }
