@@ -11,6 +11,7 @@ import { useMutation } from "@tanstack/react-query";
 import { createHelpOfferRequest } from "@/services/apiService";
 import { queryClient } from "@/App";
 import { toast } from "react-toastify";
+import ApplyHelpOfferModalLoading from "./ApplyHelpOfferModalLoading";
 
 type Props = {
   open: boolean;
@@ -51,26 +52,32 @@ const ApplyForHelpModal = ({ open, onClose, helpId, userId }: Props) => {
         </DialogHeader>
 
         <div className="space-y-2">
-          <label className="text-sm font-medium">Message</label>
-          <Textarea
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-            maxLength={maxLength}
-            placeholder="Write your message here..."
-            className="min-h-[120px]"
-          />
-          <div className="text-right text-xs text-muted-foreground">
-            {message.length}/{maxLength}
-          </div>
-          <div className="flex justify-center">
-            <Button
-              className="text-white"
-              onClick={handleSubmit}
-              disabled={isPending || message.trim().length === 0}
-            >
-              {isPending ? "Applying..." : "Apply"}
-            </Button>
-          </div>
+          {isPending ? (
+            <ApplyHelpOfferModalLoading />
+          ) : (
+            <>
+              <label className="text-sm font-medium">Message</label>
+              <Textarea
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
+                maxLength={maxLength}
+                placeholder="Write your message here..."
+                className="min-h-[120px] mt-1"
+              />
+              <div className="text-right text-xs text-muted-foreground">
+                {message.length}/{maxLength}
+              </div>
+              <div className="flex justify-center mt-3">
+                <Button
+                  className="text-white w-full"
+                  onClick={handleSubmit}
+                  disabled={isPending || message.trim().length === 0}
+                >
+                  Apply
+                </Button>
+              </div>
+            </>
+          )}
         </div>
       </DialogContent>
     </Dialog>

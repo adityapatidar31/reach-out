@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { HeartHandshake } from "lucide-react";
 import { useState } from "react";
-import ApplyForHelpModal from "./ApplyForHelpModal";
+import ApplyForHelpModal from "./ApplyHelpOfferModal";
 import LoadingComponent from "./HelpPageLoading";
 import Error from "../../Error";
 
@@ -36,7 +36,7 @@ function HelpPage() {
   });
 
   if (helpLoading || offerLoading) return <LoadingComponent />;
-  if (!helpError || !help)
+  if (helpError || !help)
     return (
       <Error
         onRetry={() => window.location.reload()}
