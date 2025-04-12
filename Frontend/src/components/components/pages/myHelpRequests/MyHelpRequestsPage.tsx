@@ -1,17 +1,14 @@
-import { getAllHelpOfferByHelpId } from "@/services/apiService";
+import { getAllHelpRequestByUserId } from "@/services/apiService";
 import { useQuery } from "@tanstack/react-query";
 
 function MyHelpRequestsPage() {
-  // getAllHelpOfferByHelpId
-  const userId = 3;
-  const {
-    data: myHelpRequest,
-    isLoading,
-    isError,
-  } = useQuery({
+  const userId = 1;
+  const { data: myHelpRequest } = useQuery({
     queryKey: ["myHelpRequests", userId],
-    queryFn:()=>
+    queryFn: () => getAllHelpRequestByUserId(userId),
   });
+
+  console.log(myHelpRequest);
   return <div>MyHelpRequestsPage MyHelpRequestsPage</div>;
 }
 

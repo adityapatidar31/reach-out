@@ -93,3 +93,15 @@ export const getAllHelpOfferByHelpId = async (helpId: number) => {
 
   return parsed.data;
 };
+
+export async function getAllHelpRequestByUserId(userId: number) {
+  const response = await axios.get(`${BASE_URL}api/v1/help/user/${userId}`);
+
+  const parsed = helpArraySchema.safeParse(response.data.data);
+
+  if (!parsed.success) {
+    console.log("Validation failed", parsed.error);
+    throw new Error("Invalid help format");
+  }
+  return parsed.data;
+}
