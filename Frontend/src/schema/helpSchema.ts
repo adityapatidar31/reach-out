@@ -81,3 +81,18 @@ export const myHelpOfferSchema = z.object({
 });
 
 export const myHelpOfferArraySchema = z.array(myHelpOfferSchema);
+
+export const helpOfferWithUserSchema = z.object({
+  id: z.number(),
+  helpId: z.number(),
+  message: z.string(),
+  status: z.nativeEnum(HelpOfferStatus),
+  createdAt: z.string().datetime(),
+  updatedAt: z.string().datetime().nullable(),
+  userId: z.number(),
+  userName: z.string(),
+  userEmail: z.string().email(),
+  userImageUrl: z.string(),
+});
+
+export const helpOfferWithUserListSchema = z.array(helpOfferWithUserSchema);
