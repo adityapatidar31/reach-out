@@ -2,8 +2,10 @@ package com.reach.out.Services;
 
 import com.reach.out.Dto.HelpOfferRequest;
 import com.reach.out.Dto.HelpOfferResponse;
+import com.reach.out.Dto.HelpOfferResponseByUser;
 import com.reach.out.Dto.HelpOfferStatusUpdateRequest;
 import com.reach.out.Exceptions.ApiException;
+import com.reach.out.Mapper.HelpMapper;
 import com.reach.out.Model.Help;
 import com.reach.out.Model.HelpOffer;
 import com.reach.out.Model.User;
@@ -85,10 +87,18 @@ public class HelpOfferServicesImpl implements HelpOfferServices {
     }
 
     @Override
-    public List<HelpOfferResponse> getAllHelpOfferByUserId(Long userId) {
+    public List<HelpOfferResponseByUser> getAllHelpOfferByUserId(Long userId) {
         return helpOfferRepository.findAllByOfferedById(userId)
                 .stream()
-                .map(HelpOfferMapper::toResponse)
+                .map(helpOffer -> new HelpOfferResponseByUser(
+                        helpOffer.getId(),
+                        helpOffer.getHelp().getId(),
+                        helpOffer.getOfferedBy().getId(),
+                        helpOffer.getMessage(),
+                        helpOffer.getStatus(),
+                        helpOffer.getCreatedAt(),
+                        HelpMapper.toHelpAllResponse(helpOffer.getHelp())
+                ))
                 .toList();
     }
 

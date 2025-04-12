@@ -15,7 +15,7 @@ import ApplyForHelpModal from "./ApplyForHelpModal";
 function HelpPage() {
   const { id } = useParams();
   const helpId = Number(id);
-  const userId = 1; // hardcoded for now
+  const userId = 1;
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 

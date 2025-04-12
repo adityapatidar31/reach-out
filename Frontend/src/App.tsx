@@ -8,6 +8,7 @@ import Navbar from "./components/components/navbar/Navbar";
 import HomePage from "./components/components/pages/HomePage/HomePage";
 import HelpPage from "./components/components/pages/HelpPage/HelpPage";
 import { ToastContainer } from "react-toastify";
+import MyHelpOffersPage from "./components/components/pages/MyHelpOffers/MyHelpOffersPage";
 
 export const queryClient = new QueryClient();
 
@@ -41,6 +42,7 @@ function App() {
             <Routes>
               <Route path="/" element={<HomePage />} />
               <Route path="/help/:id" element={<HelpPage />} />
+              <Route path="/my-help-offers" element={<MyHelpOffersPage />} />
               {/* <Route path="/signup" element={<SignupPage />} /> */}
               {/* <Route path="/login" element={<LoginPage />} /> */}
             </Routes>

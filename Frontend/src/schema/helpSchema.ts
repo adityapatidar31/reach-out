@@ -69,3 +69,15 @@ export const helpOfferSchema = z.object({
 export const helpOfferNullableSchema = helpOfferSchema.nullable();
 
 export type HelpOffer = z.infer<typeof helpOfferSchema>;
+
+export const myHelpOfferSchema = z.object({
+  id: z.number(),
+  helpId: z.number(),
+  offeredById: z.number(),
+  message: z.string(),
+  status: z.nativeEnum(HelpOfferStatus),
+  createdAt: z.string(),
+  help: helpSchema,
+});
+
+export const myHelpOfferArraySchema = z.array(myHelpOfferSchema);

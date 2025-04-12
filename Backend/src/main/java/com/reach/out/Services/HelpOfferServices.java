@@ -1,6 +1,7 @@
 package com.reach.out.Services;
 
 import com.reach.out.Dto.HelpOfferRequest;
+import com.reach.out.Dto.HelpOfferResponseByUser;
 import com.reach.out.Dto.HelpOfferStatusUpdateRequest;
 import com.reach.out.Dto.HelpOfferResponse;
 
@@ -12,6 +13,6 @@ public interface HelpOfferServices {
     HelpOfferResponse createHelpOfferRequest(HelpOfferRequest helpOfferRequest);
     HelpOfferResponse updateHelpStatusById(Long id, HelpOfferStatusUpdateRequest helpOfferStatusUpdateRequest);
     void deleteHelpOfferById(Long id);
-    List<HelpOfferResponse> getAllHelpOfferByUserId(Long userId);
+    List<HelpOfferResponseByUser> getAllHelpOfferByUserId(Long userId);
     Optional<HelpOfferResponse> getOfferByHelpIdAndUserId(Long helpId, Long userId);
 }

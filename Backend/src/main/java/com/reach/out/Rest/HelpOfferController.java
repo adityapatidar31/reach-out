@@ -2,6 +2,7 @@ package com.reach.out.Rest;
 
 import com.reach.out.Dto.HelpOfferRequest;
 import com.reach.out.Dto.HelpOfferResponse;
+import com.reach.out.Dto.HelpOfferResponseByUser;
 import com.reach.out.Dto.HelpOfferStatusUpdateRequest;
 import com.reach.out.Response.ApiResponse;
 import com.reach.out.Services.HelpOfferServices;
@@ -77,7 +78,7 @@ public class HelpOfferController {
     public ResponseEntity<Map<String, Object>> getAllHelpOfferByUserId(@PathVariable Long userId) {
         Map<String, Object> response = new HashMap<>();
 
-        List<HelpOfferResponse> allHelpOfferedByUser = helpOfferServices.getAllHelpOfferByUserId(userId);
+        List<HelpOfferResponseByUser> allHelpOfferedByUser = helpOfferServices.getAllHelpOfferByUserId(userId);
 
         response.put("status", "success");
         response.put("data", allHelpOfferedByUser);
