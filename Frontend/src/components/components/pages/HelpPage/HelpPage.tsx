@@ -11,6 +11,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { HeartHandshake } from "lucide-react";
 import { useState } from "react";
 import ApplyForHelpModal from "./ApplyForHelpModal";
+import LoadingComponent from "./HelpPageLoading";
 
 function HelpPage() {
   const { id } = useParams();
@@ -33,7 +34,7 @@ function HelpPage() {
     queryFn: () => getHelpOfferByHelpAndUserId(helpId, userId),
   });
 
-  if (helpLoading || offerLoading) return <p>Loading...</p>;
+  if (helpLoading || offerLoading) return <LoadingComponent />;
   if (helpError || !help) return <p>Error loading help request.</p>;
 
   const creator = help.createdBy;
