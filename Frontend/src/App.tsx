@@ -40,7 +40,7 @@ function App() {
       <BrowserRouter>
         <div className="max-w-screen-xl mx-auto">
           <Navbar setTheme={setTheme} theme={theme} />
-          <main className="p-4">
+          <main className="sm:p-4 p-2">
             <Routes>
               <Route path="/" element={<HomePage />} />
               <Route path="/help/:id" element={<HelpPage />} />
