@@ -2,19 +2,33 @@ import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
 import { getAllHelpOfferByHelpId } from "@/services/apiService";
 import HelpOfferCard from "./HelpOfferCard";
+import Error from "../../Error";
 
 function MyDetailHelpRequestPage() {
   const { id } = useParams();
   const helpId = Number(id);
   const userId = 1;
 
-  const { data: helpOffers } = useQuery({
+  const {
+    data: helpOffers,
+    isPending,
+    isError,
+  } = useQuery({
     queryKey: ["helpOfferOnHelp", userId, helpId],
     queryFn: () => getAllHelpOfferByHelpId(helpId),
   });
 
-  if (!helpOffers) {
-    return <p>Maje Karo</p>;
+  if (isPending) {
+    return <p>Load ho raha hai bhai thoda ruk</p>;
+  }
+
+  if (!helpOffers || isError) {
+    return (
+      <Error
+        onRetry={() => window.location.reload()}
+        message="Failed to load help offer on this help."
+      />
+    );
   }
 
   return (

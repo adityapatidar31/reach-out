@@ -28,7 +28,7 @@ function HelpOfferCard({ offer }: HelpOfferCardProps) {
       >
         <div className="flex justify-center">
           <img
-            src={offer.userImageUrl || "/default-avatar.png"}
+            src={offer.userImageUrl || "/default-avatar.jpg"}
             alt={offer.userName}
             className="w-24 h-24 rounded-full object-cover border"
           />
