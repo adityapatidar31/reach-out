@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { getAllHelpOfferByHelpId } from "@/services/apiService";
 import HelpOfferCard from "./HelpOfferCard";
 import Error from "../../Error";
+import MyDetailHelpRequestPageLoading from "./MyDetailHelpRequestPageLoading";
 
 function MyDetailHelpRequestPage() {
   const { id } = useParams();
@@ -19,7 +20,7 @@ function MyDetailHelpRequestPage() {
   });
 
   if (isPending) {
-    return <p>Load ho raha hai bhai thoda ruk</p>;
+    return <MyDetailHelpRequestPageLoading />;
   }
 
   if (!helpOffers || isError) {
