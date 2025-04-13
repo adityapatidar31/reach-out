@@ -9,7 +9,7 @@ import HomePage from "./components/components/pages/HomePage/HomePage";
 import HelpPage from "./components/components/pages/HelpPage/HelpPage";
 import { ToastContainer } from "react-toastify";
 import MyHelpOffersPage from "./components/components/pages/MyHelpOffers/MyHelpOffersPage";
-import MyHelpRequestsPage from "./components/components/pages/MyHelpRequests/MyHelpRequestsPage";
+import MyHelpRequestsPage from "./components/components/pages/myHelpRequests/MyHelpRequestsPage";
 import MyDetailHelpRequestPage from "./components/components/pages/MyDetailHelpRequests/MyDetailHelpRequestPage";
 
 export const queryClient = new QueryClient();

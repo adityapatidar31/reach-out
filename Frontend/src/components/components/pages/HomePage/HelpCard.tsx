@@ -1,4 +1,4 @@
-import { Help } from "@/schema/helpSchema";
+import { Help } from "@/schema/schema";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardTitle } from "@/components/ui/card";
 import { format } from "date-fns";

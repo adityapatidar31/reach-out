@@ -6,8 +6,8 @@ import {
   helpOfferNullableSchema,
   helpOfferWithUserListSchema,
   myHelpOfferArraySchema,
-} from "@/schema/helpSchema";
-import { Help } from "@/schema/helpSchema";
+} from "@/schema/schema";
+import { Help } from "@/schema/schema";
 
 const BASE_URL = "http://localhost:8080/";
 

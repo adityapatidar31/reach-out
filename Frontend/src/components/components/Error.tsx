@@ -6,7 +6,7 @@ interface HomeErrorProps {
   message?: string;
 }
 
-const HomeError = ({ onRetry, message }: HomeErrorProps) => {
+const Error = ({ onRetry, message }: HomeErrorProps) => {
   return (
     <div className="flex flex-col items-center justify-center text-center py-12 px-4">
       <AlertTriangle className="w-12 h-12 text-destructive mb-4" />
@@ -23,4 +23,4 @@ const HomeError = ({ onRetry, message }: HomeErrorProps) => {
   );
 };
 
-export default HomeError;
+export default Error;

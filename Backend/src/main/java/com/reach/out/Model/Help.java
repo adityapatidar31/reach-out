@@ -1,6 +1,5 @@
 package com.reach.out.Model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.reach.out.enums.Category;
 import com.reach.out.enums.HelpStatus;
 import com.reach.out.enums.HelpType;
