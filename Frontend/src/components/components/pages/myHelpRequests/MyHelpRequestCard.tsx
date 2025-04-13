@@ -12,6 +12,10 @@ import {
 } from "@/components/ui/select";
 import { HelpStatus } from "@/types/enums";
 import { Help } from "@/schema/schema";
+import { useMutation } from "@tanstack/react-query";
+import { updateHelpStatusById } from "@/services/apiService";
+import { toast } from "react-toastify";
+import { SyncLoader } from "react-spinners";
 
 interface MyHelpRequestCardProps {
   help: Help;
@@ -20,10 +24,17 @@ interface MyHelpRequestCardProps {
 function MyHelpRequestCard({ help }: MyHelpRequestCardProps) {
   const [status, setStatus] = useState<HelpStatus>(help.status);
 
-  const handleUpdateStatus = () => {
-    console.log(`Update help ID ${help.id} to status: ${status}`);
-    // 🔥 Call mutation here if needed
-  };
+  const { mutate, isPending } = useMutation({
+    mutationFn: () => {
+      return updateHelpStatusById(help.id, status);
+    },
+    onSuccess: () => {
+      toast.success("Status Updated Successfully");
+    },
+    onError: () => {
+      toast.error("Failed to Update Status");
+    },
+  });
 
   return (
     <div className="group transition-all duration-300 ease-in-out">
@@ -61,8 +72,12 @@ function MyHelpRequestCard({ help }: MyHelpRequestCardProps) {
                   </SelectContent>
                 </Select>
 
-                <Button onClick={handleUpdateStatus} className="text-white">
-                  Update
+                <Button
+                  onClick={() => mutate()}
+                  className="text-white"
+                  disabled={isPending}
+                >
+                  {isPending ? <SyncLoader color="#fff" size={10} /> : "Update"}
                 </Button>
               </div>
             </div>
@@ -80,10 +95,10 @@ function MyHelpRequestCard({ help }: MyHelpRequestCardProps) {
                 </Badge>
               ))}
             </div>
+            <p className="text-xs text-muted-foreground">
+              Created At: {format(new Date(help.createdAt), "PPP p")}
+            </p>
           </div>
-          <p className="text-xs text-muted-foreground">
-            Created At: {format(new Date(help.createdAt), "PPP p")}
-          </p>
         </div>
       </div>
     </div>

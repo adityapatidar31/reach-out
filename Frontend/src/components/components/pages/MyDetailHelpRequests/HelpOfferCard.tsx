@@ -13,7 +13,7 @@ import { HelpOfferStatus } from "@/types/enums";
 import { format } from "date-fns";
 import { helpOfferWithUser } from "@/schema/schema";
 import { useMutation } from "@tanstack/react-query";
-import { updateHelpOfferOnHelpById } from "@/services/apiService";
+import { updateHelpOfferStatusById } from "@/services/apiService";
 import { toast } from "react-toastify";
 import { queryClient } from "@/App";
 
@@ -26,7 +26,7 @@ function HelpOfferCard({ offer }: HelpOfferCardProps) {
   const userId = 1;
   const { mutate, isPending } = useMutation({
     mutationFn: () => {
-      return updateHelpOfferOnHelpById(offer.id, status);
+      return updateHelpOfferStatusById(offer.id, status);
     },
     onSuccess: () => {
       toast.success("Status update successfully");

@@ -212,4 +212,26 @@ public class Help {
     public void setTitle(String title) {
         this.title = title;
     }
+
+    @Override
+    public String toString() {
+        return "Help{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", helpImageUrl='" + helpImageUrl + '\'' +
+                ", type=" + type +
+                ", area='" + area + '\'' +
+                ", city='" + city + '\'' +
+                ", state='" + state + '\'' +
+                ", country='" + country + '\'' +
+                ", pincode='" + pincode + '\'' +
+                ", status=" + status +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
+                ", reward='" + reward + '\'' +
+                ", categories=" + categories +
+                ", createdBy=" + createdBy +
+                '}';
+    }
 }

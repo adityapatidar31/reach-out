@@ -90,7 +90,8 @@ public class HelpController {
         Help updatedHelp= helpService.updateHelpStatusById(id, patchRequest);
 
         response.put("status","success");
-        response.put("data",updatedHelp);
+        System.out.println(updatedHelp);
+//        response.put("data",updatedHelp);
         return ResponseEntity.ok(response);
     }
 

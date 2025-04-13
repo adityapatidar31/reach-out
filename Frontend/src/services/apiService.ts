@@ -9,7 +9,7 @@ import {
   myHelpOfferArraySchema,
 } from "@/schema/schema";
 import { Help } from "@/schema/schema";
-import { HelpOfferStatus } from "@/types/enums";
+import { HelpOfferStatus, HelpStatus } from "@/types/enums";
 
 const BASE_URL = "http://localhost:8080/";
 
@@ -108,13 +108,19 @@ export async function getAllHelpRequestByUserId(userId: number) {
   return parsed.data;
 }
 
-export async function updateHelpOfferOnHelpById(
+export async function updateHelpOfferStatusById(
   id: number,
   status: HelpOfferStatus
 ): Promise<HelpOffer> {
   const response = await axios.patch(`${BASE_URL}api/v1/help-offer/${id}`, {
     status,
   });
-
   return response.data;
+}
+
+export async function updateHelpStatusById(id: number, status: HelpStatus) {
+  const response = await axios.patch(`${BASE_URL}api/v1/help/${id}`, {
+    status,
+  });
+  console.log(response.data);
 }
