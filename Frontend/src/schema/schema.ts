@@ -95,4 +95,6 @@ export const helpOfferWithUserSchema = z.object({
   userImageUrl: z.string(),
 });
 
+export type helpOfferWithUser = z.infer<typeof helpOfferWithUserSchema>;
+
 export const helpOfferWithUserListSchema = z.array(helpOfferWithUserSchema);
