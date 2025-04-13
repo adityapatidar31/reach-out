@@ -18,7 +18,7 @@ function MyHelpOffersPage() {
   });
 
   if (isLoading) return <p>Loading...</p>;
-  if (!isError || !helpOffers)
+  if (isError || !helpOffers)
     return <HomeError onRetry={() => window.location.reload()} />;
 
   return (

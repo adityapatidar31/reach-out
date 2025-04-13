@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { SyncLoader } from "react-spinners";
 import {
   Select,
   SelectContent,
@@ -11,6 +12,10 @@ import { Card } from "@/components/ui/card";
 import { HelpOfferStatus } from "@/types/enums";
 import { format } from "date-fns";
 import { helpOfferWithUser } from "@/schema/schema";
+import { useMutation } from "@tanstack/react-query";
+import { updateHelpOfferOnHelpById } from "@/services/apiService";
+import { toast } from "react-toastify";
+import { queryClient } from "@/App";
 
 type HelpOfferCardProps = {
   offer: helpOfferWithUser;
@@ -18,6 +23,22 @@ type HelpOfferCardProps = {
 
 function HelpOfferCard({ offer }: HelpOfferCardProps) {
   const [status, setStatus] = useState<HelpOfferStatus>(offer.status);
+  const userId = 1;
+  const { mutate, isPending } = useMutation({
+    mutationFn: () => {
+      return updateHelpOfferOnHelpById(offer.id, status);
+    },
+    onSuccess: () => {
+      toast.success("Status update successfully");
+      console.log(userId, offer.helpId);
+      queryClient.invalidateQueries({
+        queryKey: ["helpOfferOnHelp", userId, offer.helpId],
+      });
+    },
+    onError: () => {
+      toast.success("Failed to update help offer");
+    },
+  });
 
   return (
     <div className="group transition-all duration-300 ease-in-out">
@@ -60,8 +81,13 @@ function HelpOfferCard({ offer }: HelpOfferCardProps) {
                   </SelectItem>
                 </SelectContent>
               </Select>
-              <Button variant="default" className="text-white">
-                Update
+              <Button
+                variant="default"
+                className="text-white"
+                onClick={() => mutate()}
+                disabled={isPending}
+              >
+                {isPending ? <SyncLoader color="#fff" size={10} /> : "Update"}
               </Button>
             </div>
           </div>

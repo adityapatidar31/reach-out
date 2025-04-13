@@ -3,11 +3,13 @@ import {
   DetailedHelp,
   detailedHelpSchema,
   helpArraySchema,
+  HelpOffer,
   helpOfferNullableSchema,
   helpOfferWithUserListSchema,
   myHelpOfferArraySchema,
 } from "@/schema/schema";
 import { Help } from "@/schema/schema";
+import { HelpOfferStatus } from "@/types/enums";
 
 const BASE_URL = "http://localhost:8080/";
 
@@ -104,4 +106,15 @@ export async function getAllHelpRequestByUserId(userId: number) {
     throw new Error("Invalid help format");
   }
   return parsed.data;
+}
+
+export async function updateHelpOfferOnHelpById(
+  id: number,
+  status: HelpOfferStatus
+): Promise<HelpOffer> {
+  const response = await axios.patch(`${BASE_URL}api/v1/help-offer/${id}`, {
+    status,
+  });
+
+  return response.data;
 }
