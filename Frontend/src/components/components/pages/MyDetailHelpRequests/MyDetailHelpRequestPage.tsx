@@ -4,6 +4,7 @@ import { getAllHelpOfferByHelpId } from "@/services/apiService";
 import HelpOfferCard from "./HelpOfferCard";
 import Error from "../../Error";
 import MyDetailHelpRequestPageLoading from "./MyDetailHelpRequestPageLoading";
+import NoHelpOfferFound from "./NoHelpOfferFound";
 
 function MyDetailHelpRequestPage() {
   const { id } = useParams();
@@ -30,6 +31,10 @@ function MyDetailHelpRequestPage() {
         message="Failed to load help offer on this help."
       />
     );
+  }
+
+  if (helpOffers.length == 0) {
+    return <NoHelpOfferFound />;
   }
 
   return (
