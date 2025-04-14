@@ -2,6 +2,7 @@ package com.reach.out.Rest;
 
 import com.reach.out.Dto.*;
 import com.reach.out.Response.ApiResponse;
+import com.reach.out.Security.AuthUtils;
 import com.reach.out.Services.HelpOfferServices;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,9 +73,10 @@ public class HelpOfferController {
     }
 
     @GetMapping("/user")
-    public ResponseEntity<Map<String, Object>> getAllHelpOfferByUserId(@PathVariable Long userId) {
+    public ResponseEntity<Map<String, Object>> getAllHelpOfferByUserId() {
         Map<String, Object> response = new HashMap<>();
 
+        Long userId= AuthUtils.getCurrentUserId();
         List<HelpOfferResponseByUser> allHelpOfferedByUser = helpOfferServices.getAllHelpOfferByUserId(userId);
 
         response.put("status", "success");
@@ -84,9 +86,9 @@ public class HelpOfferController {
 
     @GetMapping("/help/{helpId}/user")
     public ResponseEntity<ApiResponse<HelpOfferResponse>> getHelpOfferByHelpIdAndUserId(
-            @PathVariable Long helpId,
-            @PathVariable Long userId) {
+            @PathVariable Long helpId) {
 
+        Long userId= AuthUtils.getCurrentUserId();
         Optional<HelpOfferResponse> offerOpt = helpOfferServices.getOfferByHelpIdAndUserId(helpId, userId);
 
         if (offerOpt.isPresent()) {
