@@ -6,7 +6,7 @@ import MyHelpRequestCard from "./MyHelpRequestCard";
 import NoHelpCreate from "./NoHelpCreate";
 
 function MyHelpRequestsPage() {
-  const userId = 3;
+  const userId = 1;
 
   const {
     data: myHelpRequests,
