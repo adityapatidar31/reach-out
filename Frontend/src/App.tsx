@@ -12,6 +12,8 @@ import MyHelpOffersPage from "./components/components/pages/MyHelpOffers/MyHelpO
 import MyHelpRequestsPage from "./components/components/pages/myHelpRequests/MyHelpRequestsPage";
 import MyDetailHelpRequestPage from "./components/components/pages/MyDetailHelpRequests/MyDetailHelpRequestPage";
 import CreateHelpRequestPage from "./components/components/pages/CreateHelpRequest/CreateHelpRequestPage";
+import { Provider } from "react-redux";
+import { store } from "./store/store";
 
 export const queryClient = new QueryClient();
 
@@ -27,43 +29,45 @@ function App() {
   }, []);
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <ReactQueryDevtools initialIsOpen={false} />
-      <ToastContainer
-        position="top-center"
-        autoClose={2000}
-        hideProgressBar={false}
-        newestOnTop={true}
-        closeOnClick={false}
-        draggable
-        theme={theme}
-      />
-      <BrowserRouter>
-        <div className="max-w-screen-xl mx-auto">
-          <Navbar setTheme={setTheme} theme={theme} />
-          <main className="sm:p-4 p-2">
-            <Routes>
-              <Route path="/" element={<HomePage />} />
-              <Route path="/help/:id" element={<HelpPage />} />
-              <Route path="/my-help-offers" element={<MyHelpOffersPage />} />
-              <Route
-                path="/my-help-requests"
-                element={<MyHelpRequestsPage />}
-              />
-              <Route
-                path="/my-help-requests/:id"
-                element={<MyDetailHelpRequestPage />}
-              />
-              <Route
-                path="/create-help-request"
-                element={<CreateHelpRequestPage />}
-              />
-              {/* <Route path="/login" element={<LoginPage />} /> */}
-            </Routes>
-          </main>
-        </div>
-      </BrowserRouter>
-    </QueryClientProvider>
+    <Provider store={store}>
+      <QueryClientProvider client={queryClient}>
+        <ReactQueryDevtools initialIsOpen={false} />
+        <ToastContainer
+          position="top-center"
+          autoClose={2000}
+          hideProgressBar={false}
+          newestOnTop={true}
+          closeOnClick={false}
+          draggable
+          theme={theme}
+        />
+        <BrowserRouter>
+          <div className="max-w-screen-xl mx-auto">
+            <Navbar setTheme={setTheme} theme={theme} />
+            <main className="sm:p-4 p-2">
+              <Routes>
+                <Route path="/" element={<HomePage />} />
+                <Route path="/help/:id" element={<HelpPage />} />
+                <Route path="/my-help-offers" element={<MyHelpOffersPage />} />
+                <Route
+                  path="/my-help-requests"
+                  element={<MyHelpRequestsPage />}
+                />
+                <Route
+                  path="/my-help-requests/:id"
+                  element={<MyDetailHelpRequestPage />}
+                />
+                <Route
+                  path="/create-help-request"
+                  element={<CreateHelpRequestPage />}
+                />
+                {/* <Route path="/login" element={<LoginPage />} /> */}
+              </Routes>
+            </main>
+          </div>
+        </BrowserRouter>
+      </QueryClientProvider>
+    </Provider>
   );
 }
 

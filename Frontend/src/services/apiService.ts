@@ -12,6 +12,8 @@ import {
 import { Help } from "@/schema/schema";
 import { HelpOfferStatus, HelpStatus } from "@/types/enums";
 
+// const BASE_URL = "https://reach-out-tuzt.onrender.com/";
+
 const BASE_URL = "http://localhost:8080/";
 
 export const getAllHelpRequest = async (): Promise<Help[]> => {
