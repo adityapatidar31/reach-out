@@ -11,6 +11,7 @@ import { ToastContainer } from "react-toastify";
 import MyHelpOffersPage from "./components/components/pages/MyHelpOffers/MyHelpOffersPage";
 import MyHelpRequestsPage from "./components/components/pages/myHelpRequests/MyHelpRequestsPage";
 import MyDetailHelpRequestPage from "./components/components/pages/MyDetailHelpRequests/MyDetailHelpRequestPage";
+import CreateHelpRequestPage from "./components/components/pages/CreateHelpRequest/CreateHelpRequestPage";
 
 export const queryClient = new QueryClient();
 
@@ -52,6 +53,10 @@ function App() {
               <Route
                 path="/my-help-requests/:id"
                 element={<MyDetailHelpRequestPage />}
+              />
+              <Route
+                path="/create-help-request"
+                element={<CreateHelpRequestPage />}
               />
               {/* <Route path="/login" element={<LoginPage />} /> */}
             </Routes>
