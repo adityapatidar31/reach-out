@@ -27,7 +27,7 @@ public class AuthController {
         this.jwtUtil = jwtUtil;
     }
 
-    @PostMapping("/signUp")
+    @PostMapping("/sign-up")
     public ResponseEntity<Map<String, Object>> signUpUser(
             @Valid @RequestBody SignupRequest signupRequest,
             HttpServletResponse response) {

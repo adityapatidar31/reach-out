@@ -9,6 +9,7 @@ import {
   helpOfferWithUserListSchema,
   LoginFormData,
   myHelpOfferArraySchema,
+  SignupFormData,
   userSchema,
 } from "@/schema/schema";
 import { Help } from "@/schema/schema";
@@ -172,10 +173,23 @@ export async function verifyUserToken() {
 }
 
 export async function loginUser(data: LoginFormData) {
-  const response = await axios.post(`${BASE_URL}api/v1/login`, data);
+  const response = await axios.post(
+    `${BASE_URL}api/v1/login`,
+    data,
+    cookieSender
+  );
   const parsed = userSchema.safeParse(response.data.data);
   if (!parsed.success) {
     console.log(parsed.error);
   }
   return parsed.data;
+}
+
+export async function signupUser(data: SignupFormData) {
+  const response = await axios.post(
+    `${BASE_URL}api/v1/sign-up`,
+    data,
+    cookieSender
+  );
+  return response.data;
 }

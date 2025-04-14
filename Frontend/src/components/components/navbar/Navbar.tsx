@@ -139,7 +139,7 @@ const Navbar = ({
                     </Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem asChild>
-                    <Link to="/signup" className="flex items-center gap-2">
+                    <Link to="/sign-up" className="flex items-center gap-2">
                       <UserPlus className="w-4 h-4" />
                       Signup
                     </Link>

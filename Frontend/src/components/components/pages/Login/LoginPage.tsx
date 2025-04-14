@@ -52,12 +52,8 @@ const LoginPage = () => {
     },
   });
 
-  const onSubmit = (data: LoginFormData) => {
-    mutate(data);
-  };
-
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form onSubmit={handleSubmit((data) => mutate(data))}>
       <div className="flex justify-center md:mt-30 sm:mt-20 mt-4  bg-background">
         <div className="w-full max-w-md p-8 bg-card rounded-lg shadow-lg">
           <h2 className="text-2xl font-semibold text-center text-primary mb-6">

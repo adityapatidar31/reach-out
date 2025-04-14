@@ -15,6 +15,7 @@ import CreateHelpRequestPage from "./components/components/pages/CreateHelpReque
 import { Provider } from "react-redux";
 import { store } from "./store/store";
 import LoginPage from "./components/components/pages/Login/LoginPage";
+import SignupPage from "./components/components/pages/Signup/SignupPage";
 
 export const queryClient = new QueryClient();
 
@@ -63,6 +64,7 @@ function App() {
                   element={<CreateHelpRequestPage />}
                 />
                 <Route path="/login" element={<LoginPage />} />
+                <Route path="/sign-up" element={<SignupPage />} />
               </Routes>
             </main>
           </div>
