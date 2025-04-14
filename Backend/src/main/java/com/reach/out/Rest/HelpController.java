@@ -19,7 +19,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @Controller
-@RequestMapping("/api/v1/help")
+@RequestMapping("/api/v1/helps")
 public class HelpController {
 
     private  final HelpService helpService;
@@ -107,12 +107,14 @@ public class HelpController {
     }
 
     @GetMapping("/user")
-    public  ResponseEntity<?> getAllHelpRequestByUsedId(@CookieValue(name = "access_token", required = false) String token){
+    public  ResponseEntity<Map<String,Object>> getAllHelpRequestByUsedId(@CookieValue(name = "access_token", required = false) String token){
         System.out.println(token);
-        if (token == null || !jwtUtil.validateToken(token)) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid or missing token");
-        }
         Map<String,Object> response= new HashMap<>();
+        if (token == null || !jwtUtil.validateToken(token)) {
+            response.put("status","error");
+            response.put("message","Invalid or missing token");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+        }
 
         Long userId= jwtUtil.extractUserId(token);
 

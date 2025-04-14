@@ -34,7 +34,7 @@ public class AuthController {
             HttpServletResponse response) {
 
         User user = userService.registerUser(signupRequest);
-        String token = jwtUtil.generateToken(user.getId());
+        String token = jwtUtil.generateToken(user.getId(),user.getRole());
 
         setJwtCookie(response, token);
 
@@ -53,7 +53,7 @@ public class AuthController {
             HttpServletResponse response) {
 
         User user = userService.loginUser(loginRequest);
-        String token = jwtUtil.generateToken(user.getId());
+        String token = jwtUtil.generateToken(user.getId(),user.getRole());
 
         setJwtCookie(response, token);
 

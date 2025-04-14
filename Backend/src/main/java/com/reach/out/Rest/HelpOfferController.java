@@ -15,7 +15,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @Controller
-@RequestMapping("/api/v1/help-offer")
+@RequestMapping("/api/v1/help-offers")
 public class HelpOfferController {
 
     private final HelpOfferServices helpOfferServices;
@@ -71,7 +71,7 @@ public class HelpOfferController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/user/{userId}")
+    @GetMapping("/user")
     public ResponseEntity<Map<String, Object>> getAllHelpOfferByUserId(@PathVariable Long userId) {
         Map<String, Object> response = new HashMap<>();
 
@@ -82,7 +82,7 @@ public class HelpOfferController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/help/{helpId}/user/{userId}")
+    @GetMapping("/help/{helpId}/user")
     public ResponseEntity<ApiResponse<HelpOfferResponse>> getHelpOfferByHelpIdAndUserId(
             @PathVariable Long helpId,
             @PathVariable Long userId) {

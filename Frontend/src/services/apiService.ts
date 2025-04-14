@@ -15,7 +15,7 @@ import { HelpOfferStatus, HelpStatus } from "@/types/enums";
 const BASE_URL = "http://localhost:8080/";
 
 export const getAllHelpRequest = async (): Promise<Help[]> => {
-  const response = await axios.get(`${BASE_URL}api/v1/help`);
+  const response = await axios.get(`${BASE_URL}api/v1/helps`);
 
   const parsed = helpArraySchema.safeParse(response.data.data);
 
@@ -28,7 +28,7 @@ export const getAllHelpRequest = async (): Promise<Help[]> => {
 };
 
 export const getHelpById = async (id: number): Promise<DetailedHelp> => {
-  const response = await axios.get(`${BASE_URL}api/v1/help/${id}`);
+  const response = await axios.get(`${BASE_URL}api/v1/helps/${id}`);
 
   const parsed = detailedHelpSchema.safeParse(response.data.data);
 
@@ -45,7 +45,7 @@ export const getHelpOfferByHelpAndUserId = async (
   userId: number
 ) => {
   const response = await axios.get(
-    `${BASE_URL}api/v1/help-offer/help/${helpId}/user/${userId}`
+    `${BASE_URL}api/v1/help-offers/help/${helpId}/user/${userId}`
   );
   const parsed = helpOfferNullableSchema.safeParse(response.data.data);
 
@@ -63,13 +63,13 @@ export const createHelpOfferRequest = async (
   message: string
 ) => {
   const body = { helpId, offeredBy: userId, message };
-  const response = await axios.post(`${BASE_URL}api/v1/help-offer`, body);
+  const response = await axios.post(`${BASE_URL}api/v1/help-offers`, body);
   console.log(response.data);
 };
 
 export const getAllHelpOfferByMe = async (userId: number) => {
   const response = await axios.get(
-    `${BASE_URL}api/v1/help-offer/user/${userId}`
+    `${BASE_URL}api/v1/help-offers/user/${userId}`
   );
 
   console.log(response.data.data);
@@ -84,7 +84,7 @@ export const getAllHelpOfferByMe = async (userId: number) => {
 
 export const getAllHelpOfferByHelpId = async (helpId: number) => {
   const response = await axios.get(
-    `${BASE_URL}api/v1/help-offer/help/${helpId}`
+    `${BASE_URL}api/v1/help-offers/help/${helpId}`
   );
 
   const parsed = helpOfferWithUserListSchema.safeParse(response.data.data);
@@ -98,7 +98,7 @@ export const getAllHelpOfferByHelpId = async (helpId: number) => {
 };
 
 export async function getAllHelpRequestByUserId(userId: number) {
-  const response = await axios.get(`${BASE_URL}api/v1/help/user/${userId}`);
+  const response = await axios.get(`${BASE_URL}api/v1/helps/user/${userId}`);
 
   const parsed = helpArraySchema.safeParse(response.data.data);
 
@@ -113,19 +113,19 @@ export async function updateHelpOfferStatusById(
   id: number,
   status: HelpOfferStatus
 ): Promise<HelpOffer> {
-  const response = await axios.patch(`${BASE_URL}api/v1/help-offer/${id}`, {
+  const response = await axios.patch(`${BASE_URL}api/v1/help-offers/${id}`, {
     status,
   });
   return response.data;
 }
 
 export async function updateHelpStatusById(id: number, status: HelpStatus) {
-  const response = await axios.patch(`${BASE_URL}api/v1/help/${id}`, {
+  const response = await axios.patch(`${BASE_URL}api/v1/helps/${id}`, {
     status,
   });
   console.log(response.data);
 }
 
 export async function createHelpRequest(data: HelpFormData, userId: number) {
-  await axios.post(`${BASE_URL}api/v1/help`, { ...data, createdBy: userId });
+  await axios.post(`${BASE_URL}api/v1/helps`, { ...data, createdBy: userId });
 }
