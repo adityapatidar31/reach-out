@@ -22,7 +22,7 @@ import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import { useQuery } from "@tanstack/react-query";
 import { verifyUserToken } from "@/services/apiService";
-import { useAppDispatch } from "@/hooks/storeHooks";
+import { useAppDispatch, useAppSelector } from "@/hooks/storeHooks";
 import { useEffect } from "react";
 import { addUser } from "@/store/userSlice";
 import LoadingProfile from "./LoadingProfile";
@@ -34,19 +34,19 @@ const Navbar = ({
   theme: "light" | "dark";
   setTheme: React.Dispatch<React.SetStateAction<"light" | "dark">>;
 }) => {
-  const { data: user, isPending } = useQuery({
+  const { data, isPending } = useQuery({
     queryKey: ["user"],
     queryFn: () => verifyUserToken(),
   });
   const dispatch = useAppDispatch();
   useEffect(() => {
-    if (user) {
-      dispatch(addUser(user));
+    if (data) {
+      dispatch(addUser(data));
     }
-  }, [user, dispatch]);
+  }, [data, dispatch]);
 
+  const user = useAppSelector((store) => store.user.user);
   const userId = user?.id;
-
   return (
     <nav className="bg-background border-b border-border shadow-sm">
       <div className="container mx-auto px-4 py-4 flex justify-between items-center">
@@ -70,7 +70,7 @@ const Navbar = ({
                 <LoadingProfile />
               ) : userId ? (
                 <Avatar className="cursor-pointer">
-                  <AvatarFallback>{user.email[0]}</AvatarFallback>
+                  <AvatarFallback>{user.name[0]}</AvatarFallback>
                 </Avatar>
               ) : (
                 <Button variant="ghost" size="icon">

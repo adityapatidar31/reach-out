@@ -173,7 +173,6 @@ export async function verifyUserToken() {
 
 export async function loginUser(data: LoginFormData) {
   const response = await axios.post(`${BASE_URL}api/v1/login`, data);
-  console.log(response.data);
   const parsed = userSchema.safeParse(response.data.data);
   if (!parsed.success) {
     console.log(parsed.error);
