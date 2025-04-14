@@ -11,7 +11,6 @@ import com.reach.out.Repository.HelpRepository;
 import com.reach.out.Repository.UserRepository;
 import com.reach.out.enums.HelpOfferStatus;
 import com.reach.out.Mapper.HelpOfferMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -25,7 +24,6 @@ public class HelpOfferServicesImpl implements HelpOfferServices {
     private final HelpRepository helpRepository;
     private final UserRepository userRepository;
 
-    @Autowired
     public HelpOfferServicesImpl(
             HelpOfferRepository helpOfferRepository,
             HelpRepository helpRepository,

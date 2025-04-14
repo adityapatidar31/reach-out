@@ -5,7 +5,6 @@ import com.reach.out.Response.ApiResponse;
 import com.reach.out.Security.AuthUtils;
 import com.reach.out.Services.HelpOfferServices;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +20,6 @@ public class HelpOfferController {
 
     private final HelpOfferServices helpOfferServices;
 
-    @Autowired
     public HelpOfferController(HelpOfferServices helpOfferServices) {
         this.helpOfferServices = helpOfferServices;
     }
