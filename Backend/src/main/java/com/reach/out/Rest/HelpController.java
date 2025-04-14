@@ -4,12 +4,14 @@ import com.reach.out.Dto.HelpAllResponse;
 import com.reach.out.Dto.HelpPatchRequest;
 import com.reach.out.Dto.HelpRequest;
 import com.reach.out.Model.Help;
+import com.reach.out.Security.AuthUtils;
 import com.reach.out.Security.JwtUtil;
 import com.reach.out.Services.HelpService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -107,16 +109,12 @@ public class HelpController {
     }
 
     @GetMapping("/user")
-    public  ResponseEntity<Map<String,Object>> getAllHelpRequestByUsedId(@CookieValue(name = "access_token", required = false) String token){
-        System.out.println(token);
-        Map<String,Object> response= new HashMap<>();
-        if (token == null || !jwtUtil.validateToken(token)) {
-            response.put("status","error");
-            response.put("message","Invalid or missing token");
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
-        }
+    public  ResponseEntity<Map<String,Object>> getAllHelpRequestByUsedId(){
 
-        Long userId= jwtUtil.extractUserId(token);
+        Long userId = AuthUtils.getCurrentUserId();
+        String role = AuthUtils.getCurrentUserRole();
+        System.out.println(role);
+        Map<String,Object> response =new HashMap<>();
 
         List<Help> allHelpByUserId = helpService.getAllHelpRequestByUserId(userId);
 

@@ -29,6 +29,9 @@ public class SecurityConfig {
                         // Public GET endpoints
                         .requestMatchers(HttpMethod.GET, "/api/v1/helps", "/api/v1/helps/**").permitAll()
 
+                        //  Auth routes
+                        .requestMatchers(HttpMethod.POST, "/api/v1/login","/api/v1/signup").permitAll()
+
                         // Admin-only DELETE endpoints
                         .requestMatchers(HttpMethod.DELETE, "/api/v1/helps/**", "/api/v1/help-offers/**").hasRole("ADMIN")
 
