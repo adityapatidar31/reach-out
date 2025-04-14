@@ -13,6 +13,12 @@ import { Button } from "@/components/ui/button";
 import { Category, HelpType } from "@/types/enums";
 import { HelpFormData, helpFormSchema } from "@/schema/schema";
 import { cn } from "@/lib/utils";
+import { useMutation } from "@tanstack/react-query";
+import { createHelpRequest } from "@/services/apiService";
+import { toast } from "react-toastify";
+import { SyncLoader } from "react-spinners";
+import { queryClient } from "@/App";
+import { useNavigate } from "react-router-dom";
 
 function CreateHelpForm() {
   const {
@@ -28,12 +34,25 @@ function CreateHelpForm() {
     },
   });
 
+  const navigate = useNavigate();
+
+  const userId = 1;
+
+  const { mutate, isPending } = useMutation({
+    mutationFn: (data: HelpFormData) => createHelpRequest(data, userId),
+    onSuccess: () => {
+      toast.success("Help Created Successfully");
+      queryClient.invalidateQueries({ queryKey: ["myHelpRequests", userId] });
+      navigate("/my-help-requests");
+    },
+    onError: (error) => {
+      toast.error("Failed to Create Help");
+      console.error("Create Help Error:", error);
+    },
+  });
+
   const onSubmit = (data: HelpFormData) => {
-    console.log("Final Payload:", {
-      ...data,
-      createdBy: 1,
-    });
-    // Handle submission logic here
+    mutate(data);
   };
 
   const handleCategoryChange = (value: Category) => {
@@ -53,13 +72,13 @@ function CreateHelpForm() {
   };
 
   return (
-    <div className="max-w-3xl mx-auto p-6">
+    <div className="max-w-3xl mx-auto sm:p-6  ">
       <h1 className="text-2xl font-bold mb-6 text-foreground text-center">
         Create a Help Request
       </h1>
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="space-y-4 max-w-3xl mx-auto p-6 bg-background rounded-xl shadow"
+        className="space-y-4 max-w-3xl mx-auto sm:p-6 p-2  bg-background rounded-xl shadow"
       >
         <Input placeholder="Title" {...register("title")} />
         {errors.title && (
@@ -152,10 +171,15 @@ function CreateHelpForm() {
             </p>
           )}
         </div>
-
-        <Button type="submit" className="mt-4 text-white">
-          Submit Help
-        </Button>
+        <div className="flex justify-end mr-5">
+          <Button
+            type="submit"
+            className="mt-4 text-white"
+            disabled={isPending}
+          >
+            {isPending ? <SyncLoader color="#fff" size={10} /> : "Submit Help"}
+          </Button>
+        </div>
       </form>
     </div>
   );

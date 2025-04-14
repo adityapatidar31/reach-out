@@ -3,6 +3,7 @@ import {
   DetailedHelp,
   detailedHelpSchema,
   helpArraySchema,
+  HelpFormData,
   HelpOffer,
   helpOfferNullableSchema,
   helpOfferWithUserListSchema,
@@ -123,4 +124,8 @@ export async function updateHelpStatusById(id: number, status: HelpStatus) {
     status,
   });
   console.log(response.data);
+}
+
+export async function createHelpRequest(data: HelpFormData, userId: number) {
+  await axios.post(`${BASE_URL}api/v1/help`, { ...data, createdBy: userId });
 }

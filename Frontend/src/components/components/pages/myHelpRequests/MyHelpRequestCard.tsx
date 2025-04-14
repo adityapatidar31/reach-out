@@ -16,6 +16,7 @@ import { useMutation } from "@tanstack/react-query";
 import { updateHelpStatusById } from "@/services/apiService";
 import { toast } from "react-toastify";
 import { SyncLoader } from "react-spinners";
+import { useNavigate } from "react-router-dom";
 
 interface MyHelpRequestCardProps {
   help: Help;
@@ -23,6 +24,7 @@ interface MyHelpRequestCardProps {
 
 function MyHelpRequestCard({ help }: MyHelpRequestCardProps) {
   const [status, setStatus] = useState<HelpStatus>(help.status);
+  const navigate = useNavigate();
 
   const { mutate, isPending } = useMutation({
     mutationFn: () => {
@@ -37,7 +39,21 @@ function MyHelpRequestCard({ help }: MyHelpRequestCardProps) {
   });
 
   return (
-    <div className="group transition-all duration-300 ease-in-out">
+    <div
+      className="group transition-all duration-300 ease-in-out hover:cursor-pointer"
+      onClick={(e) => {
+        const target = e.target as HTMLElement;
+        if (
+          target.closest("button") ||
+          target.closest("select") ||
+          target.closest("[role='combobox']") // for SelectTrigger
+        ) {
+          e.stopPropagation();
+        } else {
+          navigate(`/my-help-requests/${help.id}`);
+        }
+      }}
+    >
       <div
         className="flex flex-col md:flex-row gap-4  rounded-xl shadow bg-background
             group-hover:shadow-lg group-hover:ring-ring 
@@ -74,7 +90,7 @@ function MyHelpRequestCard({ help }: MyHelpRequestCardProps) {
 
                 <Button
                   onClick={() => mutate()}
-                  className="text-white"
+                  className="text-white hover:cursor-pointer"
                   disabled={isPending}
                 >
                   {isPending ? <SyncLoader color="#fff" size={10} /> : "Update"}
