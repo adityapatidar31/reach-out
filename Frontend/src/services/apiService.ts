@@ -191,5 +191,10 @@ export async function signupUser(data: SignupFormData) {
     data,
     cookieSender
   );
-  return response.data;
+
+  const parsed = userSchema.safeParse(response.data.data);
+  if (!parsed.success) {
+    console.log(parsed.error);
+  }
+  return parsed.data;
 }

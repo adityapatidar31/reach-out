@@ -9,7 +9,12 @@ import { SyncLoader } from "react-spinners";
 import { toast } from "react-toastify";
 import { useAppDispatch } from "@/hooks/storeHooks";
 import { signupUser } from "@/services/apiService";
-import { SignupFormData, signupSchema } from "@/schema/schema";
+import {
+  errorResponseSchema,
+  SignupFormData,
+  signupSchema,
+} from "@/schema/schema";
+import { AxiosError } from "axios";
 
 const SignupPage = () => {
   const navigate = useNavigate();
@@ -28,11 +33,20 @@ const SignupPage = () => {
       return await signupUser(data);
     },
     onSuccess: (user) => {
-      dispatch(addUser(user));
-      navigate("/home");
+      if (user) dispatch(addUser(user));
+      navigate("/");
     },
-    onError: () => {
-      toast.error("Failed to Signup. Try again later");
+    onError: (error) => {
+      const axiosError = error as AxiosError;
+      const apiError = axiosError.response?.data;
+
+      const parsed = errorResponseSchema.safeParse(apiError);
+
+      if (parsed.success) {
+        toast.error(parsed.data.message);
+      } else {
+        toast.error("Failed to Signup. Try again later");
+      }
     },
   });
 
@@ -41,7 +55,7 @@ const SignupPage = () => {
   };
 
   return (
-    <form onSubmit={() => handleSubmit(onSubmit)}>
+    <form onSubmit={handleSubmit(onSubmit)}>
       <div className="flex justify-center md:mt-30 sm:mt-20 mt-4 bg-background">
         <div className="w-full max-w-md p-8 bg-card rounded-lg shadow-lg">
           <h2 className="text-2xl font-semibold text-center text-primary mb-6">
@@ -135,8 +149,12 @@ const SignupPage = () => {
 
           {/* Submit */}
           <div className="flex justify-center mt-6">
-            <Button type="submit" className="w-full" disabled={isPending}>
-              {isPending ? <SyncLoader color="#fff" size={6} /> : "Register"}
+            <Button
+              type="submit"
+              className="w-full text-white"
+              disabled={isPending}
+            >
+              {isPending ? <SyncLoader color="#fff" size={10} /> : "Register"}
             </Button>
           </div>
 

@@ -122,7 +122,7 @@ const LoginPage = () => {
           </div>
 
           <div className="mt-4 text-center">
-            <Link to="/signup" className="text-primary hover:underline">
+            <Link to="/sign-up" className="text-primary hover:underline">
               Don't have an account? Register here
             </Link>
           </div>
