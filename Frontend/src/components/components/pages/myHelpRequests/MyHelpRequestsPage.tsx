@@ -3,9 +3,10 @@ import { getAllHelpRequestByUserId } from "@/services/apiService";
 import MyHelpRequestsPageLoader from "./MyHelpRequestsPageLoader";
 import Error from "../../Error";
 import MyHelpRequestCard from "./MyHelpRequestCard";
+import NoHelpCreate from "./NoHelpCreate";
 
 function MyHelpRequestsPage() {
-  const userId = 1;
+  const userId = 3;
 
   const {
     data: myHelpRequests,
@@ -25,6 +26,10 @@ function MyHelpRequestsPage() {
         message="Failed to load help requests."
       />
     );
+
+  if (myHelpRequests.length == 0) {
+    return <NoHelpCreate />;
+  }
 
   return (
     <div className="max-w-5xl mx-auto space-y-6">

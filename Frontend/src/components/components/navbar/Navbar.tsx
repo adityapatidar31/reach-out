@@ -23,7 +23,7 @@ const Navbar = ({
           to="/"
           className="text-xl font-bold text-primary tracking-tight hover:opacity-80"
         >
-          Basic Login Form
+          Reach-Out
         </Link>
 
         <div className="flex gap-4 justify-center items-center">
