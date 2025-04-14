@@ -20,6 +20,12 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import ThemeSwitcher from "./ThemeSwitcher";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
+import { useQuery } from "@tanstack/react-query";
+import { verifyUserToken } from "@/services/apiService";
+import { useAppDispatch } from "@/hooks/storeHooks";
+import { useEffect } from "react";
+import { addUser } from "@/store/userSlice";
+import LoadingProfile from "./LoadingProfile";
 
 const Navbar = ({
   theme,
@@ -28,7 +34,18 @@ const Navbar = ({
   theme: "light" | "dark";
   setTheme: React.Dispatch<React.SetStateAction<"light" | "dark">>;
 }) => {
-  const userId = null; // or null
+  const { data: user, isPending } = useQuery({
+    queryKey: ["user"],
+    queryFn: () => verifyUserToken(),
+  });
+  const dispatch = useAppDispatch();
+  useEffect(() => {
+    if (user) {
+      dispatch(addUser(user));
+    }
+  }, [user, dispatch]);
+
+  const userId = user?.id;
 
   return (
     <nav className="bg-background border-b border-border shadow-sm">
@@ -49,9 +66,11 @@ const Navbar = ({
           {/* Avatar or User Icon */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              {userId ? (
+              {isPending ? (
+                <LoadingProfile />
+              ) : userId ? (
                 <Avatar className="cursor-pointer">
-                  <AvatarFallback>A</AvatarFallback>
+                  <AvatarFallback>{user.email[0]}</AvatarFallback>
                 </Avatar>
               ) : (
                 <Button variant="ghost" size="icon">

@@ -8,6 +8,7 @@ import {
   helpOfferNullableSchema,
   helpOfferWithUserListSchema,
   myHelpOfferArraySchema,
+  userSchema,
 } from "@/schema/schema";
 import { Help } from "@/schema/schema";
 import { HelpOfferStatus, HelpStatus } from "@/types/enums";
@@ -130,4 +131,12 @@ export async function updateHelpStatusById(id: number, status: HelpStatus) {
 
 export async function createHelpRequest(data: HelpFormData, userId: number) {
   await axios.post(`${BASE_URL}api/v1/helps`, { ...data, createdBy: userId });
+}
+
+export async function verifyUserToken() {
+  const response = await axios.get(`${BASE_URL}api/v1/is-login`);
+
+  const parsed = userSchema.safeParse(response.data.data);
+  if (!parsed.success) return null;
+  return parsed.data;
 }
