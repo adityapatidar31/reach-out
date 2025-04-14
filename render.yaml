@@ -2,7 +2,7 @@ services:
   - type: web
     name: reachout-backend
     env: docker
-    region: oregon # or frankfurt, depending on your location
+    region: singapore # or frankfurt, depending on your location
     plan: free
     branch: main
     rootDir: Backend
