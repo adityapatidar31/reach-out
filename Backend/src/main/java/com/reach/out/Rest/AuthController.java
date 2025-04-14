@@ -64,7 +64,7 @@ public class AuthController {
         return ResponseEntity.ok(res);
     }
 
-    @GetMapping("/is-login")
+    @GetMapping("/verify-token")
     public ResponseEntity<Map<String,Object>> getUserWithToken(){
         Map<String,Object> response= new HashMap<>();
 
