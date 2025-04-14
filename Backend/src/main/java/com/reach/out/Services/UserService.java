@@ -7,4 +7,5 @@ import com.reach.out.Model.User;
 public interface UserService {
     User registerUser(SignupRequest signupRequest);
     User loginUser(LoginRequest loginRequest);
+    User getUserById(Long userId);
 }

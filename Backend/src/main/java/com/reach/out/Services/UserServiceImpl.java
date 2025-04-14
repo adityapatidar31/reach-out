@@ -47,6 +47,7 @@ public class UserServiceImpl implements UserService {
         return userRepository.save(user);
     }
 
+    @Override
     public User loginUser(LoginRequest loginRequest){
         User user = userRepository.findByEmail(loginRequest.getEmail())
                 .orElseThrow(() -> new ApiException("Invalid email or password"));
@@ -57,6 +58,11 @@ public class UserServiceImpl implements UserService {
         }
 
         return user;
+    }
+
+    @Override
+    public User getUserById(Long userId){
+        return userRepository.findById(userId).orElseThrow(()-> new ApiException("User Does not exist"));
     }
 }
 
