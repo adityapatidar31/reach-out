@@ -27,11 +27,12 @@ public class User {
     // Constructors
     public User() {}
 
-    public User(String name, String email, String password, String role) {
+    public User(String name, String email, String password, String role, String imageUrl) {
         this.name = name;
         this.email = email;
         this.password = password;
         this.role = role;
+        this.imageUrl=imageUrl;
     }
 
     // Getters and Setters

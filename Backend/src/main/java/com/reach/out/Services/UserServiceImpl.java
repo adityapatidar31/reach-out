@@ -33,14 +33,15 @@ public class UserServiceImpl implements UserService {
         }
 
 
-        // For now, save raw password — we’ll hash later with Spring Security
+
         String encodedPassword= passwordEncoder.encode(signupRequest.getPassword());
 
         User user = new User(
                 signupRequest.getName(),
                 signupRequest.getEmail(),
                 encodedPassword,
-                "USER"
+                "USER",
+                signupRequest.getImageUrl()
         );
 
         return userRepository.save(user);

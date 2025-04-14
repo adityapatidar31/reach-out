@@ -17,6 +17,17 @@ public class SignupRequest {
     @NotBlank(message = "Confirm password is required")
     private String confirmPassword;
 
+    @NotBlank(message = "Image Url is required")
+    private String ImageUrl;
+
+    public String getImageUrl() {
+        return ImageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        ImageUrl = imageUrl;
+    }
+
     // Getters and setters
     public String getName() {
         return name;
