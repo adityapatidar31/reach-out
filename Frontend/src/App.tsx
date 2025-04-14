@@ -14,6 +14,7 @@ import MyDetailHelpRequestPage from "./components/components/pages/MyDetailHelpR
 import CreateHelpRequestPage from "./components/components/pages/CreateHelpRequest/CreateHelpRequestPage";
 import { Provider } from "react-redux";
 import { store } from "./store/store";
+import LoginPage from "./components/components/pages/Login/LoginPage";
 
 export const queryClient = new QueryClient();
 
@@ -61,7 +62,7 @@ function App() {
                   path="/create-help-request"
                   element={<CreateHelpRequestPage />}
                 />
-                {/* <Route path="/login" element={<LoginPage />} /> */}
+                <Route path="/login" element={<LoginPage />} />
               </Routes>
             </main>
           </div>

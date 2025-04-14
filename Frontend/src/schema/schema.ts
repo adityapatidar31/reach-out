@@ -120,3 +120,18 @@ export const helpFormSchema = z.object({
 });
 
 export type HelpFormData = z.infer<typeof helpFormSchema>;
+
+// login schema
+export const loginSchema = z.object({
+  email: z.string().email("Invalid email"),
+  password: z.string().min(1, "Password is required"),
+});
+
+export type LoginFormData = z.infer<typeof loginSchema>;
+
+export const errorResponseSchema = z.object({
+  status: z.enum(["fail", "error"]),
+  message: z.string(),
+});
+
+export type ErrorResponseType = z.infer<typeof errorResponseSchema>;

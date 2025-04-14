@@ -7,6 +7,7 @@ import {
   HelpOffer,
   helpOfferNullableSchema,
   helpOfferWithUserListSchema,
+  LoginFormData,
   myHelpOfferArraySchema,
   userSchema,
 } from "@/schema/schema";
@@ -167,5 +168,15 @@ export async function verifyUserToken() {
 
   const parsed = userSchema.safeParse(response.data.data);
   if (!parsed.success) return null;
+  return parsed.data;
+}
+
+export async function loginUser(data: LoginFormData) {
+  const response = await axios.post(`${BASE_URL}api/v1/login`, data);
+  console.log(response.data);
+  const parsed = userSchema.safeParse(response.data.data);
+  if (!parsed.success) {
+    console.log(parsed.error);
+  }
   return parsed.data;
 }
