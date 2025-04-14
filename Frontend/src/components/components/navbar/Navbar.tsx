@@ -19,6 +19,7 @@ import {
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import ThemeSwitcher from "./ThemeSwitcher";
 import { Separator } from "@/components/ui/separator";
+import { Button } from "@/components/ui/button";
 
 const Navbar = ({
   theme,
@@ -27,7 +28,7 @@ const Navbar = ({
   theme: "light" | "dark";
   setTheme: React.Dispatch<React.SetStateAction<"light" | "dark">>;
 }) => {
-  const userId = 1; // or null
+  const userId = null; // or null
 
   return (
     <nav className="bg-background border-b border-border shadow-sm">
@@ -53,7 +54,9 @@ const Navbar = ({
                   <AvatarFallback>A</AvatarFallback>
                 </Avatar>
               ) : (
-                <User className="w-6 h-6 cursor-pointer text-muted-foreground hover:text-primary" />
+                <Button variant="ghost" size="icon">
+                  <User className="w-5 h-5 cursor-pointer text-muted-foreground hover:text-primary" />
+                </Button>
               )}
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
