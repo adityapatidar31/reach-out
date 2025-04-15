@@ -16,6 +16,7 @@ import { Provider } from "react-redux";
 import { store } from "./store/store";
 import LoginPage from "./components/components/pages/Login/LoginPage";
 import SignupPage from "./components/components/pages/Signup/SignupPage";
+import RenderAlert from "./components/components/RenderAlert";
 
 export const queryClient = new QueryClient();
 
@@ -45,6 +46,7 @@ function App() {
         />
         <BrowserRouter>
           <div className="max-w-screen-xl mx-auto">
+            <RenderAlert />
             <Navbar setTheme={setTheme} theme={theme} />
             <main className="sm:p-4 p-2">
               <Routes>
