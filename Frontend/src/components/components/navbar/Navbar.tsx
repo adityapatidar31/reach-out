@@ -162,7 +162,7 @@ const Navbar = ({
           <ThemeSwitcher setTheme={setTheme} theme={theme} />
         </div>
       </div>
-      <div className="sm:hidden mx-4 mb-2">
+      <div className="sm:hidden mx-8 mb-2">
         <SearchInput />
       </div>
     </nav>
