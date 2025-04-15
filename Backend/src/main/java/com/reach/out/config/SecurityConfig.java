@@ -44,7 +44,7 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.PATCH, "/api/v1/help-offers/{id}").authenticated()
                                 .requestMatchers(HttpMethod.DELETE, "/api/v1/help-offers/{id}").hasRole("ADMIN")
                                 .requestMatchers(HttpMethod.GET, "/api/v1/help-offers/me").authenticated()
-                                .requestMatchers(HttpMethod.GET, "/api/v1/help-offers/help/{helpId}/me").authenticated()
+                                .requestMatchers(HttpMethod.GET, "/api/v1/help-offers/help/{helpId}/me").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/api/v1/help-offers/help/{helpId}").authenticated()
 
                                 // Default: deny anything not explicitly mentioned

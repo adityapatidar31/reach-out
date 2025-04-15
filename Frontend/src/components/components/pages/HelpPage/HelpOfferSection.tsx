@@ -6,7 +6,9 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { format } from "date-fns";
 import ApplyForHelpModal from "./ApplyHelpOfferModal";
-import LoadingComponent from "./HelpPageLoading";
+import { useCurrentUser } from "@/hooks/useCurrentUser";
+import { useNavigate } from "react-router-dom";
+import HelpOfferLoading from "./HelpOfferLoading";
 
 type Props = {
   helpId: number;
@@ -14,13 +16,29 @@ type Props = {
 
 const HelpOfferSection = ({ helpId }: Props) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const navigate = useNavigate();
+
+  const user = useCurrentUser();
+  const userId = user?.id;
 
   const { data: helpOffer, isLoading } = useQuery({
-    queryKey: ["help-offer", helpId],
+    queryKey: ["help-offer", helpId, userId],
     queryFn: () => getHelpOfferByHelpAndUserId(helpId),
+    enabled: !!userId,
   });
 
-  if (isLoading) return <LoadingComponent />;
+  if (!userId) {
+    return (
+      <Button
+        className="w-full max-w-xs text-white"
+        onClick={() => navigate("/login")}
+      >
+        Login to Offer Help
+      </Button>
+    );
+  }
+
+  if (isLoading) return <HelpOfferLoading />;
 
   return (
     <>

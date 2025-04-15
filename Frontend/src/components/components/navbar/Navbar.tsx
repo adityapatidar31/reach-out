@@ -27,6 +27,7 @@ import { useEffect } from "react";
 import { addUser } from "@/store/userSlice";
 import LoadingProfile from "./LoadingProfile";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
+import SearchInput from "./Search";
 
 const Navbar = ({
   theme,
@@ -62,7 +63,9 @@ const Navbar = ({
             </span>
           </div>
         </Link>
-
+        <div className="hidden sm:flex flex-1 justify-center sm:max-w-xs md:max-w-sm">
+          <SearchInput />
+        </div>
         <div className="flex items-center gap-4">
           {/* Avatar or User Icon */}
           <DropdownMenu>
@@ -158,6 +161,9 @@ const Navbar = ({
 
           <ThemeSwitcher setTheme={setTheme} theme={theme} />
         </div>
+      </div>
+      <div className="sm:hidden mx-4 mb-2">
+        <SearchInput />
       </div>
     </nav>
   );
