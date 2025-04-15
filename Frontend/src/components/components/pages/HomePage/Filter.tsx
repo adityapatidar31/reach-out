@@ -7,16 +7,38 @@ import {
 } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
 import { Category, HelpStatus } from "@/types/enums";
+import { useSearchParams } from "react-router-dom";
 
 function Filter() {
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const handleChange = (key: string, value: string, defaultValue: string) => {
+    const newParams = new URLSearchParams(searchParams.toString());
+
+    if (value === defaultValue) {
+      newParams.delete(key);
+    } else {
+      newParams.set(key, value);
+    }
+
+    setSearchParams(newParams);
+  };
+
+  const sortValue = searchParams.get("sort") || "desc";
+  const categoryValue = searchParams.get("category") || "ALL";
+  const statusValue = searchParams.get("status") || "ALL";
+
   return (
     <div className="flex flex-wrap gap-4 items-center justify-end w-full mb-3 mb:mb-0">
       {/* Sort */}
-      <div className="flex gap-2">
+      <div className="flex gap-2 items-center">
         <Label htmlFor="sort-select">Sort</Label>
-        <Select defaultValue="desc">
-          <SelectTrigger id="sort-select">
-            <SelectValue placeholder="Sort by" />
+        <Select
+          value={sortValue}
+          onValueChange={(value) => handleChange("sort", value, "desc")}
+        >
+          <SelectTrigger id="sort-select" className="w-[150px]">
+            <SelectValue />
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="desc">Created Desc</SelectItem>
@@ -26,11 +48,14 @@ function Filter() {
       </div>
 
       {/* Category */}
-      <div className="flex gap-2">
+      <div className="flex gap-2 items-center">
         <Label htmlFor="category-select">Category</Label>
-        <Select defaultValue="ALL">
-          <SelectTrigger id="category-select">
-            <SelectValue placeholder="Category" />
+        <Select
+          value={categoryValue}
+          onValueChange={(value) => handleChange("category", value, "ALL")}
+        >
+          <SelectTrigger id="category-select" className="w-[150px]">
+            <SelectValue />
           </SelectTrigger>
           <SelectContent className="max-h-80">
             <SelectItem value="ALL">All</SelectItem>
@@ -44,11 +69,14 @@ function Filter() {
       </div>
 
       {/* Status */}
-      <div className="flex gap-2">
+      <div className="flex gap-2 items-center">
         <Label htmlFor="status-select">Status</Label>
-        <Select defaultValue="ALL">
-          <SelectTrigger id="status-select">
-            <SelectValue placeholder="Status" />
+        <Select
+          value={statusValue}
+          onValueChange={(value) => handleChange("status", value, "ALL")}
+        >
+          <SelectTrigger id="status-select" className="w-[150px]">
+            <SelectValue />
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="ALL">All</SelectItem>
