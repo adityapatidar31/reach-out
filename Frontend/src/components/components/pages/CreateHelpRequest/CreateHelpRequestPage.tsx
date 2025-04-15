@@ -19,6 +19,7 @@ import { toast } from "react-toastify";
 import { SyncLoader } from "react-spinners";
 import { queryClient } from "@/App";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "@/hooks/useAuth";
 
 function CreateHelpForm() {
   const {
@@ -35,14 +36,11 @@ function CreateHelpForm() {
   });
 
   const navigate = useNavigate();
-
-  const userId = 1;
-
   const { mutate, isPending } = useMutation({
-    mutationFn: (data: HelpFormData) => createHelpRequest(data, userId),
+    mutationFn: (data: HelpFormData) => createHelpRequest(data),
     onSuccess: () => {
       toast.success("Help Created Successfully");
-      queryClient.invalidateQueries({ queryKey: ["myHelpRequests", userId] });
+      queryClient.invalidateQueries({ queryKey: ["myHelpRequests"] });
       navigate("/my-help-requests");
     },
     onError: (error) => {
@@ -50,6 +48,8 @@ function CreateHelpForm() {
       console.error("Create Help Error:", error);
     },
   });
+
+  useAuth();
 
   const onSubmit = (data: HelpFormData) => {
     mutate(data);

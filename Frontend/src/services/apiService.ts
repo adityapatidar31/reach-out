@@ -153,12 +153,8 @@ export async function updateHelpStatusById(id: number, status: HelpStatus) {
   console.log(response.data);
 }
 
-export async function createHelpRequest(data: HelpFormData, userId: number) {
-  await axios.post(
-    `${BASE_URL}api/v1/helps`,
-    { ...data, createdBy: userId },
-    cookieSender
-  );
+export async function createHelpRequest(data: HelpFormData) {
+  await axios.post(`${BASE_URL}api/v1/helps`, data, cookieSender);
 }
 
 export async function verifyUserToken() {
