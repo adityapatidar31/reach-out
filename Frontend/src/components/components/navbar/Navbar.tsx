@@ -24,7 +24,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { logoutUser, verifyUserToken } from "@/services/apiService";
 import { useAppDispatch } from "@/hooks/storeHooks";
 import { useEffect } from "react";
-import { addUser } from "@/store/userSlice";
+import { addUser, deleteUser } from "@/store/userSlice";
 import LoadingProfile from "./LoadingProfile";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
 import SearchInput from "./Search";
@@ -44,10 +44,13 @@ const Navbar = ({
     queryFn: () => verifyUserToken(),
   });
 
+  const dispatch = useAppDispatch();
+
   const { mutate } = useMutation({
     mutationFn: logoutUser,
     onSuccess: () => {
       toast.success("You are logout Successfully");
+      dispatch(deleteUser());
     },
     onError: (error) => {
       const axiosError = error as AxiosError;
@@ -61,7 +64,6 @@ const Navbar = ({
     },
   });
 
-  const dispatch = useAppDispatch();
   useEffect(() => {
     if (data) {
       dispatch(addUser(data));
