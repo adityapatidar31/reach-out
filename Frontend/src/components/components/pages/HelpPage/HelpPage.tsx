@@ -1,25 +1,16 @@
 import { useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import {
-  getHelpById,
-  getHelpOfferByHelpAndUserId,
-} from "@/services/apiService";
+import { getHelpById } from "@/services/apiService";
 import { format } from "date-fns";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { HeartHandshake } from "lucide-react";
-import { useState } from "react";
-import ApplyForHelpModal from "./ApplyHelpOfferModal";
+import HelpOfferSection from "./HelpOfferSection";
 import LoadingComponent from "./HelpPageLoading";
 import Error from "../../Error";
 
 function HelpPage() {
   const { id } = useParams();
   const helpId = Number(id);
-  const userId = 1;
-
-  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const {
     data: help,
@@ -30,12 +21,7 @@ function HelpPage() {
     queryFn: () => getHelpById(helpId),
   });
 
-  const { data: helpOffer, isLoading: offerLoading } = useQuery({
-    queryKey: ["help-offer", helpId, userId],
-    queryFn: () => getHelpOfferByHelpAndUserId(helpId, userId),
-  });
-
-  if (helpLoading || offerLoading) return <LoadingComponent />;
+  if (helpLoading) return <LoadingComponent />;
   if (helpError || !help)
     return (
       <Error
@@ -45,9 +31,9 @@ function HelpPage() {
     );
 
   const creator = help.createdBy;
+
   return (
     <div className="max-w-4xl mx-auto p-4 space-y-6">
-      {/* Part A: Help Details */}
       <div className="rounded-2xl shadow bg-background overflow-hidden">
         <img
           src={help.helpImageUrl}
@@ -74,7 +60,6 @@ function HelpPage() {
           <p className="text-xs text-muted-foreground">
             Created At: {format(new Date(help.createdAt), "PPP p")}
           </p>
-          {/* Creator Info */}
           <div className="flex items-center gap-4 p-4 border rounded-2xl shadow-sm bg-muted">
             <Avatar>
               <AvatarImage src={creator.imageUrl || undefined} />
@@ -88,55 +73,7 @@ function HelpPage() {
         </div>
       </div>
 
-      {!helpOffer && (
-        <Button
-          className="w-full max-w-xs text-white"
-          onClick={() => setIsModalOpen(true)}
-        >
-          Apply for Help
-        </Button>
-      )}
-      {helpOffer && (
-        <div className="mt-8 p-4 border rounded-2xl shadow bg-muted space-y-4">
-          <div className="flex items-center gap-2">
-            <HeartHandshake className="h-5 w-5 text-primary" />
-            <h3 className="text-lg font-semibold">Your Help Offer</h3>
-          </div>
-
-          <div className="space-y-3">
-            <div className="flex items-center gap-3">
-              <Avatar>
-                {/* <AvatarImage src={helpOffer.imageUrl || undefined} /> */}
-                <AvatarFallback>A</AvatarFallback>
-              </Avatar>
-              <div>
-                <p className="font-medium text-sm">Aditya</p>
-                <p className="text-xs text-muted-foreground">
-                  Applied on {format(new Date(helpOffer.createdAt), "PPP p")}
-                </p>
-              </div>
-            </div>
-            <div>
-              <p className="text-sm">
-                <span className="font-semibold">Status:</span>{" "}
-                {helpOffer.status}
-              </p>
-              <p className="text-sm">
-                <span className="font-semibold">Message:</span>{" "}
-                {helpOffer.message}
-              </p>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Modal for applying */}
-      <ApplyForHelpModal
-        open={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        helpId={helpId}
-        userId={userId}
-      />
+      <HelpOfferSection helpId={helpId} />
     </div>
   );
 }

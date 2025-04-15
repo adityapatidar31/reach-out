@@ -17,19 +17,18 @@ type Props = {
   open: boolean;
   onClose: () => void;
   helpId: number;
-  userId: number;
 };
 
-const ApplyForHelpModal = ({ open, onClose, helpId, userId }: Props) => {
+const ApplyForHelpModal = ({ open, onClose, helpId }: Props) => {
   const [message, setMessage] = useState("");
   const maxLength = 1000;
 
   const { mutate, isPending } = useMutation({
-    mutationFn: () => createHelpOfferRequest(helpId, userId, message),
+    mutationFn: () => createHelpOfferRequest(helpId, message),
     onSuccess: () => {
       toast.success("Help offer submitted successfully!");
       queryClient.invalidateQueries({
-        queryKey: ["help-offer", helpId, userId],
+        queryKey: ["help-offer", helpId],
       });
       onClose();
       setMessage("");

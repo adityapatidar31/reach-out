@@ -22,10 +22,11 @@ import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import { useQuery } from "@tanstack/react-query";
 import { verifyUserToken } from "@/services/apiService";
-import { useAppDispatch, useAppSelector } from "@/hooks/storeHooks";
+import { useAppDispatch } from "@/hooks/storeHooks";
 import { useEffect } from "react";
 import { addUser } from "@/store/userSlice";
 import LoadingProfile from "./LoadingProfile";
+import { useCurrentUser } from "@/hooks/useCurrentUser";
 
 const Navbar = ({
   theme,
@@ -45,7 +46,7 @@ const Navbar = ({
     }
   }, [data, dispatch]);
 
-  const user = useAppSelector((store) => store.user.user);
+  const user = useCurrentUser();
   const userId = user?.id;
   return (
     <nav className="bg-background border-b border-border shadow-sm">

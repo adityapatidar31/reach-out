@@ -52,12 +52,9 @@ export const getHelpById = async (id: number): Promise<DetailedHelp> => {
   return parsed.data;
 };
 
-export const getHelpOfferByHelpAndUserId = async (
-  helpId: number,
-  userId: number
-) => {
+export const getHelpOfferByHelpAndUserId = async (helpId: number) => {
   const response = await axios.get(
-    `${BASE_URL}api/v1/help-offers/help/${helpId}/user/${userId}`,
+    `${BASE_URL}api/v1/help-offers/help/${helpId}/me`,
     cookieSender
   );
   const parsed = helpOfferNullableSchema.safeParse(response.data.data);
@@ -72,10 +69,9 @@ export const getHelpOfferByHelpAndUserId = async (
 
 export const createHelpOfferRequest = async (
   helpId: number,
-  userId: number,
   message: string
 ) => {
-  const body = { helpId, offeredBy: userId, message };
+  const body = { helpId, message };
   const response = await axios.post(
     `${BASE_URL}api/v1/help-offers`,
     body,
