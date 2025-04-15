@@ -5,18 +5,19 @@ import HelpOfferCard from "./HelpOfferCard";
 import Error from "../../Error";
 import MyDetailHelpRequestPageLoading from "./MyDetailHelpRequestPageLoading";
 import NoHelpOfferFound from "./NoHelpOfferFound";
+import { useAuth } from "@/hooks/useAuth";
 
 function MyDetailHelpRequestPage() {
   const { id } = useParams();
   const helpId = Number(id);
-  const userId = 1;
+  useAuth();
 
   const {
     data: helpOffers,
     isPending,
     isError,
   } = useQuery({
-    queryKey: ["helpOfferOnHelp", userId, helpId],
+    queryKey: ["helpOfferOnHelp", helpId],
     queryFn: () => getAllHelpOfferByHelpId(helpId),
   });
 
