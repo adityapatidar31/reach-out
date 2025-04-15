@@ -34,7 +34,7 @@ function HelpOfferCard({ offer }: HelpOfferCardProps) {
       });
     },
     onError: () => {
-      toast.success("Failed to update help offer");
+      toast.error("Failed to update help offer");
     },
   });
 

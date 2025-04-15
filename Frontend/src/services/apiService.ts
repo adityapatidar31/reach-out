@@ -123,10 +123,13 @@ export async function updateHelpOfferStatusById(
   id: number,
   status: HelpOfferStatus
 ): Promise<HelpOffer> {
-  const response = await axios.patch(`${BASE_URL}api/v1/help-offers/${id}`, {
-    status,
-    cookieSender,
-  });
+  const response = await axios.patch(
+    `${BASE_URL}api/v1/help-offers/${id}`,
+    {
+      status,
+    },
+    cookieSender
+  );
   return response.data;
 }
 

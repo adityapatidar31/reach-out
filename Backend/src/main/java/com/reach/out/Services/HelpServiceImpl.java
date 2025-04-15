@@ -8,6 +8,11 @@ import com.reach.out.Model.User;
 import com.reach.out.Repository.HelpRepository;
 import com.reach.out.Repository.UserRepository;
 import com.reach.out.Security.AuthUtils;
+import com.reach.out.Specification.HelpSpecification;
+import com.reach.out.enums.Category;
+import com.reach.out.enums.HelpStatus;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,6 +32,19 @@ public class HelpServiceImpl implements HelpService {
     @Override
     public List<Help> getAllHelpRequest(){
         return helpRepository.findAll();
+    }
+
+    @Override
+    public List<Help> getFilteredHelps(String search, Category category, HelpStatus status, String sortDir) {
+        Specification<Help> spec = Specification
+                .where(HelpSpecification.titleOrDescriptionContains(search))
+                .and(HelpSpecification.hasCategory(category))
+                .and(HelpSpecification.hasStatus(status));
+
+        Sort sort = Sort.by("createdAt");
+        sort = "asc".equalsIgnoreCase(sortDir) ? sort.ascending() : sort.descending();
+
+        return helpRepository.findAll(spec, sort);
     }
 
     @Override
@@ -65,18 +83,21 @@ public class HelpServiceImpl implements HelpService {
 
     @Override
     @Transactional
-    public Help updateHelpStatusById(Long id, HelpPatchRequest patchRequest) {
+    public void updateHelpStatusById(Long id, HelpPatchRequest patchRequest) {
         Help help = helpRepository.findById(id)
                 .orElseThrow(() -> new ApiException("Help request not found"));
 
-        Long currentUserId = AuthUtils.getCurrentUserId();
+        Long userId = AuthUtils.getCurrentUserId();
 
-        if (!help.getCreatedBy().getId().equals(currentUserId)) {
+        if(userId==null)
+            throw new ApiException("You are not authenticated. Please log in first.");
+
+        if (!help.getCreatedBy().getId().equals(userId)) {
             throw new ApiException("You are not authorized to update this help request");
         }
 
         help.setStatus(patchRequest.getStatus());
-        return helpRepository.save(help);
+        helpRepository.save(help);
     }
 
 

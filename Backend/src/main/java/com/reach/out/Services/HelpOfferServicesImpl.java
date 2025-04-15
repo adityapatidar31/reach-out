@@ -13,6 +13,7 @@ import com.reach.out.Security.AuthUtils;
 import com.reach.out.enums.HelpOfferStatus;
 import com.reach.out.Mapper.HelpOfferMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -68,6 +69,7 @@ public class HelpOfferServicesImpl implements HelpOfferServices {
     }
 
     @Override
+    @Transactional
     public HelpOfferResponse updateHelpStatusById(Long id, HelpOfferStatusUpdateRequest helpOfferStatusUpdateRequest) {
 
         HelpOffer helpOffer = helpOfferRepository.findById(id)

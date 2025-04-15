@@ -6,6 +6,8 @@ import com.reach.out.Dto.HelpRequest;
 import com.reach.out.Model.Help;
 import com.reach.out.Security.AuthUtils;
 import com.reach.out.Services.HelpService;
+import com.reach.out.enums.Category;
+import com.reach.out.enums.HelpStatus;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -28,11 +30,14 @@ public class HelpController {
     }
 
     @GetMapping("")
-    public ResponseEntity<Map<String, Object>> getAllHelpRequest(){
+    public ResponseEntity<Map<String, Object>> getAllHelpRequest(
+            @RequestParam(required = false) String search,
+            @RequestParam(required = false) Category category,
+            @RequestParam(required = false) HelpStatus status,
+            @RequestParam(defaultValue = "desc") String sort) {
 
-        Map<String, Object> response=new HashMap<>();
+        List<Help> helps = helpService.getFilteredHelps(search, category, status, sort);
 
-        List<Help> helps = helpService.getAllHelpRequest();
 
         List<HelpAllResponse> dtos = helps.stream().map(help -> {
             HelpAllResponse dto = new HelpAllResponse();
@@ -53,6 +58,7 @@ public class HelpController {
             return dto;
         }).collect(Collectors.toList());
 
+        Map<String, Object> response=new HashMap<>();
         response.put("status", "success");
         response.put("data", dtos);
 
