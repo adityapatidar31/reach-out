@@ -15,16 +15,36 @@ import {
 import { Help } from "@/schema/schema";
 import { HelpOfferStatus, HelpStatus } from "@/types/enums";
 
-const BASE_URL = "https://reach-out-tuzt.onrender.com/";
+// const BASE_URL = "https://reach-out-tuzt.onrender.com/";
 
-// const BASE_URL = "http://localhost:8080/";
+const BASE_URL = "http://localhost:8080/";
 
 const cookieSender = {
   withCredentials: true,
 };
 
-export const getAllHelpRequest = async (): Promise<Help[]> => {
-  const response = await axios.get(`${BASE_URL}api/v1/helps`, cookieSender);
+interface Query {
+  search: string;
+  sort: string;
+  category: string;
+  status: string;
+}
+
+export const getAllHelpRequest = async (query: Query): Promise<Help[]> => {
+  let url = BASE_URL + "api/v1/helps";
+
+  const params = new URLSearchParams();
+
+  if (query.search) params.append("search", query.search);
+  if (query.sort) params.append("sort", "asc");
+  if (query.category) params.append("category", query.category);
+  if (query.status) params.append("status", query.status);
+
+  if (params.toString()) {
+    console.log(params.toString());
+    url += `?${params.toString()}`;
+  }
+  const response = await axios.get(url, cookieSender);
 
   const parsed = helpArraySchema.safeParse(response.data.data);
 

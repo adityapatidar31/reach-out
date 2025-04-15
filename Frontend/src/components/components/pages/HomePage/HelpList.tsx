@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+import { useSearchParams } from "react-router-dom";
 
 import { getAllHelpRequest } from "@/services/apiService";
 import HelpCard from "./HelpCard";
@@ -7,14 +8,28 @@ import NoHelpFound from "./NoHelpFound";
 import Error from "../../Error";
 
 const HelpList = () => {
+  const [searchParams] = useSearchParams();
+
+  const search = searchParams.get("search") || "";
+  const sort = searchParams.get("sort") || "";
+  const category = searchParams.get("category") || "";
+  const status = searchParams.get("status") || "";
+
   const {
     data: helps,
     isLoading,
     isError,
   } = useQuery({
-    queryKey: ["helps"],
-    queryFn: getAllHelpRequest,
+    queryKey: ["helps", search, sort, category, status],
+    queryFn: () =>
+      getAllHelpRequest({
+        search,
+        sort,
+        category,
+        status,
+      }),
   });
+
   if (isLoading) return <HomePageLoading />;
   if (isError || !helps)
     return (
