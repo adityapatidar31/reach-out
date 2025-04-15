@@ -48,7 +48,12 @@ public class HelpOfferServicesImpl implements HelpOfferServices {
         Help help = helpRepository.findById(helpOfferRequest.getHelpId())
                 .orElseThrow(() -> new ApiException("Help request not found"));
 
-        User user = userRepository.findById(helpOfferRequest.getOfferedBy())
+        Long userId=AuthUtils.getCurrentUserId();
+        if(userId==null)
+            throw new ApiException("You are not authenticated. Please log in");
+
+
+        User user = userRepository.findById(userId)
                 .orElseThrow(() -> new ApiException("User not found"));
 
         HelpOffer helpOffer = new HelpOffer();
@@ -64,8 +69,16 @@ public class HelpOfferServicesImpl implements HelpOfferServices {
 
     @Override
     public HelpOfferResponse updateHelpStatusById(Long id, HelpOfferStatusUpdateRequest helpOfferStatusUpdateRequest) {
+
         HelpOffer helpOffer = helpOfferRepository.findById(id)
                 .orElseThrow(() -> new ApiException("Help offer not found"));
+
+        Long userId=AuthUtils.getCurrentUserId();
+        if(userId==null)
+            throw new ApiException("You are not authenticated. Please log in");
+
+        if(!helpOffer.getHelp().getId().equals(userId))
+            throw new ApiException("You are not authorized to do it");
 
         helpOffer.setStatus(helpOfferStatusUpdateRequest.getStatus());
         helpOffer.setUpdatedAt(LocalDateTime.now());

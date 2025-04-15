@@ -88,7 +88,7 @@ public class HelpOfferController {
     }
 
     @PreAuthorize("isAuthenticated()")
-    @GetMapping("/help/{helpId}/user")
+    @GetMapping("/help/{helpId}/me")
     public ResponseEntity<Map<String,Object>> getHelpOfferByHelpIdAndUserId(
             @PathVariable Long helpId) {
 
@@ -96,7 +96,12 @@ public class HelpOfferController {
 
         Map<String,Object> response=new HashMap<>();
         response.put("status", "success");
-        offerOpt.ifPresent(helpOfferResponse -> response.put("data", helpOfferResponse));
+        if(offerOpt.isPresent()){
+            response.put("data", offerOpt.get());
+        }
+        else{
+            response.put("data",null);
+        }
         return ResponseEntity.ok(response);
     }
 

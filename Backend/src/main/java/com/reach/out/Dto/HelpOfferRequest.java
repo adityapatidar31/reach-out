@@ -9,7 +9,6 @@ public class HelpOfferRequest {
     @NotNull(message = "helpId is required")
     private Long helpId;
 
-    @NotNull(message = "offeredBy is required")
     private Long offeredBy;
 
     @NotBlank(message = "Message is required")
