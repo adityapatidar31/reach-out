@@ -40,7 +40,7 @@ function HelpPage() {
     return (
       <Error
         onRetry={() => window.location.reload()}
-        message="Failed to load Help Offered"
+        message="Failed to load Help Request"
       />
     );
 
