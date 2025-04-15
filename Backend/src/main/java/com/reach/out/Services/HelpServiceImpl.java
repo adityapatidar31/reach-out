@@ -40,10 +40,10 @@ public class HelpServiceImpl implements HelpService {
     public Help createHelp(HelpRequest helpRequest) {
         Long userId=AuthUtils.getCurrentUserId();
         if(userId==null)
-            throw new ApiException("Your are authenticated please login first");
+            throw new ApiException("You are not authenticated. Please log in first.");
 
         User createdBy = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found with id: " + helpRequest.getCreatedBy()));
+                .orElseThrow(() -> new RuntimeException("User not found with id: " + userId));
 
         Help help = new Help();
         help.setTitle(helpRequest.getTitle());

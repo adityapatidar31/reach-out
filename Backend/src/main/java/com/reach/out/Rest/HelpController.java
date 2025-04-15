@@ -8,6 +8,7 @@ import com.reach.out.Security.AuthUtils;
 import com.reach.out.Services.HelpService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -70,6 +71,7 @@ public class HelpController {
 
     }
 
+    @PreAuthorize("isAuthenticated()")
     @PostMapping("")
     public ResponseEntity<Map<String,Object>> createHelpRequest(@Valid @RequestBody HelpRequest helpRequest){
         Map<String, Object> response= new HashMap<>();
@@ -80,6 +82,7 @@ public class HelpController {
         return ResponseEntity.ok(response);
     }
 
+    @PreAuthorize("isAuthenticated()")
     @PatchMapping("/{id}")
     public ResponseEntity<Map<String,Object>> updateHelpStatusById(
             @PathVariable Long id,
@@ -94,6 +97,7 @@ public class HelpController {
         return ResponseEntity.ok(response);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteHelpRequestById(@PathVariable Long id){
         helpService.deleteHelpById(id);
@@ -101,6 +105,7 @@ public class HelpController {
         return ResponseEntity.noContent().build();
     }
 
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/me")
     public  ResponseEntity<Map<String,Object>> getAllHelpRequestByMe(){
 

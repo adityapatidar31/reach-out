@@ -6,6 +6,7 @@ import com.reach.out.Security.AuthUtils;
 import com.reach.out.Services.HelpOfferServices;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,6 +25,7 @@ public class HelpOfferController {
         this.helpOfferServices = helpOfferServices;
     }
 
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("")
     public ResponseEntity<Map<String, Object>> getAllHelpOffer() {
         Map<String, Object> response = new HashMap<>();
@@ -35,6 +37,7 @@ public class HelpOfferController {
         return ResponseEntity.ok(response);
     }
 
+    @PreAuthorize("isAuthenticated()")
     @PostMapping("")
     public ResponseEntity<Map<String, Object>> createHelpOfferRequest(
             @Valid @RequestBody HelpOfferRequest helpOfferRequest) {
@@ -49,6 +52,7 @@ public class HelpOfferController {
         return ResponseEntity.ok(response);
     }
 
+    @PreAuthorize("isAuthenticated()")
     @PatchMapping("/{id}")
     public ResponseEntity<Map<String, Object>> updateHelpOfferRequestStatus(
             @PathVariable Long id,
@@ -64,12 +68,14 @@ public class HelpOfferController {
         return ResponseEntity.ok(response);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteHelpOfferRequestById(@PathVariable Long id) {
         helpOfferServices.deleteHelpOfferById(id);
         return ResponseEntity.noContent().build();
     }
 
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/user")
     public ResponseEntity<Map<String, Object>> getAllHelpOfferByUserId() {
         Map<String, Object> response = new HashMap<>();
@@ -82,6 +88,7 @@ public class HelpOfferController {
         return ResponseEntity.ok(response);
     }
 
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/help/{helpId}/user")
     public ResponseEntity<ApiResponse<HelpOfferResponse>> getHelpOfferByHelpIdAndUserId(
             @PathVariable Long helpId) {
@@ -96,6 +103,7 @@ public class HelpOfferController {
         }
     }
 
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/help/{helpId}")
     public ResponseEntity<Map<String, Object>> getAllHelpOfferByHelpId(@PathVariable Long helpId) {
         Map<String, Object> response = new HashMap<>();
