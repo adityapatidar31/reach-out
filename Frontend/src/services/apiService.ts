@@ -205,3 +205,7 @@ export async function signupUser(data: SignupFormData) {
   }
   return parsed.data;
 }
+
+export async function logoutUser() {
+  await axios.post(`${BASE_URL}api/v1/logout`, null, cookieSender);
+}

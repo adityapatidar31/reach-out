@@ -20,14 +20,17 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import ThemeSwitcher from "./ThemeSwitcher";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
-import { useQuery } from "@tanstack/react-query";
-import { verifyUserToken } from "@/services/apiService";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { logoutUser, verifyUserToken } from "@/services/apiService";
 import { useAppDispatch } from "@/hooks/storeHooks";
 import { useEffect } from "react";
 import { addUser } from "@/store/userSlice";
 import LoadingProfile from "./LoadingProfile";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
 import SearchInput from "./Search";
+import { toast } from "react-toastify";
+import { AxiosError } from "axios";
+import { errorResponseSchema } from "@/schema/schema";
 
 const Navbar = ({
   theme,
@@ -40,6 +43,24 @@ const Navbar = ({
     queryKey: ["user"],
     queryFn: () => verifyUserToken(),
   });
+
+  const { mutate } = useMutation({
+    mutationFn: logoutUser,
+    onSuccess: () => {
+      toast.success("You are logout Successfully");
+    },
+    onError: (error) => {
+      const axiosError = error as AxiosError;
+      const parsed = errorResponseSchema.safeParse(axiosError.response?.data);
+
+      if (parsed.success) {
+        toast.error(parsed.data.message);
+      } else {
+        toast.error("Failed to logout");
+      }
+    },
+  });
+
   const dispatch = useAppDispatch();
   useEffect(() => {
     if (data) {
@@ -49,6 +70,7 @@ const Navbar = ({
 
   const user = useCurrentUser();
   const userId = user?.id;
+
   return (
     <nav className="bg-background border-b border-border shadow-sm">
       <div className="container mx-auto px-4 py-4 flex justify-between items-center">
@@ -128,7 +150,7 @@ const Navbar = ({
                   <Separator className="my-0.5" />
                   <DropdownMenuItem
                     // className="text-red-500"
-                    onClick={() => console.log("logout")}
+                    onClick={() => mutate()}
                   >
                     <LogOut className="w-4 h-4 mr-2" />
                     Logout
