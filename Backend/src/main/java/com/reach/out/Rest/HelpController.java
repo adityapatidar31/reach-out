@@ -4,7 +4,6 @@ import com.reach.out.Dto.HelpAllResponse;
 import com.reach.out.Dto.HelpPatchRequest;
 import com.reach.out.Dto.HelpRequest;
 import com.reach.out.Model.Help;
-import com.reach.out.Security.AuthUtils;
 import com.reach.out.Services.HelpService;
 import com.reach.out.enums.Category;
 import com.reach.out.enums.HelpStatus;

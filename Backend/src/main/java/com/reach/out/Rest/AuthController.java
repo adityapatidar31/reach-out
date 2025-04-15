@@ -64,6 +64,18 @@ public class AuthController {
         return ResponseEntity.ok(res);
     }
 
+    @PostMapping("/logout")
+    public ResponseEntity<Map<String, Object>> logoutUser(HttpServletResponse response) {
+        clearJwtCookie(response);
+
+        Map<String, Object> res = new HashMap<>();
+        res.put("status", "success");
+        res.put("message", "Logged out successfully");
+
+        return ResponseEntity.ok(res);
+    }
+
+
     @GetMapping("/verify-token")
     public ResponseEntity<Map<String,Object>> getUserWithToken(){
         Map<String,Object> response= new HashMap<>();
@@ -80,10 +92,21 @@ public class AuthController {
         return ResponseEntity.ok(response);
     }
 
+    private void clearJwtCookie(HttpServletResponse response) {
+        Cookie cookie = new Cookie("access_token", null);
+        cookie.setHttpOnly(true);
+        cookie.setSecure(false); // true in production (HTTPS)
+        cookie.setPath("/");
+        cookie.setMaxAge(0);
+        cookie.setAttribute("SameSite", "None");
+        response.addCookie(cookie);
+    }
+
+
     private void setJwtCookie(HttpServletResponse response, String token) {
         Cookie cookie = new Cookie("access_token", token);
         cookie.setHttpOnly(true);
-        cookie.setSecure(true); // Set to true in production (HTTPS)
+        cookie.setSecure(false); // Set to true in production (HTTPS)
         cookie.setPath("/");
         cookie.setMaxAge(24 * 60 * 60);
         cookie.setAttribute("SameSite", "None");
