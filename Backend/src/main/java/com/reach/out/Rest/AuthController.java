@@ -71,10 +71,12 @@ public class AuthController {
         Long userId= AuthUtils.getCurrentUserId();
         response.put("status","success");
         if(userId==null){
-            return ResponseEntity.ok(response);
+            response.put("data",null);
         }
-        User user=userService.getUserById(userId);
-        response.put("data",user);
+        else{
+            User user=userService.getUserById(userId);
+            response.put("data",user);
+        }
         return ResponseEntity.ok(response);
     }
 

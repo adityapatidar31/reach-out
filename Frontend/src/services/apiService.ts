@@ -20,7 +20,7 @@ const BASE_URL = "https://reach-out-tuzt.onrender.com/";
 // const BASE_URL = "http://localhost:8080/";
 
 const cookieSender = {
-  withCredentials: false,
+  withCredentials: true,
 };
 
 export const getAllHelpRequest = async (): Promise<Help[]> => {
@@ -72,17 +72,12 @@ export const createHelpOfferRequest = async (
   message: string
 ) => {
   const body = { helpId, message };
-  const response = await axios.post(
-    `${BASE_URL}api/v1/help-offers`,
-    body,
-    cookieSender
-  );
-  console.log(response.data);
+  await axios.post(`${BASE_URL}api/v1/help-offers`, body, cookieSender);
 };
 
-export const getAllHelpOfferByMe = async (userId: number) => {
+export const getAllHelpOfferByMe = async () => {
   const response = await axios.get(
-    `${BASE_URL}api/v1/help-offers/user/${userId}`,
+    `${BASE_URL}api/v1/help-offers/me`,
     cookieSender
   );
 
@@ -112,11 +107,8 @@ export const getAllHelpOfferByHelpId = async (helpId: number) => {
   return parsed.data;
 };
 
-export async function getAllHelpRequestByUserId(userId: number) {
-  const response = await axios.get(
-    `${BASE_URL}api/v1/helps/user/${userId}`,
-    cookieSender
-  );
+export async function getAllHelpRequestByUserId() {
+  const response = await axios.get(`${BASE_URL}api/v1/helps/me`, cookieSender);
 
   const parsed = helpArraySchema.safeParse(response.data.data);
 

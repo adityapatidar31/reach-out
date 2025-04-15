@@ -4,17 +4,17 @@ import { getAllHelpOfferByMe } from "@/services/apiService";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import HomeError from "../../Error";
+import { useAuth } from "@/hooks/useAuth";
 
 function MyHelpOffersPage() {
-  const userId = 3;
-
+  useAuth();
   const {
     data: helpOffers,
     isLoading,
     isError,
   } = useQuery({
-    queryKey: ["my-help-offers", userId],
-    queryFn: () => getAllHelpOfferByMe(userId),
+    queryKey: ["my-help-offers"],
+    queryFn: () => getAllHelpOfferByMe(),
   });
 
   if (isLoading) return <p>Loading...</p>;

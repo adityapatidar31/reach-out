@@ -17,7 +17,7 @@ function MyDetailHelpRequestPage() {
     isPending,
     isError,
   } = useQuery({
-    queryKey: ["helpOfferOnHelp", helpId],
+    queryKey: ["help-offer-on-help", helpId],
     queryFn: () => getAllHelpOfferByHelpId(helpId),
   });
 

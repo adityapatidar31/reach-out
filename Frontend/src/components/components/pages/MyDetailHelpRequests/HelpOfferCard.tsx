@@ -23,16 +23,14 @@ type HelpOfferCardProps = {
 
 function HelpOfferCard({ offer }: HelpOfferCardProps) {
   const [status, setStatus] = useState<HelpOfferStatus>(offer.status);
-  const userId = 1;
   const { mutate, isPending } = useMutation({
     mutationFn: () => {
       return updateHelpOfferStatusById(offer.id, status);
     },
     onSuccess: () => {
       toast.success("Status update successfully");
-      console.log(userId, offer.helpId);
       queryClient.invalidateQueries({
-        queryKey: ["helpOfferOnHelp", userId, offer.helpId],
+        queryKey: ["help-offer-on-help", offer.helpId],
       });
     },
     onError: () => {

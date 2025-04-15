@@ -89,11 +89,9 @@ public class HelpController {
             @Valid @RequestBody HelpPatchRequest patchRequest
     ){
         Map<String,Object> response= new HashMap<>();
-        Help updatedHelp= helpService.updateHelpStatusById(id, patchRequest);
+        helpService.updateHelpStatusById(id, patchRequest);
 
         response.put("status","success");
-        System.out.println(updatedHelp);
-//        response.put("data",updatedHelp);
         return ResponseEntity.ok(response);
     }
 

@@ -6,15 +6,13 @@ import MyHelpRequestCard from "./MyHelpRequestCard";
 import NoHelpCreate from "./NoHelpCreate";
 
 function MyHelpRequestsPage() {
-  const userId = 1;
-
   const {
     data: myHelpRequests,
     isLoading,
     isError,
   } = useQuery({
-    queryKey: ["myHelpRequests", userId],
-    queryFn: () => getAllHelpRequestByUserId(userId),
+    queryKey: ["my-help-requests"],
+    queryFn: () => getAllHelpRequestByUserId(),
   });
 
   if (isLoading) return <MyHelpRequestsPageLoader />;
