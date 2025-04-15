@@ -95,7 +95,7 @@ public class AuthController {
     private void clearJwtCookie(HttpServletResponse response) {
         Cookie cookie = new Cookie("access_token", null);
         cookie.setHttpOnly(true);
-        cookie.setSecure(false); // true in production (HTTPS)
+        cookie.setSecure(true); // true in production (HTTPS)
         cookie.setPath("/");
         cookie.setMaxAge(0);
         cookie.setAttribute("SameSite", "None");
