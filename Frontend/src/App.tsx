@@ -17,6 +17,7 @@ import { store } from "./store/store";
 import LoginPage from "./components/components/pages/Login/LoginPage";
 import SignupPage from "./components/components/pages/Signup/SignupPage";
 import RenderAlert from "./components/components/RenderAlert";
+import Footer from "./components/components/Footer";
 
 export const queryClient = new QueryClient();
 
@@ -69,6 +70,7 @@ function App() {
                 <Route path="/sign-up" element={<SignupPage />} />
               </Routes>
             </main>
+            <Footer />
           </div>
         </BrowserRouter>
       </QueryClientProvider>
