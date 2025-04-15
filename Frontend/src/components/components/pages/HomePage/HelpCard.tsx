@@ -1,7 +1,6 @@
 import { Help } from "@/schema/schema";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardTitle } from "@/components/ui/card";
-import { format } from "date-fns";
 import { Link } from "react-router-dom";
 
 type Props = {
@@ -15,42 +14,39 @@ const HelpCard = ({ help }: Props) => {
       className="group transition-all duration-300 ease-in-out"
     >
       <Card
-        className="rounded-2xl shadow-md bg-background py-0 text-foreground overflow-hidden 
-                   group-hover:shadow-lg group-hover:ring-ring 
-                   group-hover:scale-[1.01] transition-all duration-300 ease-in-out"
+        className="rounded-2xl shadow-md bg-background overflow-hidden 
+                   group-hover:shadow-lg group-hover:ring-1 group-hover:ring-ring 
+                   group-hover:scale-[1.01] transition-all duration-300 ease-in-out py-0"
       >
-        <div className="flex flex-col md:flex-row">
-          {/* Image */}
-          <div className="md:w-1/3">
-            <img
-              src={help.helpImageUrl}
-              alt={help.title}
-              className="w-full h-48 md:h-full object-cover rounded-2xl md:rounded-none md:rounded-l-2xl"
-            />
+        {/* Image */}
+        <img
+          src={help.helpImageUrl}
+          alt={help.title}
+          className="w-full h-48 object-cover"
+        />
+
+        {/* Content */}
+        <div className="p-4 space-y-2">
+          <CardTitle className="text-lg font-semibold truncate">
+            {help.title}
+          </CardTitle>
+
+          {/* Categories */}
+          <div className="flex flex-wrap gap-1">
+            {help.categories.slice(0, 3).map((category) => (
+              <Badge key={category} variant="secondary" className="text-xs">
+                {category}
+              </Badge>
+            ))}
           </div>
 
-          {/* Content */}
-          <div className="md:w-2/3 p-4 space-y-2">
-            <CardTitle className="text-xl">{help.title}</CardTitle>
-            <div className="flex flex-wrap gap-2">
-              {help.categories.map((category) => (
-                <Badge key={category} variant="secondary">
-                  {category}
-                </Badge>
-              ))}
-            </div>
-            <p className="text-sm text-muted-foreground">{help.description}</p>
-            <p className="text-sm font-medium">
-              📍 {help.area}, {help.city}, {help.state}, {help.country} -{" "}
-              {help.pincode}
-            </p>
-            <p className="text-sm">🎁 Reward: {help.reward}</p>
-            <p className="text-sm">🧭 Type: {help.type}</p>
+          {/* Reward */}
+          <p className="text-sm line-clamp-1">
+            🎁 <span className="font-medium">{help.reward}</span>
+          </p>
 
-            <p className="text-xs text-muted-foreground">
-              Created At: {format(new Date(help.createdAt), "PPP p")}
-            </p>
-          </div>
+          {/* City */}
+          <p className="text-xs text-muted-foreground">📍 {help.city}</p>
         </div>
       </Card>
     </Link>
