@@ -9,6 +9,7 @@ import com.reach.out.Model.User;
 import com.reach.out.Repository.HelpOfferRepository;
 import com.reach.out.Repository.HelpRepository;
 import com.reach.out.Repository.UserRepository;
+import com.reach.out.Security.AuthUtils;
 import com.reach.out.enums.HelpOfferStatus;
 import com.reach.out.Mapper.HelpOfferMapper;
 import org.springframework.stereotype.Service;
@@ -82,7 +83,11 @@ public class HelpOfferServicesImpl implements HelpOfferServices {
     }
 
     @Override
-    public List<HelpOfferResponseByUser> getAllHelpOfferByUserId(Long userId) {
+    public List<HelpOfferResponseByUser> getAllHelpOfferByMe() {
+        Long userId= AuthUtils.getCurrentUserId();
+        if(userId==null)
+            throw new ApiException("You are not authenticated. Please login first");
+
         return helpOfferRepository.findAllByOfferedById(userId)
                 .stream()
                 .map(helpOffer -> new HelpOfferResponseByUser(
@@ -98,13 +103,29 @@ public class HelpOfferServicesImpl implements HelpOfferServices {
     }
 
     @Override
-    public Optional<HelpOfferResponse> getOfferByHelpIdAndUserId(Long helpId, Long userId) {
+    public Optional<HelpOfferResponse> getOfferByHelpIdAndUserId(Long helpId) {
+
+        Long userId=AuthUtils.getCurrentUserId();
+        if(userId==null)
+            throw new ApiException("You are not authenticated. Please Log in");
+
         return helpOfferRepository.findByHelp_IdAndOfferedBy_Id(helpId, userId)
                 .map(HelpOfferMapper::toResponse);
     }
 
     @Override
     public List<HelpOfferResponseWithUser> getAllHelpOfferByHelpId(Long helpId) {
+
+        Help help = helpRepository.getHelpById(helpId)
+                .orElseThrow(()-> new ApiException("Please Provide the valid help id"));
+
+        Long userId=AuthUtils.getCurrentUserId();
+        if(userId==null)
+            throw new ApiException("You are not authenticated. Please Log in.");
+
+        if (!help.getCreatedBy().getId().equals(userId))
+            throw new ApiException("You are not authorized to view offers for this help request.");
+
         List<HelpOffer> offers = helpOfferRepository.findAllByHelpId(helpId);
         return offers.stream()
                 .map(HelpOfferMapper::toResponseWithUser)

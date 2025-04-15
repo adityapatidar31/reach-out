@@ -10,8 +10,8 @@ public interface HelpOfferServices {
     HelpOfferResponse createHelpOfferRequest(HelpOfferRequest helpOfferRequest);
     HelpOfferResponse updateHelpStatusById(Long id, HelpOfferStatusUpdateRequest helpOfferStatusUpdateRequest);
     void deleteHelpOfferById(Long id);
-    List<HelpOfferResponseByUser> getAllHelpOfferByUserId(Long userId);
-    Optional<HelpOfferResponse> getOfferByHelpIdAndUserId(Long helpId, Long userId);
+    List<HelpOfferResponseByUser> getAllHelpOfferByMe();
+    Optional<HelpOfferResponse> getOfferByHelpIdAndUserId(Long helpId);
     List<HelpOfferResponseWithUser> getAllHelpOfferByHelpId(Long helpId);
 
 }

@@ -76,12 +76,11 @@ public class HelpOfferController {
     }
 
     @PreAuthorize("isAuthenticated()")
-    @GetMapping("/user")
-    public ResponseEntity<Map<String, Object>> getAllHelpOfferByUserId() {
+    @GetMapping("/me")
+    public ResponseEntity<Map<String, Object>> getAllHelpOfferByMe() {
         Map<String, Object> response = new HashMap<>();
 
-        Long userId= AuthUtils.getCurrentUserId();
-        List<HelpOfferResponseByUser> allHelpOfferedByUser = helpOfferServices.getAllHelpOfferByUserId(userId);
+        List<HelpOfferResponseByUser> allHelpOfferedByUser = helpOfferServices.getAllHelpOfferByMe();
 
         response.put("status", "success");
         response.put("data", allHelpOfferedByUser);
@@ -90,17 +89,15 @@ public class HelpOfferController {
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/help/{helpId}/user")
-    public ResponseEntity<ApiResponse<HelpOfferResponse>> getHelpOfferByHelpIdAndUserId(
+    public ResponseEntity<Map<String,Object>> getHelpOfferByHelpIdAndUserId(
             @PathVariable Long helpId) {
 
-        Long userId= AuthUtils.getCurrentUserId();
-        Optional<HelpOfferResponse> offerOpt = helpOfferServices.getOfferByHelpIdAndUserId(helpId, userId);
+        Optional<HelpOfferResponse> offerOpt = helpOfferServices.getOfferByHelpIdAndUserId(helpId);
 
-        if (offerOpt.isPresent()) {
-            return ResponseEntity.ok(new ApiResponse<>(offerOpt.get(), "Success"));
-        } else {
-            return ResponseEntity.ok(new ApiResponse<>(null, "Success"));
-        }
+        Map<String,Object> response=new HashMap<>();
+        response.put("status", "success");
+        offerOpt.ifPresent(helpOfferResponse -> response.put("data", helpOfferResponse));
+        return ResponseEntity.ok(response);
     }
 
     @PreAuthorize("isAuthenticated()")
