@@ -33,7 +33,6 @@ public class HelpRequest {
     @NotBlank(message = "Pincode is required")
     private String pincode;
 
-    @NotNull(message = "createdBy userId is required for now")
     private Long createdBy;
 
     @NotBlank(message = "Help image URL is required")

@@ -7,7 +7,9 @@ import com.reach.out.Model.Help;
 import com.reach.out.Model.User;
 import com.reach.out.Repository.HelpRepository;
 import com.reach.out.Repository.UserRepository;
+import com.reach.out.Security.AuthUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -36,7 +38,11 @@ public class HelpServiceImpl implements HelpService {
 
     @Override
     public Help createHelp(HelpRequest helpRequest) {
-        User createdBy = userRepository.findById(helpRequest.getCreatedBy())
+        Long userId=AuthUtils.getCurrentUserId();
+        if(userId==null)
+            throw new ApiException("Your are authenticated please login first");
+
+        User createdBy = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found with id: " + helpRequest.getCreatedBy()));
 
         Help help = new Help();
@@ -58,13 +64,21 @@ public class HelpServiceImpl implements HelpService {
     }
 
     @Override
+    @Transactional
     public Help updateHelpStatusById(Long id, HelpPatchRequest patchRequest) {
-        Help help = helpRepository.findById(id).orElseThrow(()->new ApiException("Help request not found"));
+        Help help = helpRepository.findById(id)
+                .orElseThrow(() -> new ApiException("Help request not found"));
+
+        Long currentUserId = AuthUtils.getCurrentUserId();
+
+        if (!help.getCreatedBy().getId().equals(currentUserId)) {
+            throw new ApiException("You are not authorized to update this help request");
+        }
 
         help.setStatus(patchRequest.getStatus());
-
         return helpRepository.save(help);
     }
+
 
     public void deleteHelpById(Long Id){
         // TODO: You need to delete the HelpOffered as well if you delete the Help
@@ -72,7 +86,8 @@ public class HelpServiceImpl implements HelpService {
     }
 
     @Override
-    public List<Help> getAllHelpRequestByUserId(Long userId) {
+    public List<Help> getAllHelpRequestByMe() {
+        Long userId=AuthUtils.getCurrentUserId();
         return helpRepository.findAllByCreatedById(userId);
     }
 

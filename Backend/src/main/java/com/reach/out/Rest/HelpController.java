@@ -101,16 +101,11 @@ public class HelpController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/user")
-    public  ResponseEntity<Map<String,Object>> getAllHelpRequestByUsedId(){
+    @GetMapping("/me")
+    public  ResponseEntity<Map<String,Object>> getAllHelpRequestByMe(){
 
-        Long userId = AuthUtils.getCurrentUserId();
-        String role = AuthUtils.getCurrentUserRole();
-        System.out.println(role);
         Map<String,Object> response =new HashMap<>();
-
-        List<Help> allHelpByUserId = helpService.getAllHelpRequestByUserId(userId);
-
+        List<Help> allHelpByUserId = helpService.getAllHelpRequestByMe();
         List<HelpAllResponse> dtos = allHelpByUserId.stream().map(help -> {
             HelpAllResponse dto = new HelpAllResponse();
             dto.setId(help.getId());
