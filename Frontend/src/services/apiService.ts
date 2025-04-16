@@ -15,9 +15,7 @@ import {
 import { Help } from "@/schema/schema";
 import { HelpOfferStatus, HelpStatus } from "@/types/enums";
 
-const BASE_URL = "https://reach-out-tuzt.onrender.com/";
-
-// const BASE_URL = "http://localhost:8080/";
+const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 const cookieSender = {
   withCredentials: true,
