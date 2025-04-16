@@ -72,6 +72,7 @@ const Navbar = ({
 
   const user = useCurrentUser();
   const userId = user?.id;
+  const imageUrl = user?.imageUrl;
 
   return (
     <nav className="bg-background border-b border-border shadow-sm">
@@ -98,7 +99,15 @@ const Navbar = ({
                 <LoadingProfile />
               ) : userId ? (
                 <Avatar className="cursor-pointer">
-                  <AvatarFallback>{user.name[0]}</AvatarFallback>
+                  {imageUrl ? (
+                    <img
+                      src={imageUrl}
+                      alt="User Avatar"
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <AvatarFallback>{user.name[0]}</AvatarFallback>
+                  )}
                 </Avatar>
               ) : (
                 <Button variant="ghost" size="icon">

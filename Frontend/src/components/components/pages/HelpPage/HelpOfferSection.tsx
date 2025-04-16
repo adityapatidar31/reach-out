@@ -37,7 +37,7 @@ const HelpOfferSection = ({ helpId }: Props) => {
       </Button>
     );
   }
-
+  const imageUrl = user.imageUrl;
   if (isLoading) return <HelpOfferLoading />;
 
   return (
@@ -60,8 +60,16 @@ const HelpOfferSection = ({ helpId }: Props) => {
 
           <div className="space-y-3">
             <div className="flex items-center gap-3">
-              <Avatar>
-                <AvatarFallback>A</AvatarFallback>
+              <Avatar className="cursor-pointer">
+                {imageUrl ? (
+                  <img
+                    src={imageUrl}
+                    alt="User Avatar"
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <AvatarFallback>{user.name[0]}</AvatarFallback>
+                )}
               </Avatar>
               <div>
                 <p className="font-medium text-sm">Aditya</p>
