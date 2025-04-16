@@ -219,3 +219,13 @@ export async function signupUser(data: SignupFormData) {
 export async function logoutUser() {
   await axios.post(`${BASE_URL}api/v1/logout`, null, cookieSender);
 }
+
+export const updateUserProfileImage = async (formData: FormData) => {
+  const response = await axios.patch(
+    `${BASE_URL}api/v1/user/profile`,
+    formData,
+    cookieSender
+  );
+
+  return response.data;
+};
