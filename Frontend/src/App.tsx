@@ -18,6 +18,7 @@ import LoginPage from "./components/components/pages/Login/LoginPage";
 import SignupPage from "./components/components/pages/Signup/SignupPage";
 import RenderAlert from "./components/components/RenderAlert";
 import Footer from "./components/components/Footer";
+import ProfilePage from "./components/components/pages/Profile/ProfilePage";
 
 export const queryClient = new QueryClient();
 
@@ -57,8 +58,10 @@ function App() {
             <main className="sm:p-4 p-2  flex-1">
               <Routes>
                 <Route path="/" element={<HomePage />} />
+                <Route path="/profile" element={<ProfilePage />} />
                 <Route path="/help/:id" element={<HelpPage />} />
                 <Route path="/my-help-offers" element={<MyHelpOffersPage />} />
+
                 <Route
                   path="/my-help-requests"
                   element={<MyHelpRequestsPage />}
