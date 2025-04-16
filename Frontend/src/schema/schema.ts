@@ -163,3 +163,9 @@ export const imageSchema = z.object({
 });
 
 export type ImageType = z.infer<typeof imageSchema>;
+
+export const nameSchema = z.object({
+  name: z.string().min(2, "Name must be at least 2 characters"),
+});
+
+export type NameType = z.infer<typeof nameSchema>;

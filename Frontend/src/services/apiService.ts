@@ -9,6 +9,7 @@ import {
   helpOfferWithUserListSchema,
   LoginFormData,
   myHelpOfferArraySchema,
+  NameType,
   SignupFormData,
   userSchema,
 } from "@/schema/schema";
@@ -222,10 +223,24 @@ export async function logoutUser() {
 
 export const updateUserProfileImage = async (formData: FormData) => {
   const response = await axios.patch(
-    `${BASE_URL}api/v1/user/profile`,
+    `${BASE_URL}api/v1/users/profile`,
     formData,
     cookieSender
   );
 
   return response.data;
+};
+
+export const updateUserName = async (name: NameType) => {
+  const response = await axios.patch(
+    `${BASE_URL}api/v1/users/name`,
+    name,
+    cookieSender
+  );
+
+  const parsed = userSchema.safeParse(response.data.data);
+  if (!parsed.success) {
+    console.log(parsed.error);
+  }
+  return parsed.data;
 };
