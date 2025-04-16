@@ -149,7 +149,8 @@ public class UserServiceImpl implements UserService {
 
         // Encode the new password
         String encodedNewPassword = passwordEncoder.encode(passwordUpdateRequest.getNewPassword());
-        user.setPasswordChangedAt(LocalDateTime.now());
+        // It will ensure that password update is before the token generation
+        user.setPasswordChangedAt(LocalDateTime.now().minusSeconds(10));
         user.setPassword(encodedNewPassword);
 
         return userRepository.save(user);
