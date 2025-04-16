@@ -2,6 +2,8 @@ package com.reach.out.Model;
 
 import jakarta.persistence.*;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Table(name = "users")
 public class User {
@@ -23,6 +25,10 @@ public class User {
     private String role = "USER"; // Default role
 
     private String imageUrl;
+
+    @Column(name = "password_changed_at")
+    private LocalDateTime passwordChangedAt;
+
 
     // Constructors
     public User() {}
@@ -83,5 +89,13 @@ public class User {
 
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
+    }
+
+    public LocalDateTime getPasswordChangedAt() {
+        return passwordChangedAt;
+    }
+
+    public void setPasswordChangedAt(LocalDateTime passwordChangedAt) {
+        this.passwordChangedAt = passwordChangedAt;
     }
 }

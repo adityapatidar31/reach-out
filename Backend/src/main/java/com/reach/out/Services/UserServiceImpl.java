@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -148,6 +149,7 @@ public class UserServiceImpl implements UserService {
 
         // Encode the new password
         String encodedNewPassword = passwordEncoder.encode(passwordUpdateRequest.getNewPassword());
+        user.setPasswordChangedAt(LocalDateTime.now());
         user.setPassword(encodedNewPassword);
 
         return userRepository.save(user);

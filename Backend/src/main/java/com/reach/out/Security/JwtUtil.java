@@ -48,4 +48,14 @@ public class JwtUtil {
             return false;
         }
     }
+
+    public Date extractIssuedAt(String token) {
+        return Jwts.parserBuilder()
+                .setSigningKey(key)
+                .build()
+                .parseClaimsJws(token)
+                .getBody()
+                .getIssuedAt();
+    }
+
 }
