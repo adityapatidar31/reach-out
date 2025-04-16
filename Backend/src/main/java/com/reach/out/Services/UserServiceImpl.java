@@ -6,6 +6,7 @@ import com.reach.out.Dto.SignupRequest;
 import com.reach.out.Exceptions.ApiException;
 import com.reach.out.Model.User;
 import com.reach.out.Repository.UserRepository;
+import com.reach.out.Security.AuthUtils;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -61,6 +62,27 @@ public class UserServiceImpl implements UserService {
     @Override
     public User getUserById(Long userId){
         return userRepository.findById(userId).orElseThrow(()-> new ApiException("User Does not exist"));
+    }
+
+    @Override
+    public User updateUserName(String name){
+
+        if (name == null || name.trim().isEmpty()) {
+            throw new ApiException("Name cannot be empty");
+        }
+
+        Long userId= AuthUtils.getCurrentUserId();
+        if(userId==null)
+            throw new ApiException("You are not authenticated. Please log in");
+
+        User user=userRepository.findById(userId)
+                .orElseThrow(()->new ApiException("User Does not exist"));
+
+        user.setName(name);
+
+        userRepository.save(user);
+
+        return user;
     }
 }
 

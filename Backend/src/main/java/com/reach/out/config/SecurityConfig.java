@@ -50,6 +50,9 @@ public class SecurityConfig {
                         // Auth Routes
                         .requestMatchers(HttpMethod.POST, "/api/v1/logout").authenticated()
 
+                        // User Routes
+                        .requestMatchers(HttpMethod.PATCH,"/api/v1/users/**").authenticated()
+
                         // Default: deny anything not explicitly mentioned
                         .anyRequest().denyAll()
                 )

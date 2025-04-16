@@ -8,4 +8,5 @@ public interface UserService {
     User registerUser(SignupRequest signupRequest);
     User loginUser(LoginRequest loginRequest);
     User getUserById(Long userId);
+    User updateUserName(String name);
 }
