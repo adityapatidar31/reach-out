@@ -169,3 +169,16 @@ export const nameSchema = z.object({
 });
 
 export type NameType = z.infer<typeof nameSchema>;
+
+export const passwordUpdateSchema = z
+  .object({
+    currentPassword: z.string().min(8, "Current password is too short"),
+    newPassword: z.string().min(8, "New password is too short"),
+    newPasswordConfirm: z.string(),
+  })
+  .refine((data) => data.newPassword === data.newPasswordConfirm, {
+    path: ["newPasswordConfirm"],
+    message: "Passwords do not match",
+  });
+
+export type TypePasswordUpdate = z.infer<typeof passwordUpdateSchema>;

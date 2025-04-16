@@ -72,7 +72,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
                 Map<String, String> errorBody = new HashMap<>();
                 errorBody.put("status", "error");
-                errorBody.put("message", "Your token is expired, please login again");
+                errorBody.put("message", "Your password has been updated. Please log in again to continue.");
 
                 new ObjectMapper().writeValue(response.getWriter(), errorBody);
                 return;

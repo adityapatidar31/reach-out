@@ -8,25 +8,30 @@ import { updateUserProfileImage } from "@/services/apiService";
 import { toast } from "react-toastify";
 import { imageSchema, ImageType } from "@/schema/schema";
 import { useState } from "react";
+import { useAppDispatch } from "@/hooks/storeHooks";
+import { addUser } from "@/store/userSlice";
+import { SyncLoader } from "react-spinners";
 
 function ImageSection() {
   const user = useCurrentUser();
-  const [previewUrl, setPreviewUrl] = useState<string | null>(
-    user?.imageUrl || null
-  );
+  const dispatch = useAppDispatch();
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
   const {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm<ImageType>({
     resolver: zodResolver(imageSchema),
   });
 
   const { mutate: updateImage, isPending: updating } = useMutation({
     mutationFn: updateUserProfileImage,
-    onSuccess: () => {
+    onSuccess: (user) => {
+      if (user) dispatch(addUser(user));
       toast.success("Profile image updated successfully");
+      reset();
       setPreviewUrl(null); // Clear preview after successful upload
     },
     onError: () => toast.error("Failed to update profile image"),
@@ -51,7 +56,7 @@ function ImageSection() {
   return (
     <div className="flex flex-col items-center md:w-1/3">
       <img
-        src={previewUrl || "./default-image.jpg"}
+        src={previewUrl || user?.imageUrl || "./default-image.jpg"}
         alt={user.name}
         className="w-40 h-40 object-cover rounded-full border"
       />
@@ -72,7 +77,11 @@ function ImageSection() {
           <span className="text-sm text-red-500">{errors.image.message}</span>
         )}
         <Button type="submit" disabled={updating} className="text-white">
-          {updating ? "Updating..." : "Update Profile Image"}
+          {updating ? (
+            <SyncLoader color="#FFF" size={10} />
+          ) : (
+            "Update Profile Image"
+          )}
         </Button>
       </form>
     </div>

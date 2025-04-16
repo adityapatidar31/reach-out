@@ -11,6 +11,7 @@ import {
   myHelpOfferArraySchema,
   NameType,
   SignupFormData,
+  TypePasswordUpdate,
   userSchema,
 } from "@/schema/schema";
 import { Help } from "@/schema/schema";
@@ -228,7 +229,10 @@ export const updateUserProfileImage = async (formData: FormData) => {
     cookieSender
   );
 
-  return response.data;
+  const parsed = userSchema.safeParse(response.data.data);
+  if (!parsed.success) console.log(parsed.error);
+
+  return parsed.data;
 };
 
 export const updateUserName = async (name: NameType) => {
@@ -242,5 +246,20 @@ export const updateUserName = async (name: NameType) => {
   if (!parsed.success) {
     console.log(parsed.error);
   }
+  return parsed.data;
+};
+
+export const updatePassword = async (password: TypePasswordUpdate) => {
+  console.log(password);
+  const response = await axios.patch(
+    `${BASE_URL}api/v1/users/password`,
+    password,
+    cookieSender
+  );
+
+  const parsed = userSchema.safeParse(response.data.data);
+
+  if (!parsed.success) console.log(parsed.error);
+
   return parsed.data;
 };

@@ -10,6 +10,7 @@ import { updateUserName } from "@/services/apiService";
 import { useAppDispatch } from "@/hooks/storeHooks";
 import { addUser } from "@/store/userSlice";
 import { AxiosError } from "axios";
+import { SyncLoader } from "react-spinners";
 
 function UserSection() {
   const user = useCurrentUser();
@@ -55,7 +56,11 @@ function UserSection() {
         <div className="flex items-center gap-2">
           <Input {...register("name")} />
           <Button type="submit" disabled={isSubmitting} className="text-white">
-            {isSubmitting ? "Updating..." : "Update Name"}
+            {isSubmitting ? (
+              <SyncLoader color="#FFF" size={10} />
+            ) : (
+              "Update Name"
+            )}
           </Button>
         </div>
         {errors.name && (
