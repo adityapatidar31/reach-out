@@ -96,27 +96,27 @@ export const helpOfferWithUserListSchema = z.array(helpOfferWithUserSchema);
 
 export const helpFormSchema = z.object({
   title: z.string().min(1, "Title is required"),
-  description: z
-    .string()
-    .min(1, "Description is required")
-    .max(2000, "Max 2000 characters"),
-  reward: z
-    .string()
-    .min(1, "Reward is required")
-    .max(2000, "Max 2000 characters"),
+  description: z.string().min(1, "Description is required").max(2000),
+  reward: z.string().min(1, "Reward is required").max(2000),
   type: z.nativeEnum(HelpType, { required_error: "Help type is required" }),
   area: z.string().min(1, "Area is required"),
   city: z.string().min(1, "City is required"),
   state: z.string().min(1, "State is required"),
   country: z.string().min(1, "Country is required"),
   pincode: z.coerce.number().min(100000, "Valid Pincode is required"),
-  helpImageUrl: z
-    .string()
-    .min(1, "Image URL is required")
-    .url("Enter a valid image URL"),
+  helpImage: z
+    .custom<File>((file) => file instanceof File, {
+      message: "Please upload a valid file",
+    })
+    .refine((file) => file?.type === "image/jpeg", {
+      message: "Only .jpg files are allowed",
+    })
+    .refine((file) => file?.size <= 1 * 1024 * 1024, {
+      message: "Image must be less than 1MB",
+    }),
   categories: z
     .array(z.nativeEnum(Category))
-    .nonempty("Select at least one category"),
+    .min(1, "Select at least one category"),
 });
 
 export type HelpFormData = z.infer<typeof helpFormSchema>;

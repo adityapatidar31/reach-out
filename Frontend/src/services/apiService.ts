@@ -15,9 +15,9 @@ import {
 import { Help } from "@/schema/schema";
 import { HelpOfferStatus, HelpStatus } from "@/types/enums";
 
-const BASE_URL = "https://reach-out-tuzt.onrender.com/";
+// const BASE_URL = "https://reach-out-tuzt.onrender.com/";
 
-// const BASE_URL = "http://localhost:8080/";
+const BASE_URL = "http://localhost:8080/";
 
 const cookieSender = {
   withCredentials: true,
@@ -164,8 +164,20 @@ export async function updateHelpStatusById(id: number, status: HelpStatus) {
   console.log(response.data);
 }
 
-export async function createHelpRequest(data: HelpFormData) {
-  await axios.post(`${BASE_URL}api/v1/helps`, data, cookieSender);
+export async function createHelpRequest(data: HelpFormData): Promise<void> {
+  const formData = new FormData();
+
+  Object.entries(data).forEach(([key, value]) => {
+    if (key === "categories" && Array.isArray(value)) {
+      value.forEach((cat) => formData.append("categories", cat)); // ✅ send each category individually
+    } else if (key === "helpImage") {
+      formData.append("helpImage", value as File);
+    } else {
+      formData.append(key, String(value));
+    }
+  });
+
+  await axios.post(`${BASE_URL}api/v1/helps`, formData, cookieSender);
 }
 
 export async function verifyUserToken() {

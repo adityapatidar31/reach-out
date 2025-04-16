@@ -51,10 +51,10 @@ function App() {
           theme={theme}
         />
         <BrowserRouter>
-          <div className="max-w-screen-xl mx-auto">
+          <div className="max-w-screen-xl flex flex-col min-h-screen mx-auto">
             <RenderAlert />
             <Navbar setTheme={setTheme} theme={theme} />
-            <main className="sm:p-4 p-2">
+            <main className="sm:p-4 p-2  flex-1">
               <Routes>
                 <Route path="/" element={<HomePage />} />
                 <Route path="/help/:id" element={<HelpPage />} />

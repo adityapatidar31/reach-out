@@ -1,5 +1,6 @@
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { helpFormSchema, HelpFormData } from "@/schema/schema";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import {
@@ -11,7 +12,6 @@ import {
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { Category, HelpType } from "@/types/enums";
-import { HelpFormData, helpFormSchema } from "@/schema/schema";
 import { cn } from "@/lib/utils";
 import { useMutation } from "@tanstack/react-query";
 import { createHelpRequest } from "@/services/apiService";
@@ -25,6 +25,7 @@ function CreateHelpForm() {
   const {
     register,
     handleSubmit,
+    control,
     watch,
     setValue,
     formState: { errors },
@@ -36,8 +37,9 @@ function CreateHelpForm() {
   });
 
   const navigate = useNavigate();
-  const { mutate, isPending } = useMutation({
-    mutationFn: (data: HelpFormData) => createHelpRequest(data),
+
+  const { mutate, isPending } = useMutation<void, Error, HelpFormData>({
+    mutationFn: createHelpRequest,
     onSuccess: () => {
       toast.success("Help Created Successfully");
       queryClient.invalidateQueries({ queryKey: ["myHelpRequests"] });
@@ -58,27 +60,26 @@ function CreateHelpForm() {
   const handleCategoryChange = (value: Category) => {
     const current = watch("categories");
 
-    // If removing would leave the array empty, do nothing
     if (current.includes(value)) {
       if (current.length === 1) return;
-
       setValue(
         "categories",
-        current.filter((cat) => cat !== value) as [Category, ...Category[]]
+        current.filter((cat) => cat !== value) as Category[]
       );
     } else {
-      setValue("categories", [...current, value] as [Category, ...Category[]]);
+      setValue("categories", [...current, value] as Category[]);
     }
   };
 
   return (
-    <div className="max-w-3xl mx-auto sm:p-6  ">
+    <div className="max-w-3xl mx-auto sm:p-6">
       <h1 className="text-2xl font-bold mb-6 text-foreground text-center">
         Create a Help Request
       </h1>
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="space-y-4 max-w-3xl mx-auto sm:p-6 p-2  bg-background rounded-xl shadow"
+        className="space-y-4 max-w-3xl mx-auto sm:p-6 p-2 bg-background rounded-xl shadow"
+        encType="multipart/form-data"
       >
         <Input placeholder="Title" {...register("title")} />
         {errors.title && (
@@ -124,25 +125,48 @@ function CreateHelpForm() {
           <p className="text-red-500 text-sm">{errors.pincode.message}</p>
         )}
 
-        <Input placeholder="Help Image URL" {...register("helpImageUrl")} />
-        {errors.helpImageUrl && (
-          <p className="text-red-500 text-sm">{errors.helpImageUrl.message}</p>
+        <Controller
+          name="helpImage"
+          control={control}
+          render={({ field }) => (
+            <Input
+              type="file"
+              accept=".jpg"
+              className="block w-full text-sm text-muted-foreground bg-background border border-input rounded-lg cursor-pointer"
+              onChange={(e) => {
+                const file = e.target.files?.[0];
+                field.onChange(file);
+              }}
+            />
+          )}
+        />
+
+        {errors.helpImage && (
+          <p className="text-red-500 text-sm">{errors.helpImage.message}</p>
         )}
-        <Select onValueChange={(val) => setValue("type", val as HelpType)}>
-          <SelectTrigger>
-            <SelectValue placeholder="Select Help Type" />
-          </SelectTrigger>
-          <SelectContent>
-            {Object.values(HelpType).map((type) => (
-              <SelectItem key={type} value={type}>
-                {type}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+
+        <Controller
+          name="type"
+          control={control}
+          render={({ field }) => (
+            <Select onValueChange={field.onChange} value={field.value}>
+              <SelectTrigger>
+                <SelectValue placeholder="Select Help Type" />
+              </SelectTrigger>
+              <SelectContent>
+                {Object.values(HelpType).map((type) => (
+                  <SelectItem key={type} value={type}>
+                    {type}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          )}
+        />
         {errors.type && (
           <p className="text-red-500 text-sm">{errors.type.message}</p>
         )}
+
         <div>
           <p className="font-medium mb-2">Select Categories</p>
           <div className="flex flex-wrap gap-2">
@@ -171,6 +195,7 @@ function CreateHelpForm() {
             </p>
           )}
         </div>
+
         <div className="flex justify-end mr-5">
           <Button
             type="submit"

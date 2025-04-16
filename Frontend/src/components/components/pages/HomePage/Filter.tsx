@@ -32,7 +32,9 @@ function Filter() {
     <div className="flex flex-wrap gap-4 items-center justify-end w-full mb-3 mb:mb-0">
       {/* Sort */}
       <div className="flex gap-2 items-center">
-        <Label htmlFor="sort-select">Sort</Label>
+        <Label htmlFor="sort-select" className="py-3 pl-3 cursor-pointer">
+          Sort
+        </Label>
         <Select
           value={sortValue}
           onValueChange={(value) => handleChange("sort", value, "desc")}
@@ -49,7 +51,9 @@ function Filter() {
 
       {/* Category */}
       <div className="flex gap-2 items-center">
-        <Label htmlFor="category-select">Category</Label>
+        <Label htmlFor="category-select" className="py-3 pl-3  cursor-pointer">
+          Category
+        </Label>
         <Select
           value={categoryValue}
           onValueChange={(value) => handleChange("category", value, "ALL")}
@@ -70,7 +74,9 @@ function Filter() {
 
       {/* Status */}
       <div className="flex gap-2 items-center">
-        <Label htmlFor="status-select">Status</Label>
+        <Label htmlFor="status-select" className="py-3 pl-3  cursor-pointer">
+          Status
+        </Label>
         <Select
           value={statusValue}
           onValueChange={(value) => handleChange("status", value, "ALL")}
