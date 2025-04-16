@@ -86,7 +86,8 @@ public class HelpServiceImpl implements HelpService {
 
         try {
             // Upload to Cloudinary
-            Map uploadResult = cloudinary.uploader().upload(image.getBytes(), ObjectUtils.emptyMap());
+            @SuppressWarnings("unchecked")
+            Map<String, Object> uploadResult = cloudinary.uploader().upload(image.getBytes(), ObjectUtils.emptyMap());
 
             // Extract URL from response
             String imageUrl = (String) uploadResult.get("secure_url");

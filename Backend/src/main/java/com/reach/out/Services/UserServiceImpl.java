@@ -1,6 +1,8 @@
 package com.reach.out.Services;
 
 
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
 import com.reach.out.Dto.LoginRequest;
 import com.reach.out.Dto.SignupRequest;
 import com.reach.out.Exceptions.ApiException;
@@ -9,16 +11,24 @@ import com.reach.out.Repository.UserRepository;
 import com.reach.out.Security.AuthUtils;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final Cloudinary cloudinary;
 
-    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+
+    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder, Cloudinary cloudinary) {
         this.userRepository = userRepository;
         this.passwordEncoder=passwordEncoder;
+        this.cloudinary=cloudinary;
     }
 
     @Override
@@ -84,5 +94,36 @@ public class UserServiceImpl implements UserService {
 
         return user;
     }
+
+    @Override
+    public User updateProfileImage(MultipartFile image) {
+        Long userId = AuthUtils.getCurrentUserId();
+        if (userId == null) {
+            throw new ApiException("You are not authenticated. Please log in");
+        }
+
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new ApiException("User not found"));
+
+        if (image == null || image.isEmpty()) {
+            throw new ApiException("Image file is required");
+        }
+
+        try {
+            @SuppressWarnings("unchecked")
+            Map<String, Object> uploadResult = cloudinary.uploader().upload(image.getBytes(), ObjectUtils.emptyMap());
+            // Get URL
+            String imageUrl = (String) uploadResult.get("secure_url");
+
+            // Save to user
+            user.setImageUrl(imageUrl);
+            return userRepository.save(user);
+
+        } catch (IOException e) {
+            throw new ApiException("Failed to upload image to Cloudinary");
+        }
+    }
+
+
 }
 
