@@ -4,6 +4,7 @@ package com.reach.out.Services;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import com.reach.out.Dto.LoginRequest;
+import com.reach.out.Dto.PasswordUpdateRequest;
 import com.reach.out.Dto.SignupRequest;
 import com.reach.out.Exceptions.ApiException;
 import com.reach.out.Model.User;
@@ -123,6 +124,35 @@ public class UserServiceImpl implements UserService {
             throw new ApiException("Failed to upload image to Cloudinary");
         }
     }
+
+    @Override
+    public User updateUserPassword(PasswordUpdateRequest passwordUpdateRequest) {
+
+        if (!passwordUpdateRequest.getNewPassword().equals(passwordUpdateRequest.getNewPasswordConfirm())) {
+            throw new ApiException("New password and confirm password do not match");
+        }
+
+        Long userId = AuthUtils.getCurrentUserId();
+
+        if (userId == null) {
+            throw new ApiException("You are not authenticated. Please log in");
+        }
+
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new ApiException("User not found"));
+
+        // Check if the current password matches
+        if (!passwordEncoder.matches(passwordUpdateRequest.getCurrentPassword(), user.getPassword())) {
+            throw new ApiException("Invalid current password");
+        }
+
+        // Encode the new password
+        String encodedNewPassword = passwordEncoder.encode(passwordUpdateRequest.getNewPassword());
+        user.setPassword(encodedNewPassword);
+
+        return userRepository.save(user);
+    }
+
 
 
 }

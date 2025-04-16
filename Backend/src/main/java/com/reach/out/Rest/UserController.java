@@ -1,9 +1,12 @@
 package com.reach.out.Rest;
 
+import com.reach.out.Dto.PasswordUpdateRequest;
 import com.reach.out.Dto.UpdateUserNameRequest;
 import com.reach.out.Model.User;
 import com.reach.out.Security.JwtUtil;
 import com.reach.out.Services.UserService;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -52,5 +55,32 @@ public class UserController {
         return ResponseEntity.ok(response);
     }
 
+    @PreAuthorize("isAuthenticated()")
+    @PatchMapping("/password")
+    public ResponseEntity<Map<String,Object>> updateUserPassword(
+            @Valid @RequestBody PasswordUpdateRequest passwordUpdateRequest,
+            HttpServletResponse response
+    ){
+
+        User user=userService.updateUserPassword(passwordUpdateRequest);
+
+        Map<String, Object> res=new HashMap<>();
+        res.put("status","success");
+        res.put("data",user);
+
+        String token = jwtUtil.generateToken(user.getId(),user.getRole());
+        setJwtCookie(response, token);
+        return ResponseEntity.ok(res);
+    }
+
+    private void setJwtCookie(HttpServletResponse response, String token) {
+        Cookie cookie = new Cookie("access_token", token);
+        cookie.setHttpOnly(true);
+        cookie.setSecure(true); // Set to true in production (HTTPS)
+        cookie.setPath("/");
+        cookie.setMaxAge(24 * 60 * 60);
+        cookie.setAttribute("SameSite", "None");
+        response.addCookie(cookie);
+    }
 
 }
