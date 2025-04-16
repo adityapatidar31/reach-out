@@ -1,5 +1,7 @@
 package com.reach.out.Services;
 
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
 import com.reach.out.Dto.HelpPatchRequest;
 import com.reach.out.Dto.HelpRequest;
 import com.reach.out.Exceptions.ApiException;
@@ -15,18 +17,23 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class HelpServiceImpl implements HelpService {
 
     private final HelpRepository helpRepository;
     private final UserRepository userRepository;
+    private final Cloudinary cloudinary;
 
-    public HelpServiceImpl(HelpRepository helpRepository, UserRepository userRepository) {
+    public HelpServiceImpl(HelpRepository helpRepository, UserRepository userRepository, Cloudinary cloudinary) {
         this.helpRepository = helpRepository;
         this.userRepository = userRepository;
+        this.cloudinary = cloudinary;
     }
 
     @Override
@@ -56,10 +63,9 @@ public class HelpServiceImpl implements HelpService {
 
     @Override
     public Help createHelp(HelpRequest helpRequest) {
-        Long userId=AuthUtils.getCurrentUserId();
-        if(userId==null)
+        Long userId = AuthUtils.getCurrentUserId();
+        if (userId == null)
             throw new ApiException("You are not authenticated. Please log in first.");
-
         User createdBy = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found with id: " + userId));
 
@@ -76,10 +82,23 @@ public class HelpServiceImpl implements HelpService {
         help.setCategories(helpRequest.getCategories());
         help.setReward(helpRequest.getReward());
 
-        help.setHelpImageUrl(helpRequest.getHelpImageUrl());
+        MultipartFile image = helpRequest.getHelpImage();
+
+        try {
+            // Upload to Cloudinary
+            Map uploadResult = cloudinary.uploader().upload(image.getBytes(), ObjectUtils.emptyMap());
+
+            // Extract URL from response
+            String imageUrl = (String) uploadResult.get("secure_url");
+
+            help.setHelpImageUrl(imageUrl);
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to upload image to Cloudinary");
+        }
 
         return helpRepository.save(help);
     }
+
 
     @Override
     @Transactional

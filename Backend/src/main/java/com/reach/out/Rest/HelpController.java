@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.HashMap;
 import java.util.List;
@@ -78,9 +79,10 @@ public class HelpController {
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping("")
-    public ResponseEntity<Map<String,Object>> createHelpRequest(@Valid @RequestBody HelpRequest helpRequest){
+    public ResponseEntity<Map<String, Object>> createHelpRequest(
+            @Valid @ModelAttribute HelpRequest helpRequest,
+            @RequestParam("helpImage") MultipartFile helpImage) {
         Map<String, Object> response= new HashMap<>();
-
         Help help=helpService.createHelp(helpRequest);
         response.put("status","success");
         response.put("data",help);

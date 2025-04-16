@@ -4,6 +4,7 @@ import com.reach.out.enums.Category;
 import com.reach.out.enums.HelpType;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -35,8 +36,8 @@ public class HelpRequest {
 
     private Long createdBy;
 
-    @NotBlank(message = "Help image URL is required")
-    private String helpImageUrl;
+    @NotNull(message = "Help image is required")
+    private MultipartFile helpImage;
 
     @NotBlank(message = "Reward is required")
     private String reward;
@@ -48,7 +49,7 @@ public class HelpRequest {
     }
 
     public HelpRequest(String title, String description, HelpType type, String area, String city, String state,
-                       String country, String pincode, Long createdBy, String helpImageUrl,
+                       String country, String pincode, Long createdBy, MultipartFile helpImage,
                        String reward, List<Category> categories) {
         this.title = title;
         this.description = description;
@@ -59,7 +60,7 @@ public class HelpRequest {
         this.country = country;
         this.pincode = pincode;
         this.createdBy = createdBy;
-        this.helpImageUrl = helpImageUrl;
+        this.helpImage = helpImage;
         this.reward = reward;
         this.categories = categories;
     }
@@ -138,12 +139,12 @@ public class HelpRequest {
         this.createdBy = createdBy;
     }
 
-    public String getHelpImageUrl() {
-        return helpImageUrl;
+    public MultipartFile getHelpImage() {
+        return helpImage;
     }
 
-    public void setHelpImageUrl(String helpImageUrl) {
-        this.helpImageUrl = helpImageUrl;
+    public void setHelpImage(MultipartFile helpImage) {
+        this.helpImage = helpImage;
     }
 
     public String getReward() {
