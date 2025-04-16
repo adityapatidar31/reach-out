@@ -67,9 +67,9 @@ function MyHelpRequestCard({ help }: MyHelpRequestCardProps) {
 
         <div className="flex flex-col justify-between space-y-2 w-full">
           <div>
-            <div className="flex justify-between items-center">
+            <div className="flex justify-between flex-col sm:flex-row items-start sm:items-center">
               <h2 className="text-xl font-semibold">{help.title}</h2>
-              <div className="flex items-center gap-2 my-2">
+              <div className="flex items-center flex-row gap-2 my-2">
                 <Select
                   value={status}
                   onValueChange={(val) => setStatus(val as HelpStatus)}

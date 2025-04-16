@@ -3,8 +3,10 @@ import { format } from "date-fns";
 import { getAllHelpOfferByMe } from "@/services/apiService";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import HomeError from "../../Error";
+import Error from "../../Error";
 import { useAuth } from "@/hooks/useAuth";
+import NoHelpOfferFound from "../MyDetailHelpRequests/NoHelpOfferFound";
+import LoadingMyHelpOffersPage from "./LoadingMyHelpOffersPage";
 
 function MyHelpOffersPage() {
   useAuth();
@@ -17,10 +19,20 @@ function MyHelpOffersPage() {
     queryFn: () => getAllHelpOfferByMe(),
   });
 
-  if (isLoading) return <p>Loading...</p>;
+  if (isLoading) return <LoadingMyHelpOffersPage />;
   if (isError || !helpOffers)
-    return <HomeError onRetry={() => window.location.reload()} />;
+    return (
+      <Error
+        onRetry={() => window.location.reload()}
+        message="Failed to load help offer"
+      />
+    );
 
+  if (helpOffers.length == 0) {
+    return (
+      <NoHelpOfferFound message="You haven't offered any help yet. Once you contribute by offering help, your contributions will be displayed here." />
+    );
+  }
   return (
     <div className="max-w-6xl mx-auto p-4">
       <h1 className="text-2xl font-bold mb-4">My Help Offers</h1>

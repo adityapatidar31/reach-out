@@ -1,7 +1,11 @@
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 
-function NoHelpOfferFound() {
+interface Props {
+  message?: string;
+}
+
+function NoHelpOfferFound({ message }: Props) {
   const navigate = useNavigate();
 
   return (
@@ -10,8 +14,8 @@ function NoHelpOfferFound() {
         No Help Offers Found
       </h2>
       <p className="text-muted-foreground max-w-md">
-        Nobody has offered help on this request yet. Once someone submits a help
-        offer, it will appear here.
+        {message ||
+          "Nobody has offered help on this request yet. Once someone submits a help offer, it will appear here."}
       </p>
       <Button onClick={() => navigate(-1)} className="mt-4 text-white">
         Go Back

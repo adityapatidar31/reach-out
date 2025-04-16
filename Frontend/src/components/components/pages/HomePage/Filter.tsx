@@ -29,7 +29,7 @@ function Filter() {
   const statusValue = searchParams.get("status") || "ALL";
 
   return (
-    <div className="flex flex-wrap gap-4 items-center justify-end w-full mb-3 mb:mb-0">
+    <div className="flex flex-wrap sm:gap-4 gap-2  items-center justify-end w-full mb-3 mb:mb-0">
       {/* Sort */}
       <div className="flex gap-2 items-center">
         <Label htmlFor="sort-select" className="py-3 pl-3 cursor-pointer">
@@ -45,29 +45,6 @@ function Filter() {
           <SelectContent>
             <SelectItem value="desc">Created Desc</SelectItem>
             <SelectItem value="asc">Created Asc</SelectItem>
-          </SelectContent>
-        </Select>
-      </div>
-
-      {/* Category */}
-      <div className="flex gap-2 items-center">
-        <Label htmlFor="category-select" className="py-3 pl-3  cursor-pointer">
-          Category
-        </Label>
-        <Select
-          value={categoryValue}
-          onValueChange={(value) => handleChange("category", value, "ALL")}
-        >
-          <SelectTrigger id="category-select" className="w-[150px]">
-            <SelectValue />
-          </SelectTrigger>
-          <SelectContent className="max-h-80">
-            <SelectItem value="ALL">All</SelectItem>
-            {Object.values(Category).map((cat) => (
-              <SelectItem key={cat} value={cat}>
-                {cat}
-              </SelectItem>
-            ))}
           </SelectContent>
         </Select>
       </div>
@@ -89,6 +66,28 @@ function Filter() {
             {Object.values(HelpStatus).map((status) => (
               <SelectItem key={status} value={status}>
                 {status}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
+      {/* Category */}
+      <div className="flex gap-2 items-center">
+        <Label htmlFor="category-select" className="py-3 pl-3  cursor-pointer">
+          Category
+        </Label>
+        <Select
+          value={categoryValue}
+          onValueChange={(value) => handleChange("category", value, "ALL")}
+        >
+          <SelectTrigger id="category-select" className="w-[150px]">
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent className="max-h-80">
+            <SelectItem value="ALL">All</SelectItem>
+            {Object.values(Category).map((cat) => (
+              <SelectItem key={cat} value={cat}>
+                {cat}
               </SelectItem>
             ))}
           </SelectContent>
