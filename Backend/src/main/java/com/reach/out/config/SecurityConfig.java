@@ -53,6 +53,9 @@ public class SecurityConfig {
                         // User Routes
                         .requestMatchers(HttpMethod.PATCH,"/api/v1/users/**").authenticated()
 
+                        // Conversation Routes
+                        .requestMatchers(HttpMethod.POST,"/api/v1/conversation/**").authenticated()
+
                         // Default: deny anything not explicitly mentioned
                         .anyRequest().denyAll()
                 )
