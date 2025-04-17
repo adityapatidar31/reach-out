@@ -1,19 +1,28 @@
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 export default function SearchInput() {
   const [search, setSearch] = useState("");
   const navigate = useNavigate();
+  const location = useLocation();
 
-  const debounced = useDebouncedCallback((query) => {
+  const debounced = useDebouncedCallback((query: string) => {
     if (query.length < 3) {
-      navigate("?", { replace: true });
+      if (location.pathname !== "/") {
+        navigate("/", { replace: true });
+      } else {
+        navigate("?", { replace: true });
+      }
     } else {
-      navigate(`?search=${query}`, { replace: true });
+      if (location.pathname !== "/") {
+        navigate(`/?search=${query}`, { replace: true });
+      } else {
+        navigate(`?search=${query}`, { replace: true });
+      }
     }
-  }, 1000);
+  }, 500); // 0.5 second debounce for faster feel
 
   return (
     <Input

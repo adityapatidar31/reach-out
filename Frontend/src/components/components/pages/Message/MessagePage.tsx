@@ -1,7 +1,9 @@
 import { MessageCircleOff } from "lucide-react";
 import NoHelpOfferFound from "../MyDetailHelpRequests/NoHelpOfferFound";
+import { useAuth } from "@/hooks/useAuth";
 
 function MessagePage() {
+  useAuth();
   const messages = [];
   if (messages.length == 0) {
     return (

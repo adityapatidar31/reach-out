@@ -9,8 +9,6 @@ import {
   Plus,
   Handshake,
   BadgeInfo,
-  BellRing,
-  MessageSquareQuote,
 } from "lucide-react";
 import {
   DropdownMenu,
@@ -19,7 +17,6 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import ThemeSwitcher from "./ThemeSwitcher";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import { useMutation, useQuery } from "@tanstack/react-query";
@@ -33,6 +30,9 @@ import SearchInput from "./Search";
 import { toast } from "react-toastify";
 import { AxiosError } from "axios";
 import { errorResponseSchema } from "@/schema/schema";
+import LoadingIcon from "./LoadingIcon";
+import Icons from "./Icons";
+import ThemeSwitcher from "./ThemeSwitcher";
 
 const Navbar = ({
   theme,
@@ -94,14 +94,7 @@ const Navbar = ({
           <SearchInput />
         </div>
         <div className="flex items-center gap-4">
-          <Button variant="ghost" size="icon" className="cursor-pointer">
-            <BellRing className="text-primary" />
-          </Button>
-          <Link to="/messages">
-            <Button variant="ghost" size="icon" className="cursor-pointer">
-              <MessageSquareQuote className="text-primary" />
-            </Button>
-          </Link>
+          {isPending ? <LoadingIcon /> : <Icons />}
           <ThemeSwitcher setTheme={setTheme} theme={theme} />
 
           {/* Avatar or User Icon */}
