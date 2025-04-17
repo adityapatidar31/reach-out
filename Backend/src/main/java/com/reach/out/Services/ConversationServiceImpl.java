@@ -15,6 +15,7 @@ import com.reach.out.Security.AuthUtils;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class ConversationServiceImpl implements ConversationService{
@@ -60,5 +61,10 @@ public class ConversationServiceImpl implements ConversationService{
         conversation.setRequester(currentUser); // sender
         conversation.setOfferer(receiver);       // receiver
         return conversationRepository.save(conversation);
+    }
+
+    @Override
+    public List<Conversation> getAllConversation() {
+        return conversationRepository.findAll();
     }
 }
