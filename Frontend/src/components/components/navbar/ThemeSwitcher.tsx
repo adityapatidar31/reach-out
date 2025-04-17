@@ -16,7 +16,12 @@ export default function ThemeSwitcher({
   };
 
   return (
-    <Button onClick={toggleTheme} variant="ghost" size="icon">
+    <Button
+      onClick={toggleTheme}
+      variant="ghost"
+      size="icon"
+      className="cursor-pointer"
+    >
       {theme === "dark" ? (
         <Sun className="h-6 w-6 text-yellow-400" />
       ) : (

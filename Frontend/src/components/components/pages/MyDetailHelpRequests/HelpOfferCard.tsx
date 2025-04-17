@@ -53,8 +53,8 @@ function HelpOfferCard({ offer }: HelpOfferCardProps) {
           />
         </div>
 
-        <div className="flex-1 space-y-2">
-          <div className="flex flex-row justify-between">
+        <div className="flex-1 space-y-2 ">
+          <div className="flex sm:flex-row flex-col justify-between">
             <div>
               <h2 className="font-semibold text-lg">{offer.userName}</h2>
               <p className="text-sm text-muted-foreground">{offer.userEmail}</p>

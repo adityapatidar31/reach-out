@@ -9,6 +9,8 @@ import {
   Plus,
   Handshake,
   BadgeInfo,
+  BellRing,
+  MessageSquareQuote,
 } from "lucide-react";
 import {
   DropdownMenu,
@@ -76,7 +78,7 @@ const Navbar = ({
 
   return (
     <nav className="bg-background border-b border-border shadow-sm">
-      <div className="container mx-auto px-4 py-4 flex justify-between items-center">
+      <div className="mx-auto px-4 py-4 flex justify-between items-center">
         <Link
           to="/"
           className="text-xl font-bold text-primary tracking-tight hover:opacity-80"
@@ -92,6 +94,16 @@ const Navbar = ({
           <SearchInput />
         </div>
         <div className="flex items-center gap-4">
+          <Button variant="ghost" size="icon" className="cursor-pointer">
+            <BellRing className="text-primary" />
+          </Button>
+          <Link to="/messages">
+            <Button variant="ghost" size="icon" className="cursor-pointer">
+              <MessageSquareQuote className="text-primary" />
+            </Button>
+          </Link>
+          <ThemeSwitcher setTheme={setTheme} theme={theme} />
+
           {/* Avatar or User Icon */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -191,8 +203,6 @@ const Navbar = ({
               )}
             </DropdownMenuContent>
           </DropdownMenu>
-
-          <ThemeSwitcher setTheme={setTheme} theme={theme} />
         </div>
       </div>
       <div className="sm:hidden mx-8 mb-2">

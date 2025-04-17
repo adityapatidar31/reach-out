@@ -19,6 +19,8 @@ import SignupPage from "./components/components/pages/Signup/SignupPage";
 import RenderAlert from "./components/components/RenderAlert";
 import Footer from "./components/components/Footer";
 import ProfilePage from "./components/components/pages/Profile/ProfilePage";
+import AboutPage from "./components/components/pages/About/AboutPage";
+import MessagePage from "./components/components/pages/Message/MessagePage";
 
 export const queryClient = new QueryClient();
 
@@ -74,6 +76,8 @@ function App() {
                   path="/create-help-request"
                   element={<CreateHelpRequestPage />}
                 />
+                <Route path="/about" element={<AboutPage />} />
+                <Route path="/messages" element={<MessagePage />} />
                 <Route path="/login" element={<LoginPage />} />
                 <Route path="/sign-up" element={<SignupPage />} />
               </Routes>
