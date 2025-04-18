@@ -5,12 +5,12 @@ import HelpOfferCard from "./HelpOfferCard";
 import Error from "../../Error";
 import MyDetailHelpRequestPageLoading from "./MyDetailHelpRequestPageLoading";
 import NoHelpOfferFound from "./NoHelpOfferFound";
-import { useAuth } from "@/hooks/useAuth";
+// import { useAuth } from "@/hooks/useAuth";
 
 function MyDetailHelpRequestPage() {
   const { id } = useParams();
   const helpId = Number(id);
-  useAuth();
+  // useAuth();
 
   const {
     data: helpOffers,
@@ -40,7 +40,7 @@ function MyDetailHelpRequestPage() {
 
   return (
     <div className="max-w-5xl mx-auto p-4 space-y-6">
-      <h1 className="text-2xl font-bold">
+      <h1 className="sm:text-2xl text-xl font-bold">
         Total Help Offers for Request #{helpOffers.length}
       </h1>
 

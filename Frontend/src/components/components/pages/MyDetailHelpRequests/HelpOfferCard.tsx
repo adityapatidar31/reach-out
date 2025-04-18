@@ -11,17 +11,25 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { HelpOfferStatus } from "@/types/enums";
 import { format } from "date-fns";
-import { helpOfferWithUser } from "@/schema/schema";
+import { errorResponseSchema, helpOfferWithUser } from "@/schema/schema";
 import { useMutation } from "@tanstack/react-query";
-import { updateHelpOfferStatusById } from "@/services/apiService";
+import {
+  createConversation,
+  updateHelpOfferStatusById,
+} from "@/services/apiService";
 import { toast } from "react-toastify";
 import { queryClient } from "@/App";
+import { Send } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { AxiosError } from "axios";
+import { Skeleton } from "@/components/ui/skeleton";
 
 type HelpOfferCardProps = {
   offer: helpOfferWithUser;
 };
 
 function HelpOfferCard({ offer }: HelpOfferCardProps) {
+  const navigate = useNavigate();
   const [status, setStatus] = useState<HelpOfferStatus>(offer.status);
   const { mutate, isPending } = useMutation({
     mutationFn: () => {
@@ -35,6 +43,25 @@ function HelpOfferCard({ offer }: HelpOfferCardProps) {
     },
     onError: () => {
       toast.error("Failed to update help offer");
+    },
+  });
+
+  const { mutate: connectMutate, isPending: isConnectPending } = useMutation({
+    mutationFn: () => {
+      return createConversation(offer.helpId, offer.id, offer.userId);
+    },
+    onSuccess: () => {
+      // Todo invalidate the message page
+      navigate("/messages");
+      toast.success("You can start conversation ");
+    },
+    onError: (error) => {
+      const axiosError = error as AxiosError;
+      const apiError = axiosError.response?.data;
+
+      const parsed = errorResponseSchema.safeParse(apiError);
+      if (parsed.success) toast.error(parsed.data.message);
+      else toast.error("Failed to update help offer");
     },
   });
 
@@ -92,10 +119,27 @@ function HelpOfferCard({ offer }: HelpOfferCardProps) {
 
           <p className="text-sm">{offer.message}</p>
 
-          <div className="text-xs text-muted-foreground space-y-1">
-            <p>📅 Created At: {format(new Date(offer.createdAt), "PPP p")}</p>
-            {offer.updatedAt && (
-              <p>✏️ Updated At: {format(new Date(offer.updatedAt), "PPP p")}</p>
+          <div className="flex justify-between flex-col sm:flex-row sm:gap-0 gap-2">
+            <div className="text-xs text-muted-foreground space-y-1">
+              <p>📅 Created At: {format(new Date(offer.createdAt), "PPP p")}</p>
+              {offer.updatedAt && (
+                <p>
+                  ✏️ Updated At: {format(new Date(offer.updatedAt), "PPP p")}
+                </p>
+              )}
+            </div>
+            {isConnectPending ? (
+              <Skeleton className="sm:h-10 sm:w-[110px] w-80 h-10 rounded-md" />
+            ) : (
+              <Button
+                variant="outline"
+                className="flex items-center gap-2"
+                onClick={() => connectMutate()}
+                disabled={isConnectPending}
+              >
+                <Send className="h-4 w-4" />
+                Connect
+              </Button>
             )}
           </div>
         </div>

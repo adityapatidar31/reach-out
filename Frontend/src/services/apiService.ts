@@ -263,3 +263,16 @@ export const updatePassword = async (password: TypePasswordUpdate) => {
 
   return parsed.data;
 };
+
+export async function createConversation(
+  helpId: number,
+  helpOfferId: number,
+  receiverId: number
+) {
+  const body = {
+    helpId,
+    helpOfferId,
+    receiverId,
+  };
+  await axios.post(`${BASE_URL}api/v1/conversation`, body, cookieSender);
+}
