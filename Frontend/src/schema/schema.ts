@@ -182,3 +182,19 @@ export const passwordUpdateSchema = z
   });
 
 export type TypePasswordUpdate = z.infer<typeof passwordUpdateSchema>;
+
+export const conversationSchema = z.object({
+  conversationId: z.number(),
+  helpId: z.number(),
+  helpTitle: z.string(),
+  helpCreatorName: z.string(),
+  helpCreatorImageUrl: z.string().url(),
+  helpOfferId: z.number(),
+  offererName: z.string(),
+  offererImageUrl: z.string().url(),
+  createdAt: z.string(),
+});
+
+export const conversationsSchema = z.array(conversationSchema);
+
+export type Conversation = z.infer<typeof conversationSchema>;

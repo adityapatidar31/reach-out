@@ -1,11 +1,49 @@
+// app/messages/MessagePage.tsx
+import { useState, useEffect } from "react";
+import { useAuth } from "@/hooks/useAuth";
+import { useCurrentUser } from "@/hooks/useCurrentUser";
+import { useQuery } from "@tanstack/react-query";
+import { getAllConversations } from "@/services/apiService";
 import { MessageCircleOff } from "lucide-react";
 import NoHelpOfferFound from "../MyDetailHelpRequests/NoHelpOfferFound";
-import { useAuth } from "@/hooks/useAuth";
+import ConversationList from "./ConversationList";
+import ChatWindow from "./ChatWindow";
+import Error from "../../Error";
 
 function MessagePage() {
   useAuth();
-  const messages = [];
-  if (messages.length == 0) {
+  const user = useCurrentUser();
+
+  const {
+    data: conversations,
+    isLoading,
+    isError,
+  } = useQuery({
+    queryKey: ["message", user?.id],
+    queryFn: getAllConversations,
+    enabled: !!user,
+  });
+
+  const [selectedId, setSelectedId] = useState<number | null>(null);
+
+  useEffect(() => {
+    if (conversations) {
+      if (conversations.length > 0 && selectedId === null) {
+        setSelectedId(conversations[0].conversationId);
+      }
+    }
+  }, [conversations, selectedId]);
+
+  if (isLoading) {
+    return <p>Loading</p>;
+  }
+
+  if (!conversations || isError) {
+    return <Error onRetry={() => {}} />;
+  }
+  if (!user) return null;
+
+  if (conversations.length === 0) {
     return (
       <>
         <div className="flex flex-col items-center justify-center pt-4 text-center space-y-4">
@@ -19,7 +57,24 @@ function MessagePage() {
       </>
     );
   }
-  return <div>MessagePage MessagePage</div>;
+
+  return (
+    <div className="flex flex-col md:flex-row h-[calc(100vh-4rem)] border rounded-lg shadow-sm overflow-hidden">
+      <ConversationList
+        conversations={conversations}
+        currentUserName={user.name}
+        selectedConversationId={selectedId ?? -1}
+        onSelect={(id) => setSelectedId(id)}
+      />
+      {selectedId !== null ? (
+        <ChatWindow conversationId={selectedId} />
+      ) : (
+        <div className="flex-1 flex items-center justify-center text-muted-foreground">
+          Select a conversation
+        </div>
+      )}
+    </div>
+  );
 }
 
 export default MessagePage;

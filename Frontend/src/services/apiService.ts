@@ -1,5 +1,6 @@
 import axios from "axios";
 import {
+  conversationsSchema,
   DetailedHelp,
   detailedHelpSchema,
   helpArraySchema,
@@ -275,4 +276,19 @@ export async function createConversation(
     receiverId,
   };
   await axios.post(`${BASE_URL}api/v1/conversation`, body, cookieSender);
+}
+
+export async function getAllConversations() {
+  const response = await axios.get(
+    `${BASE_URL}api/v1/conversation/me`,
+    cookieSender
+  );
+
+  const parsed = conversationsSchema.safeParse(response.data.data);
+  const conversations = parsed.success ? parsed.data : [];
+
+  if (parsed.error) {
+    console.log(parsed.error);
+  }
+  return conversations;
 }
