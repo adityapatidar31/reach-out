@@ -73,7 +73,7 @@ function MessagePage() {
         <ChatWindow
           conversationId={selectedId}
           helpTitle={helpTitle}
-          chatPartnerName={chatPartnerName ?? ""}
+          chattingWith={chatPartnerName ?? ""}
         />
       ) : (
         <div className="flex-1 flex items-center justify-center text-muted-foreground">
