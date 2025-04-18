@@ -12,4 +12,5 @@ public interface ConversationService {
     Conversation createConversation(CreateConversationRequest request);
     List<Conversation> getAllConversation();
     MessageResponse createMessage(Long conversationId, SendMessageRequest request);
+    List<MessageResponse> getAllMessageById(Long conversationId);
 }

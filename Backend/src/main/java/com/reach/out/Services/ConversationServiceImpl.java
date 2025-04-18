@@ -14,6 +14,7 @@ import com.reach.out.Dto.Conversation.MessageResponse;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ConversationServiceImpl implements ConversationService{
@@ -108,6 +109,35 @@ public class ConversationServiceImpl implements ConversationService{
 
         return MessageMapper.toDto(savedMessage);
 
+    }
+
+    @Override
+    public List<MessageResponse> getAllMessageById(Long conversationId) {
+        Long userId = AuthUtils.getCurrentUserId();
+        if (userId == null) {
+            throw new ApiException("You are not authenticated. Please log in");
+        }
+
+        // Fetch current user
+        User currentUser = userRepository.findById(userId)
+                .orElseThrow(() -> new ApiException("User not found"));
+
+        // Fetch the conversation
+        Conversation conversation = conversationRepository.findById(conversationId)
+                .orElseThrow(() -> new ApiException("Conversation not found"));
+
+        if (!conversation.getRequester().getId().equals(currentUser.getId()) &&
+                !conversation.getOfferer().getId().equals(currentUser.getId())) {
+            throw new ApiException("You are not allowed to send message in this conversation");
+        }
+
+        List<Message> messageList =messageRepository.findAllByConversationOrderBySentAtAsc(conversation);
+
+        // Mapper to message response and send it
+
+        return messageList.stream()
+                .map(MessageMapper::toDto)
+                .collect(Collectors.toList());
     }
 
 }

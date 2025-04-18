@@ -69,4 +69,19 @@ public class ConversationController {
 
         return ResponseEntity.ok(response);
     }
+
+    @GetMapping("/{conversationId}/messages")
+    public ResponseEntity<Map<String,Object>> getAllMessages(
+            @PathVariable Long conversationId
+    ) {
+        List<MessageResponse> messageResponses = conversationService.getAllMessageById(conversationId);
+        Map<String,Object> response= new HashMap<>();
+
+        response.put("status","success");
+        response.put("data",messageResponses);
+
+        return ResponseEntity.ok(response);
+
+
+    }
 }
