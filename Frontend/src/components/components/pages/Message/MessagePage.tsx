@@ -62,7 +62,7 @@ function MessagePage() {
     : selectedConversation?.helpCreatorName;
 
   return (
-    <div className="flex flex-col md:flex-row h-[calc(100vh-4rem)] border rounded-lg shadow-sm overflow-hidden">
+    <div className="flex flex-col md:flex-row  h-[calc(100vh-6rem)] border rounded-lg shadow-sm overflow-hidden">
       <ConversationList
         conversations={conversations}
         currentUserName={user.name}

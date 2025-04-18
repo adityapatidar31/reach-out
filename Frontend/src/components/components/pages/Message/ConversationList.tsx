@@ -17,19 +17,22 @@ const ConversationList = ({
 }: Props) => {
   return (
     <div className="w-full md:w-1/3 border-r border-muted h-full overflow-y-auto">
-      {conversations.map((conv) => {
-        const isCreator = conv.helpCreatorName === currentUserName;
-        const displayName = isCreator ? conv.offererName : conv.helpCreatorName;
+      {conversations.map((conversation) => {
+        const isCreator = conversation.helpCreatorName === currentUserName;
+        const displayName = isCreator
+          ? conversation.offererName
+          : conversation.helpCreatorName;
         const displayImage = isCreator
-          ? conv.offererImageUrl
-          : conv.helpCreatorImageUrl;
+          ? conversation.offererImageUrl
+          : conversation.helpCreatorImageUrl;
 
-        const isSelected = conv.conversationId === selectedConversationId;
+        const isSelected =
+          conversation.conversationId === selectedConversationId;
 
         return (
           <div
-            key={conv.conversationId}
-            onClick={() => onSelect(conv.conversationId)}
+            key={conversation.conversationId}
+            onClick={() => onSelect(conversation.conversationId)}
             className={cn(
               "cursor-pointer p-4 flex items-center gap-4 hover:bg-muted transition",
               isSelected && "bg-muted"
@@ -43,7 +46,7 @@ const ConversationList = ({
             <div>
               <p className="font-medium">{displayName}</p>
               <p className="text-sm text-muted-foreground truncate">
-                {conv.helpTitle}
+                {conversation.helpTitle}
               </p>
             </div>
           </div>

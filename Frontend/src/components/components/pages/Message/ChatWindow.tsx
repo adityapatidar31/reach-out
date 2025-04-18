@@ -80,7 +80,7 @@ const ChatWindow = ({ conversationId, helpTitle, chattingWith }: Props) => {
   const { id: userId } = user;
 
   return (
-    <div className="w-full md:w-2/3 h-full flex flex-col p-4 overflow-y-auto bg-background border rounded-2xl shadow-sm">
+    <div className="w-full md:w-2/3 h-full flex flex-col p-4 overflow-y-auto bg-background border shadow-sm">
       {/* Header */}
       <div className="mb-4">
         <h2 className="text-xl font-semibold text-primary truncate">
@@ -94,7 +94,7 @@ const ChatWindow = ({ conversationId, helpTitle, chattingWith }: Props) => {
       {/* Messages */}
       <div className="flex-1 flex flex-col gap-4 overflow-y-auto pr-2">
         {Object.entries(groupedMessages).map(([dateLabel, msgs]) => (
-          <div key={dateLabel} className="flex flex-col gap-4">
+          <div key={dateLabel} className="flex flex-col gap-2 sm:gap-4">
             <div className="text-center text-xs text-muted-foreground font-medium py-2">
               {dateLabel}
             </div>
