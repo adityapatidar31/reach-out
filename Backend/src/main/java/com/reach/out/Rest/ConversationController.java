@@ -2,15 +2,15 @@ package com.reach.out.Rest;
 
 import com.reach.out.Dto.Conversation.ConversationResponse;
 import com.reach.out.Dto.Conversation.CreateConversationRequest;
+import com.reach.out.Dto.Conversation.MessageResponse;
+import com.reach.out.Dto.Conversation.SendMessageRequest;
 import com.reach.out.Model.Conversation;
+import com.reach.out.Model.Message;
 import com.reach.out.Services.ConversationService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
@@ -52,6 +52,21 @@ public class ConversationController {
         Conversation conversation=conversationService.createConversation(request);
         response.put("status","success");
         response.put("data",conversation);
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/{id}/messages")
+    public ResponseEntity<Map<String,Object>> sendMessage(
+            @PathVariable("id") Long conversationId,
+            @RequestBody SendMessageRequest request
+    ) {
+        Map<String, Object> response= new HashMap<>();
+
+        MessageResponse message=conversationService.createMessage(conversationId,request);
+
+        response.put("status","success");
+        response.put("data",message);
+
         return ResponseEntity.ok(response);
     }
 }
