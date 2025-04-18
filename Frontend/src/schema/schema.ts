@@ -198,3 +198,15 @@ export const conversationSchema = z.object({
 export const conversationsSchema = z.array(conversationSchema);
 
 export type Conversation = z.infer<typeof conversationSchema>;
+
+export const messageSchema = z.object({
+  id: z.number(),
+  content: z.string(),
+  senderId: z.number(),
+  senderName: z.string(),
+  createdAt: z.string(),
+});
+
+export const messagesSchema = z.array(messageSchema);
+
+export type TypeMessage = z.infer<typeof messageSchema>;

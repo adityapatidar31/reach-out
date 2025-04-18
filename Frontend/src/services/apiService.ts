@@ -9,6 +9,7 @@ import {
   helpOfferNullableSchema,
   helpOfferWithUserListSchema,
   LoginFormData,
+  messagesSchema,
   myHelpOfferArraySchema,
   NameType,
   SignupFormData,
@@ -291,4 +292,19 @@ export async function getAllConversations() {
     console.log(parsed.error);
   }
   return conversations;
+}
+
+export async function getAllMessageOfConversation(conversationId: number) {
+  const response = await axios.get(
+    `${BASE_URL}api/v1/conversation/${conversationId}/messages`,
+    cookieSender
+  );
+
+  const parsed = messagesSchema.safeParse(response.data.data);
+
+  if (parsed.success) {
+    return parsed.data;
+  }
+  console.log(parsed.error);
+  return [];
 }

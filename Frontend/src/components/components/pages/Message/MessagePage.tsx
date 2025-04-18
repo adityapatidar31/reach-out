@@ -27,20 +27,13 @@ function MessagePage() {
   const [selectedId, setSelectedId] = useState<number | null>(null);
 
   useEffect(() => {
-    if (conversations) {
-      if (conversations.length > 0 && selectedId === null) {
-        setSelectedId(conversations[0].conversationId);
-      }
+    if (conversations && conversations.length > 0 && selectedId === null) {
+      setSelectedId(conversations[0].conversationId);
     }
   }, [conversations, selectedId]);
 
-  if (isLoading) {
-    return <p>Loading</p>;
-  }
-
-  if (!conversations || isError) {
-    return <Error onRetry={() => {}} />;
-  }
+  if (isLoading) return <p>Loading</p>;
+  if (!conversations || isError) return <Error onRetry={() => {}} />;
   if (!user) return null;
 
   if (conversations.length === 0) {
@@ -58,6 +51,16 @@ function MessagePage() {
     );
   }
 
+  const selectedConversation = conversations.find(
+    (c) => c.conversationId === selectedId
+  );
+
+  const helpTitle = selectedConversation?.helpTitle ?? "";
+  const isCreator = selectedConversation?.helpCreatorName === user.name;
+  const chatPartnerName = isCreator
+    ? selectedConversation?.offererName
+    : selectedConversation?.helpCreatorName;
+
   return (
     <div className="flex flex-col md:flex-row h-[calc(100vh-4rem)] border rounded-lg shadow-sm overflow-hidden">
       <ConversationList
@@ -66,8 +69,12 @@ function MessagePage() {
         selectedConversationId={selectedId ?? -1}
         onSelect={(id) => setSelectedId(id)}
       />
-      {selectedId !== null ? (
-        <ChatWindow conversationId={selectedId} />
+      {selectedId !== null && selectedConversation ? (
+        <ChatWindow
+          conversationId={selectedId}
+          helpTitle={helpTitle}
+          chatPartnerName={chatPartnerName ?? ""}
+        />
       ) : (
         <div className="flex-1 flex items-center justify-center text-muted-foreground">
           Select a conversation
