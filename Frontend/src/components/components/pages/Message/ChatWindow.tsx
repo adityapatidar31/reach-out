@@ -1,14 +1,20 @@
 // Removed toZonedTime import
 import { useCurrentUser } from "@/hooks/useCurrentUser";
-import { getAllMessageOfConversation } from "@/services/apiService";
-import { useQuery } from "@tanstack/react-query";
+import {
+  getAllMessageOfConversation,
+  sendMessage,
+} from "@/services/apiService";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { cn } from "@/lib/utils";
 import { format, isToday, isYesterday } from "date-fns";
 import { useMemo, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { TypeMessage } from "@/schema/schema";
-import { SendHorizonal } from "lucide-react";
+import { errorResponseSchema, TypeMessage } from "@/schema/schema";
+import { RefreshCw, SendHorizonal } from "lucide-react";
+import { AxiosError } from "axios";
+import { toast } from "react-toastify";
+import { queryClient } from "@/App";
 
 // Helper to add 5 hours 30 minutes to a Date
 const convertToIST = (utcStr: string): Date => {
@@ -42,13 +48,28 @@ type Props = {
 };
 
 const ChatWindow = ({ conversationId, helpTitle, chattingWith }: Props) => {
-  const { data: messages = [] } = useQuery({
+  const { data: messages = [], refetch } = useQuery({
     queryKey: ["messages", conversationId],
     queryFn: () => getAllMessageOfConversation(conversationId),
   });
 
   const user = useCurrentUser();
   const [newMessage, setNewMessage] = useState("");
+
+  const { mutate, isPending: isMessagePending } = useMutation({
+    mutationFn: () => sendMessage(conversationId, newMessage),
+    onSuccess: () => {
+      setNewMessage("");
+      queryClient.invalidateQueries({ queryKey: ["messages", conversationId] });
+      refetch();
+    },
+    onError: (error) => {
+      const axiosError = error as AxiosError;
+      const parsed = errorResponseSchema.safeParse(axiosError);
+      if (!parsed.success) toast.error(parsed.error.message);
+      else toast.error("Failed to send message");
+    },
+  });
 
   const groupedMessages = useMemo(
     () => groupMessagesByDate(messages),
@@ -102,15 +123,30 @@ const ChatWindow = ({ conversationId, helpTitle, chattingWith }: Props) => {
       </div>
 
       {/* Input Box */}
-      <form className="mt-4 flex items-center gap-2" onSubmit={() => {}}>
+      <form
+        className="mt-4 flex items-center gap-2"
+        onSubmit={(e) => {
+          e.preventDefault();
+          if (!newMessage) return;
+          mutate();
+        }}
+      >
         <Input
           placeholder="Type your message..."
           value={newMessage}
           onChange={(e) => setNewMessage(e.target.value)}
           className="flex-1"
         />
-        <Button size="icon" className="text-white cursor-pointer">
-          <SendHorizonal className="w-5 h-5" />
+        <Button
+          size="icon"
+          className="text-white cursor-pointer"
+          disabled={isMessagePending}
+        >
+          {isMessagePending ? (
+            <RefreshCw className="animate-spin text-white" />
+          ) : (
+            <SendHorizonal />
+          )}
         </Button>
       </form>
     </div>

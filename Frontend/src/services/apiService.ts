@@ -308,3 +308,11 @@ export async function getAllMessageOfConversation(conversationId: number) {
   console.log(parsed.error);
   return [];
 }
+
+export async function sendMessage(conversationId: number, content: string) {
+  await axios.post(
+    `${BASE_URL}api/v1/conversation/${conversationId}/messages`,
+    { content },
+    cookieSender
+  );
+}
