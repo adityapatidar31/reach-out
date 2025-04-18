@@ -1,9 +1,6 @@
 package com.reach.out.Rest;
 
-import com.reach.out.Dto.Conversation.ConversationResponse;
-import com.reach.out.Dto.Conversation.CreateConversationRequest;
-import com.reach.out.Dto.Conversation.MessageResponse;
-import com.reach.out.Dto.Conversation.SendMessageRequest;
+import com.reach.out.Dto.Conversation.*;
 import com.reach.out.Model.Conversation;
 import com.reach.out.Model.Message;
 import com.reach.out.Services.ConversationService;
@@ -81,7 +78,17 @@ public class ConversationController {
         response.put("data",messageResponses);
 
         return ResponseEntity.ok(response);
+    }
 
+    @GetMapping("/me")
+    public ResponseEntity<Map<String,Object>> getAllConversationByMe(){
+        Map<String,Object> response=new HashMap<>();
 
+        List<ConversationSummaryResponse> conversationList = conversationService.getAllConversationByMe();
+
+        response.put("status","success");
+        response.put("data",conversationList);
+
+        return ResponseEntity.ok(response);
     }
 }

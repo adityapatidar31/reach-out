@@ -1,9 +1,11 @@
 package com.reach.out.Services;
 
+import com.reach.out.Dto.Conversation.ConversationSummaryResponse;
 import com.reach.out.Dto.Conversation.CreateConversationRequest;
 import com.reach.out.Dto.Conversation.SendMessageRequest;
 import com.reach.out.Dto.HelpOfferResponse;
 import com.reach.out.Exceptions.ApiException;
+import com.reach.out.Mapper.ConversationMapper;
 import com.reach.out.Mapper.MessageMapper;
 import com.reach.out.Model.*;
 import com.reach.out.Repository.*;
@@ -12,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.reach.out.Dto.Conversation.MessageResponse;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -139,5 +142,28 @@ public class ConversationServiceImpl implements ConversationService{
                 .map(MessageMapper::toDto)
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public List<ConversationSummaryResponse> getAllConversationByMe() {
+        Long userId = AuthUtils.getCurrentUserId();
+        if (userId == null) {
+            throw new ApiException("You are not authenticated. Please log in");
+        }
+
+        // Fetch user
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new ApiException("User not found"));
+
+        // Fetch conversations where user is requester or offerer
+        List<Conversation> conversationList = conversationRepository.findAllByUserId(userId);
+
+        // Map each conversation to DTO and return
+        return conversationList.stream()
+                .map(ConversationMapper::mapToConversationSummary)
+                .sorted(Comparator.comparing(ConversationSummaryResponse::getCreatedAt).reversed()) // Sort by latest first
+                .collect(Collectors.toList());
+
+    }
+
 
 }

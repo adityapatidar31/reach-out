@@ -1,5 +1,6 @@
 package com.reach.out.Services;
 
+import com.reach.out.Dto.Conversation.ConversationSummaryResponse;
 import com.reach.out.Dto.Conversation.CreateConversationRequest;
 import com.reach.out.Dto.Conversation.MessageResponse;
 import com.reach.out.Dto.Conversation.SendMessageRequest;
@@ -13,4 +14,5 @@ public interface ConversationService {
     List<Conversation> getAllConversation();
     MessageResponse createMessage(Long conversationId, SendMessageRequest request);
     List<MessageResponse> getAllMessageById(Long conversationId);
+    List<ConversationSummaryResponse> getAllConversationByMe();
 }
