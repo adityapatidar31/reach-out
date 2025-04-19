@@ -18,6 +18,7 @@ import { toast } from "react-toastify";
 import { queryClient } from "@/App";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
 import ChatWindowLoading from "./ChatWindowLoading";
+import NoMessages from "./NoMessage";
 
 // Helper to add 5 hours 30 minutes to a Date
 const convertToIST = (utcStr: string): Date => {
@@ -122,37 +123,41 @@ const ChatWindow = ({
       </div>
 
       {/* Messages */}
-      <div className="flex-1 overflow-y-auto p-4 flex flex-col gap-4">
-        {Object.entries(groupedMessages).map(([dateLabel, msgs]) => (
-          <div key={dateLabel} className="flex flex-col gap-2">
-            <div className="text-center text-xs text-muted-foreground font-medium py-2">
-              {dateLabel}
+      {Object.entries(groupedMessages).length == 0 ? (
+        <NoMessages />
+      ) : (
+        <div className="flex-1 overflow-y-auto p-4 flex flex-col gap-4">
+          {Object.entries(groupedMessages).map(([dateLabel, msgs]) => (
+            <div key={dateLabel} className="flex flex-col gap-2">
+              <div className="text-center text-xs text-muted-foreground font-medium py-2">
+                {dateLabel}
+              </div>
+              {msgs.map((msg) => {
+                const isSender = msg.senderId === userId;
+                const istDate = convertToIST(msg.createdAt);
+                return (
+                  <div
+                    key={msg.id}
+                    className={cn(
+                      "px-4 py-2 rounded-xl shadow-sm text-sm break-words max-w-[75%]",
+                      isSender
+                        ? "bg-primary text-white self-end rounded-br-none"
+                        : "bg-muted text-foreground self-start rounded-bl-none"
+                    )}
+                  >
+                    <p>{msg.content}</p>
+                    <p className="text-xs font-medium mt-1 text-right text-muted-foreground">
+                      {format(istDate, "hh:mm a")}
+                    </p>
+                  </div>
+                );
+              })}
             </div>
-            {msgs.map((msg) => {
-              const isSender = msg.senderId === userId;
-              const istDate = convertToIST(msg.createdAt);
-              return (
-                <div
-                  key={msg.id}
-                  className={cn(
-                    "px-4 py-2 rounded-xl shadow-sm text-sm break-words max-w-[75%]",
-                    isSender
-                      ? "bg-primary text-white self-end rounded-br-none"
-                      : "bg-muted text-foreground self-start rounded-bl-none"
-                  )}
-                >
-                  <p>{msg.content}</p>
-                  <p className="text-xs font-medium mt-1 text-right text-muted-foreground">
-                    {format(istDate, "hh:mm a")}
-                  </p>
-                </div>
-              );
-            })}
-          </div>
-        ))}
-        {/* Empty div to auto scroll to bottom */}
-        <div ref={messagesEndRef} />
-      </div>
+          ))}
+          {/* Empty div to auto scroll to bottom */}
+          <div ref={messagesEndRef} />
+        </div>
+      )}
 
       {/* Input Box */}
       <form
