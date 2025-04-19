@@ -1,4 +1,5 @@
-// Removed toZonedTime import
+// ChatWindow.tsx
+
 import { useCurrentUser } from "@/hooks/useCurrentUser";
 import {
   getAllMessageOfConversation,
@@ -7,19 +8,19 @@ import {
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { cn } from "@/lib/utils";
 import { format, isToday, isYesterday } from "date-fns";
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { errorResponseSchema, TypeMessage } from "@/schema/schema";
-import { RefreshCw, SendHorizonal } from "lucide-react";
+import { ArrowLeft, RefreshCw, SendHorizonal } from "lucide-react";
 import { AxiosError } from "axios";
 import { toast } from "react-toastify";
 import { queryClient } from "@/App";
+import { useMediaQuery } from "@/hooks/useMediaQuery";
 
 // Helper to add 5 hours 30 minutes to a Date
 const convertToIST = (utcStr: string): Date => {
   const date = new Date(utcStr);
-  // Add 5 hours and 30 minutes in milliseconds
   return new Date(date.getTime() + 5.5 * 60 * 60 * 1000);
 };
 
@@ -45,9 +46,15 @@ type Props = {
   conversationId: number;
   helpTitle: string;
   chattingWith: string;
+  onBack?: () => void;
 };
 
-const ChatWindow = ({ conversationId, helpTitle, chattingWith }: Props) => {
+const ChatWindow = ({
+  conversationId,
+  helpTitle,
+  chattingWith,
+  onBack,
+}: Props) => {
   const { data: messages = [], refetch } = useQuery({
     queryKey: ["messages", conversationId],
     queryFn: () => getAllMessageOfConversation(conversationId),
@@ -55,6 +62,8 @@ const ChatWindow = ({ conversationId, helpTitle, chattingWith }: Props) => {
 
   const user = useCurrentUser();
   const [newMessage, setNewMessage] = useState("");
+  const messagesEndRef = useRef<HTMLDivElement | null>(null);
+  const isMdUp = useMediaQuery("(min-width: 768px)");
 
   const { mutate, isPending: isMessagePending } = useMutation({
     mutationFn: () => sendMessage(conversationId, newMessage),
@@ -80,21 +89,33 @@ const ChatWindow = ({ conversationId, helpTitle, chattingWith }: Props) => {
   const { id: userId } = user;
 
   return (
-    <div className="w-full md:w-2/3 h-full flex flex-col p-4 overflow-y-auto bg-background border shadow-sm">
+    <div className="flex flex-col h-full w-full md:w-2/3 bg-background border shadow-sm">
       {/* Header */}
-      <div className="mb-4">
-        <h2 className="text-xl font-semibold text-primary truncate">
-          {helpTitle}
-        </h2>
-        <p className="text-sm text-muted-foreground">
-          Chatting with {chattingWith}
-        </p>
+      <div className="flex items-center gap-2 p-4 border-b">
+        {!isMdUp && (
+          <Button
+            size="icon"
+            variant="outline"
+            onClick={() => onBack?.()}
+            className="cursor-pointer"
+          >
+            <ArrowLeft className="h-5 w-5" />
+          </Button>
+        )}
+        <div>
+          <h2 className="text-xl font-semibold text-primary truncate">
+            {helpTitle}
+          </h2>
+          <p className="text-sm text-muted-foreground">
+            Chatting with {chattingWith}
+          </p>
+        </div>
       </div>
 
       {/* Messages */}
-      <div className="flex-1 flex flex-col gap-4 overflow-y-auto pr-2">
+      <div className="flex-1 overflow-y-auto p-4 flex flex-col gap-4">
         {Object.entries(groupedMessages).map(([dateLabel, msgs]) => (
-          <div key={dateLabel} className="flex flex-col gap-2 sm:gap-4">
+          <div key={dateLabel} className="flex flex-col gap-2">
             <div className="text-center text-xs text-muted-foreground font-medium py-2">
               {dateLabel}
             </div>
@@ -120,16 +141,18 @@ const ChatWindow = ({ conversationId, helpTitle, chattingWith }: Props) => {
             })}
           </div>
         ))}
+        {/* Empty div to auto scroll to bottom */}
+        <div ref={messagesEndRef} />
       </div>
 
       {/* Input Box */}
       <form
-        className="mt-4 flex items-center gap-2"
         onSubmit={(e) => {
           e.preventDefault();
-          if (!newMessage) return;
+          if (!newMessage.trim()) return;
           mutate();
         }}
+        className="border-t p-4 flex items-center gap-2"
       >
         <Input
           placeholder="Type your message..."
@@ -138,12 +161,13 @@ const ChatWindow = ({ conversationId, helpTitle, chattingWith }: Props) => {
           className="flex-1"
         />
         <Button
+          type="submit"
           size="icon"
-          className="text-white cursor-pointer"
+          className="text-white"
           disabled={isMessagePending}
         >
           {isMessagePending ? (
-            <RefreshCw className="animate-spin text-white" />
+            <RefreshCw className="animate-spin" />
           ) : (
             <SendHorizonal />
           )}

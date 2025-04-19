@@ -1,4 +1,4 @@
-// app/messages/MessagePage.tsx
+// Updated MessagePage.tsx
 import { useState, useEffect } from "react";
 import { useAuth } from "@/hooks/useAuth";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
@@ -9,10 +9,12 @@ import NoHelpOfferFound from "../MyDetailHelpRequests/NoHelpOfferFound";
 import ConversationList from "./ConversationList";
 import ChatWindow from "./ChatWindow";
 import Error from "../../Error";
+import { useMediaQuery } from "@/hooks/useMediaQuery";
 
 function MessagePage() {
   useAuth();
   const user = useCurrentUser();
+  const isMdUp = useMediaQuery("(min-width: 768px)");
 
   const {
     data: conversations,
@@ -27,10 +29,11 @@ function MessagePage() {
   const [selectedId, setSelectedId] = useState<number | null>(null);
 
   useEffect(() => {
+    if (!isMdUp) return; // 👈 important: skip on mobile
     if (conversations && conversations.length > 0 && selectedId === null) {
       setSelectedId(conversations[0].conversationId);
     }
-  }, [conversations, selectedId]);
+  }, [conversations, selectedId, isMdUp]);
 
   if (isLoading) return <p>Loading</p>;
   if (!conversations || isError) return <Error onRetry={() => {}} />;
@@ -61,8 +64,30 @@ function MessagePage() {
     ? selectedConversation?.offererName
     : selectedConversation?.helpCreatorName;
 
+  if (!isMdUp) {
+    return (
+      <div className="flex flex-col h-[calc(100vh-6rem)] border rounded-lg shadow-sm overflow-hidden">
+        {!selectedId ? (
+          <ConversationList
+            conversations={conversations}
+            currentUserName={user.name}
+            selectedConversationId={selectedId ?? -1}
+            onSelect={(id) => setSelectedId(id)}
+          />
+        ) : (
+          <ChatWindow
+            conversationId={selectedId}
+            helpTitle={helpTitle}
+            chattingWith={chatPartnerName ?? ""}
+            onBack={() => setSelectedId(null)}
+          />
+        )}
+      </div>
+    );
+  }
+
   return (
-    <div className="flex flex-col md:flex-row  h-[calc(100vh-6rem)] border rounded-lg shadow-sm overflow-hidden">
+    <div className="flex flex-col md:flex-row h-[calc(100vh-6rem)] border rounded-lg shadow-sm overflow-hidden">
       <ConversationList
         conversations={conversations}
         currentUserName={user.name}
