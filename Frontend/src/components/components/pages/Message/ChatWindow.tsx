@@ -17,6 +17,7 @@ import { AxiosError } from "axios";
 import { toast } from "react-toastify";
 import { queryClient } from "@/App";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
+import ChatWindowLoading from "./ChatWindowLoading";
 
 // Helper to add 5 hours 30 minutes to a Date
 const convertToIST = (utcStr: string): Date => {
@@ -55,7 +56,11 @@ const ChatWindow = ({
   chattingWith,
   onBack,
 }: Props) => {
-  const { data: messages = [], refetch } = useQuery({
+  const {
+    data: messages = [],
+    refetch,
+    isLoading,
+  } = useQuery({
     queryKey: ["messages", conversationId],
     queryFn: () => getAllMessageOfConversation(conversationId),
   });
@@ -87,6 +92,10 @@ const ChatWindow = ({
 
   if (!user) return null;
   const { id: userId } = user;
+
+  if (isLoading) {
+    return <ChatWindowLoading />;
+  }
 
   return (
     <div className="flex flex-col h-full w-full md:w-2/3 bg-background border shadow-sm">
