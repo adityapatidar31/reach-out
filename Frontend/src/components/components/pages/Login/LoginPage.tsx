@@ -1,13 +1,13 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { addUser } from "@/store/userSlice";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { SyncLoader } from "react-spinners";
 import { useMutation } from "@tanstack/react-query";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { useAppDispatch } from "@/hooks/storeHooks";
+import { useAppDispatch, useAppSelector } from "@/hooks/storeHooks";
 import { loginUser } from "@/services/apiService";
 import {
   errorResponseSchema,
@@ -15,10 +15,16 @@ import {
   loginSchema,
 } from "@/schema/schema";
 import { AxiosError } from "axios";
+import { useEffect } from "react";
+import { useVerifyUser } from "@/hooks/useVerifyUser"; // <== assuming this hook auto-loads user from cookie
 
 const LoginPage = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const dispatch = useAppDispatch();
+
+  const user = useAppSelector((store) => store.user.user);
+  const { isPending: isVerifying } = useVerifyUser();
 
   const {
     register,
@@ -28,20 +34,27 @@ const LoginPage = () => {
     resolver: zodResolver(loginSchema),
   });
 
+  // Save previous route path (default to "/")
+  const from = location.state?.from?.pathname || "/";
+
+  // 🔁 If user gets auto-loaded after arriving at login, redirect back
+  useEffect(() => {
+    if (!isVerifying && user) {
+      navigate(from, { replace: true });
+    }
+  }, [user, isVerifying, navigate, from]);
+
   const { mutate, isPending } = useMutation({
     mutationFn: async (data: LoginFormData) => {
       return await loginUser(data);
     },
     onSuccess: (user) => {
       if (user) dispatch(addUser(user));
-      navigate("/");
+      navigate(from, { replace: true }); // <== go back to where user came from
     },
     onError: (error) => {
       const axiosError = error as AxiosError;
-
-      console.log(axiosError);
       const apiError = axiosError.response?.data;
-
       const parsed = errorResponseSchema.safeParse(apiError);
 
       if (parsed.success) {

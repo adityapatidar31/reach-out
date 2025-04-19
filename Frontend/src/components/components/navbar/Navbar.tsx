@@ -19,11 +19,10 @@ import {
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
-import { useMutation, useQuery } from "@tanstack/react-query";
-import { logoutUser, verifyUserToken } from "@/services/apiService";
+import { useMutation } from "@tanstack/react-query";
+import { logoutUser } from "@/services/apiService";
 import { useAppDispatch } from "@/hooks/storeHooks";
-import { useEffect } from "react";
-import { addUser, deleteUser } from "@/store/userSlice";
+import { deleteUser } from "@/store/userSlice";
 import LoadingProfile from "./LoadingProfile";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
 import SearchInput from "./Search";
@@ -33,6 +32,7 @@ import { errorResponseSchema } from "@/schema/schema";
 import LoadingIcon from "./LoadingIcon";
 import Icons from "./Icons";
 import ThemeSwitcher from "./ThemeSwitcher";
+import { useVerifyUser } from "@/hooks/useVerifyUser";
 
 const Navbar = ({
   theme,
@@ -41,13 +41,9 @@ const Navbar = ({
   theme: "light" | "dark";
   setTheme: React.Dispatch<React.SetStateAction<"light" | "dark">>;
 }) => {
-  const { data, isPending } = useQuery({
-    queryKey: ["user"],
-    queryFn: () => verifyUserToken(),
-  });
-
   const dispatch = useAppDispatch();
 
+  const { isPending } = useVerifyUser();
   const { mutate } = useMutation({
     mutationFn: logoutUser,
     onSuccess: () => {
@@ -65,12 +61,6 @@ const Navbar = ({
       }
     },
   });
-
-  useEffect(() => {
-    if (data) {
-      dispatch(addUser(data));
-    }
-  }, [data, dispatch]);
 
   const user = useCurrentUser();
   const userId = user?.id;
