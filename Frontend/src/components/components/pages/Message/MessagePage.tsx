@@ -10,6 +10,7 @@ import ConversationList from "./ConversationList";
 import ChatWindow from "./ChatWindow";
 import Error from "../../Error";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
+import MessagePageLoading from "./MessagePageLoading";
 
 function MessagePage() {
   useAuth();
@@ -35,7 +36,7 @@ function MessagePage() {
     }
   }, [conversations, selectedId, isMdUp]);
 
-  if (isLoading) return <p>Loading</p>;
+  if (isLoading) return <MessagePageLoading />;
   if (!conversations || isError) return <Error onRetry={() => {}} />;
   if (!user) return null;
 
