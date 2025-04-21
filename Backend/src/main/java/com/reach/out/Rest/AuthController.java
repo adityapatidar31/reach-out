@@ -6,6 +6,7 @@ import com.reach.out.Model.User;
 import com.reach.out.Security.AuthUtils;
 import com.reach.out.Security.JwtUtil;
 import com.reach.out.Services.UserService;
+import com.reach.out.Utils.CookieUtils;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
@@ -35,7 +36,7 @@ public class AuthController {
         User user = userService.registerUser(signupRequest);
         String token = jwtUtil.generateToken(user.getId(),user.getRole());
 
-        setJwtCookie(response, token);
+        CookieUtils.setJwtCookie(response, token);
 
         Map<String, Object> res = new HashMap<>();
         res.put("status", "success");
@@ -54,7 +55,7 @@ public class AuthController {
         User user = userService.loginUser(loginRequest);
         String token = jwtUtil.generateToken(user.getId(),user.getRole());
 
-        setJwtCookie(response, token);
+        CookieUtils.setJwtCookie(response, token);
 
         Map<String, Object> res = new HashMap<>();
         res.put("status", "success");
@@ -66,7 +67,7 @@ public class AuthController {
 
     @PostMapping("/logout")
     public ResponseEntity<Map<String, Object>> logoutUser(HttpServletResponse response) {
-        clearJwtCookie(response);
+        CookieUtils.clearJwtCookie(response);
 
         Map<String, Object> res = new HashMap<>();
         res.put("status", "success");
@@ -91,26 +92,4 @@ public class AuthController {
         }
         return ResponseEntity.ok(response);
     }
-
-    private void clearJwtCookie(HttpServletResponse response) {
-        Cookie cookie = new Cookie("access_token", null);
-        cookie.setHttpOnly(true);
-        cookie.setSecure(true); // true in production (HTTPS)
-        cookie.setPath("/");
-        cookie.setMaxAge(0);
-        cookie.setAttribute("SameSite", "None");
-        response.addCookie(cookie);
-    }
-
-
-    private void setJwtCookie(HttpServletResponse response, String token) {
-        Cookie cookie = new Cookie("access_token", token);
-        cookie.setHttpOnly(true);
-        cookie.setSecure(true); // Set to true in production (HTTPS)
-        cookie.setPath("/");
-        cookie.setMaxAge(24 * 60 * 60);
-        cookie.setAttribute("SameSite", "None");
-        response.addCookie(cookie);
-    }
-
 }
