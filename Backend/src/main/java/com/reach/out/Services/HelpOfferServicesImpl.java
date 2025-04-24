@@ -49,13 +49,7 @@ public class HelpOfferServicesImpl implements HelpOfferServices {
         Help help = helpRepository.findById(helpOfferRequest.getHelpId())
                 .orElseThrow(() -> new ApiException("Help request not found"));
 
-        Long userId=AuthUtils.getCurrentUserId();
-        if(userId==null)
-            throw new ApiException("You are not authenticated. Please log in");
-
-
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new ApiException("User not found"));
+        User user = AuthUtils.getCurrentUserOrThrow(userRepository);
 
         HelpOffer helpOffer = new HelpOffer();
         helpOffer.setHelp(help);
@@ -75,9 +69,7 @@ public class HelpOfferServicesImpl implements HelpOfferServices {
         HelpOffer helpOffer = helpOfferRepository.findById(id)
                 .orElseThrow(() -> new ApiException("Help offer not found"));
 
-        Long userId=AuthUtils.getCurrentUserId();
-        if(userId==null)
-            throw new ApiException("You are not authenticated. Please log in");
+        Long userId=AuthUtils.getCurrentUserIdOrThrow();
 
         if(!helpOffer.getHelp().getId().equals(userId))
             throw new ApiException("You are not authorized to do it");
@@ -99,9 +91,7 @@ public class HelpOfferServicesImpl implements HelpOfferServices {
 
     @Override
     public List<HelpOfferResponseByUser> getAllHelpOfferByMe() {
-        Long userId= AuthUtils.getCurrentUserId();
-        if(userId==null)
-            throw new ApiException("You are not authenticated. Please login first");
+        Long userId= AuthUtils.getCurrentUserIdOrThrow();
 
         return helpOfferRepository.findAllByOfferedById(userId)
                 .stream()
@@ -120,9 +110,7 @@ public class HelpOfferServicesImpl implements HelpOfferServices {
     @Override
     public Optional<HelpOfferResponse> getOfferByHelpIdAndUserId(Long helpId) {
 
-        Long userId=AuthUtils.getCurrentUserId();
-        if(userId==null)
-            throw new ApiException("You are not authenticated. Please Log in");
+        Long userId= AuthUtils.getCurrentUserIdOrThrow();
 
         return helpOfferRepository.findByHelp_IdAndOfferedBy_Id(helpId, userId)
                 .map(HelpOfferMapper::toResponse);
@@ -134,9 +122,7 @@ public class HelpOfferServicesImpl implements HelpOfferServices {
         Help help = helpRepository.getHelpById(helpId)
                 .orElseThrow(()-> new ApiException("Please Provide the valid help id"));
 
-        Long userId=AuthUtils.getCurrentUserId();
-        if(userId==null)
-            throw new ApiException("You are not authenticated. Please Log in.");
+        Long userId= AuthUtils.getCurrentUserIdOrThrow();
 
         if (!help.getCreatedBy().getId().equals(userId))
             throw new ApiException("You are not authorized to view offers for this help request.");

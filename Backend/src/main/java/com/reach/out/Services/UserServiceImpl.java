@@ -98,13 +98,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User updateProfileImage(MultipartFile image) {
-        Long userId = AuthUtils.getCurrentUserId();
-        if (userId == null) {
-            throw new ApiException("You are not authenticated. Please log in");
-        }
 
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new ApiException("User not found"));
+        User user = AuthUtils.getCurrentUserOrThrow(userRepository);
+
 
         if (image == null || image.isEmpty()) {
             throw new ApiException("Image file is required");
@@ -132,14 +128,7 @@ public class UserServiceImpl implements UserService {
             throw new ApiException("New password and confirm password do not match");
         }
 
-        Long userId = AuthUtils.getCurrentUserId();
-
-        if (userId == null) {
-            throw new ApiException("You are not authenticated. Please log in");
-        }
-
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new ApiException("User not found"));
+        User user = AuthUtils.getCurrentUserOrThrow(userRepository);
 
         // Check if the current password matches
         if (!passwordEncoder.matches(passwordUpdateRequest.getCurrentPassword(), user.getPassword())) {

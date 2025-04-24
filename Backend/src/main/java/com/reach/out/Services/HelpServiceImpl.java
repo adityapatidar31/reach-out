@@ -63,9 +63,8 @@ public class HelpServiceImpl implements HelpService {
 
     @Override
     public Help createHelp(HelpRequest helpRequest) {
-        Long userId = AuthUtils.getCurrentUserId();
-        if (userId == null)
-            throw new ApiException("You are not authenticated. Please log in first.");
+        Long userId= AuthUtils.getCurrentUserIdOrThrow();
+
         User createdBy = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found with id: " + userId));
 
@@ -107,10 +106,7 @@ public class HelpServiceImpl implements HelpService {
         Help help = helpRepository.findById(id)
                 .orElseThrow(() -> new ApiException("Help request not found"));
 
-        Long userId = AuthUtils.getCurrentUserId();
-
-        if(userId==null)
-            throw new ApiException("You are not authenticated. Please log in first.");
+        Long userId= AuthUtils.getCurrentUserIdOrThrow();
 
         if (!help.getCreatedBy().getId().equals(userId)) {
             throw new ApiException("You are not authorized to update this help request");

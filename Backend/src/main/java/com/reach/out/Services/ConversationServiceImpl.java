@@ -50,10 +50,7 @@ public class ConversationServiceImpl implements ConversationService{
             throw new ApiException("Conversation already exists for this Help and Help Offer");
         }
 
-        Long userId= AuthUtils.getCurrentUserId();
-        if (userId == null) {
-            throw new ApiException("You are not authenticated. Please log in");
-        }
+        Long userId = AuthUtils.getCurrentUserIdOrThrow();
 
         User currentUser = userRepository.findById(userId)
                 .orElseThrow(() -> new ApiException("Receiver not found"));
@@ -83,14 +80,8 @@ public class ConversationServiceImpl implements ConversationService{
     @Override
     @Transactional
     public MessageResponse createMessage(Long conversationId, SendMessageRequest request) {
-        Long userId = AuthUtils.getCurrentUserId();
-        if (userId == null) {
-            throw new ApiException("You are not authenticated. Please log in");
-        }
 
-        // Fetch current user
-        User currentUser = userRepository.findById(userId)
-                .orElseThrow(() -> new ApiException("User not found"));
+        User currentUser = AuthUtils.getCurrentUserOrThrow(userRepository);
 
         // Fetch the conversation
         Conversation conversation = conversationRepository.findById(conversationId)
@@ -116,14 +107,8 @@ public class ConversationServiceImpl implements ConversationService{
 
     @Override
     public List<MessageResponse> getAllMessageById(Long conversationId) {
-        Long userId = AuthUtils.getCurrentUserId();
-        if (userId == null) {
-            throw new ApiException("You are not authenticated. Please log in");
-        }
+        User currentUser = AuthUtils.getCurrentUserOrThrow(userRepository);
 
-        // Fetch current user
-        User currentUser = userRepository.findById(userId)
-                .orElseThrow(() -> new ApiException("User not found"));
 
         // Fetch the conversation
         Conversation conversation = conversationRepository.findById(conversationId)
@@ -145,14 +130,11 @@ public class ConversationServiceImpl implements ConversationService{
 
     @Override
     public List<ConversationSummaryResponse> getAllConversationByMe() {
-        Long userId = AuthUtils.getCurrentUserId();
-        if (userId == null) {
-            throw new ApiException("You are not authenticated. Please log in");
-        }
+        Long userId = AuthUtils.getCurrentUserIdOrThrow();
 
         // Fetch user
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new ApiException("User not found"));
+        User user = AuthUtils.getCurrentUserOrThrow(userRepository);
+
 
         // Fetch conversations where user is requester or offerer
         List<Conversation> conversationList = conversationRepository.findAllByUserId(userId);
