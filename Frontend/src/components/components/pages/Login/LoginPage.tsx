@@ -2,22 +2,16 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { addUser } from "@/store/userSlice";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
 import { SyncLoader } from "react-spinners";
 import { useMutation } from "@tanstack/react-query";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useAppDispatch, useAppSelector } from "@/hooks/storeHooks";
 import { loginUser } from "@/services/apiService";
-import {
-  errorResponseSchema,
-  LoginFormData,
-  loginSchema,
-} from "@/schema/schema";
-import { AxiosError } from "axios";
+import { LoginFormData, loginSchema } from "@/schema/schema";
 import { useEffect } from "react";
-import { useVerifyUser } from "@/hooks/useVerifyUser"; // <== assuming this hook auto-loads user from cookie
-
+import { useVerifyUser } from "@/hooks/useVerifyUser";
+import { handleApiError } from "@/utils/handleApiError";
 const LoginPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -52,17 +46,7 @@ const LoginPage = () => {
       if (user) dispatch(addUser(user));
       navigate(from, { replace: true }); // <== go back to where user came from
     },
-    onError: (error) => {
-      const axiosError = error as AxiosError;
-      const apiError = axiosError.response?.data;
-      const parsed = errorResponseSchema.safeParse(apiError);
-
-      if (parsed.success) {
-        toast.error(parsed.data.message);
-      } else {
-        toast.error("Something went wrong. Please try again.");
-      }
-    },
+    onError: handleApiError,
   });
 
   return (
