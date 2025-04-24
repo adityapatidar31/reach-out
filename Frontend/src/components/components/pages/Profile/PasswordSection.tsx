@@ -2,18 +2,14 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  errorResponseSchema,
-  passwordUpdateSchema,
-  TypePasswordUpdate,
-} from "@/schema/schema";
+import { passwordUpdateSchema, TypePasswordUpdate } from "@/schema/schema";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 import { updatePassword } from "@/services/apiService";
 import { useAppDispatch } from "@/hooks/storeHooks";
 import { addUser } from "@/store/userSlice";
-import { AxiosError } from "axios";
 import { SyncLoader } from "react-spinners";
+import { handleApiError } from "@/utils/handleApiError";
 
 function PasswordSection() {
   const dispatch = useAppDispatch();
@@ -36,13 +32,7 @@ function PasswordSection() {
       toast.success("Password updated successfully!");
       reset();
     },
-    onError: (error) => {
-      const axiosError = error as AxiosError;
-      const apiError = axiosError.response?.data;
-      const parsed = errorResponseSchema.safeParse(apiError);
-      if (parsed.success) toast.error(parsed.data.message);
-      else toast.error("Failed to update password");
-    },
+    onError: handleApiError,
   });
 
   const onSubmit = (data: TypePasswordUpdate) => {

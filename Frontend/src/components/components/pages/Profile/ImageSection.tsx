@@ -11,6 +11,7 @@ import { useState } from "react";
 import { useAppDispatch } from "@/hooks/storeHooks";
 import { addUser } from "@/store/userSlice";
 import { SyncLoader } from "react-spinners";
+import { handleApiError } from "@/utils/handleApiError";
 
 function ImageSection() {
   const user = useCurrentUser();
@@ -34,7 +35,7 @@ function ImageSection() {
       reset();
       setPreviewUrl(null); // Clear preview after successful upload
     },
-    onError: () => toast.error("Failed to update profile image"),
+    onError: handleApiError,
   });
 
   const onSubmit = (data: ImageType) => {

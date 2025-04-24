@@ -27,12 +27,11 @@ import LoadingProfile from "./LoadingProfile";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
 import SearchInput from "./Search";
 import { toast } from "react-toastify";
-import { AxiosError } from "axios";
-import { errorResponseSchema } from "@/schema/schema";
 import LoadingIcon from "./LoadingIcon";
 import Icons from "./Icons";
 import ThemeSwitcher from "./ThemeSwitcher";
 import { useVerifyUser } from "@/hooks/useVerifyUser";
+import { handleApiError } from "@/utils/handleApiError";
 
 const Navbar = ({
   theme,
@@ -50,16 +49,7 @@ const Navbar = ({
       toast.success("You are logout Successfully");
       dispatch(deleteUser());
     },
-    onError: (error) => {
-      const axiosError = error as AxiosError;
-      const parsed = errorResponseSchema.safeParse(axiosError.response?.data);
-
-      if (parsed.success) {
-        toast.error(parsed.data.message);
-      } else {
-        toast.error("Failed to logout");
-      }
-    },
+    onError: handleApiError,
   });
 
   const user = useCurrentUser();

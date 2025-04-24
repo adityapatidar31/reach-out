@@ -6,15 +6,10 @@ import { useForm } from "react-hook-form";
 import { useMutation } from "@tanstack/react-query";
 import { Link, useNavigate } from "react-router-dom";
 import { SyncLoader } from "react-spinners";
-import { toast } from "react-toastify";
 import { useAppDispatch } from "@/hooks/storeHooks";
 import { signupUser } from "@/services/apiService";
-import {
-  errorResponseSchema,
-  SignupFormData,
-  signupSchema,
-} from "@/schema/schema";
-import { AxiosError } from "axios";
+import { SignupFormData, signupSchema } from "@/schema/schema";
+import { handleApiError } from "@/utils/handleApiError";
 
 const SignupPage = () => {
   const navigate = useNavigate();
@@ -36,18 +31,7 @@ const SignupPage = () => {
       if (user) dispatch(addUser(user));
       navigate("/");
     },
-    onError: (error) => {
-      const axiosError = error as AxiosError;
-      const apiError = axiosError.response?.data;
-
-      const parsed = errorResponseSchema.safeParse(apiError);
-
-      if (parsed.success) {
-        toast.error(parsed.data.message);
-      } else {
-        toast.error("Failed to Signup. Try again later");
-      }
-    },
+    onError: handleApiError,
   });
 
   const onSubmit = (data: SignupFormData) => {

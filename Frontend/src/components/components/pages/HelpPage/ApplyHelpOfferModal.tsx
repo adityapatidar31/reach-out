@@ -12,6 +12,7 @@ import { createHelpOfferRequest } from "@/services/apiService";
 import { queryClient } from "@/App";
 import { toast } from "react-toastify";
 import ApplyHelpOfferModalLoading from "./ApplyHelpOfferModalLoading";
+import { handleApiError } from "@/utils/handleApiError";
 
 type Props = {
   open: boolean;
@@ -33,9 +34,7 @@ const ApplyForHelpModal = ({ open, onClose, helpId }: Props) => {
       onClose();
       setMessage("");
     },
-    onError: () => {
-      toast.error("Failed to submit help offer. Please try again.");
-    },
+    onError: handleApiError,
   });
 
   const handleSubmit = () => {

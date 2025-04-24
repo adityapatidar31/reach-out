@@ -5,12 +5,12 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "react-toastify";
-import { errorResponseSchema, nameSchema, NameType } from "@/schema/schema";
+import { nameSchema, NameType } from "@/schema/schema";
 import { updateUserName } from "@/services/apiService";
 import { useAppDispatch } from "@/hooks/storeHooks";
 import { addUser } from "@/store/userSlice";
-import { AxiosError } from "axios";
 import { SyncLoader } from "react-spinners";
+import { handleApiError } from "@/utils/handleApiError";
 
 function UserSection() {
   const user = useCurrentUser();
@@ -34,13 +34,7 @@ function UserSection() {
       }
       toast.success("Name updated successfully!");
     },
-    onError: (error) => {
-      const axiosError = error as AxiosError;
-      const apiError = axiosError.response?.data;
-      const parsedError = errorResponseSchema.safeParse(apiError);
-      if (parsedError.success) toast.error(parsedError.data.message);
-      else toast.error("Failed to update name.");
-    },
+    onError: handleApiError,
   });
 
   if (!user) return null;

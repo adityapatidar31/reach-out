@@ -20,6 +20,7 @@ import { SyncLoader } from "react-spinners";
 import { queryClient } from "@/App";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
+import { handleApiError } from "@/utils/handleApiError";
 
 function CreateHelpForm() {
   const {
@@ -45,10 +46,7 @@ function CreateHelpForm() {
       queryClient.invalidateQueries({ queryKey: ["myHelpRequests"] });
       navigate("/my-help-requests");
     },
-    onError: (error) => {
-      toast.error("Failed to Create Help");
-      console.error("Create Help Error:", error);
-    },
+    onError: handleApiError,
   });
 
   useAuth();

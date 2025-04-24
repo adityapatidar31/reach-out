@@ -11,14 +11,14 @@ import { format, isToday, isYesterday } from "date-fns";
 import { useMemo, useRef, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { errorResponseSchema, TypeMessage } from "@/schema/schema";
+import { TypeMessage } from "@/schema/schema";
 import { ArrowLeft, RefreshCw, SendHorizonal } from "lucide-react";
-import { AxiosError } from "axios";
-import { toast } from "react-toastify";
+
 import { queryClient } from "@/App";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
 import ChatWindowLoading from "./ChatWindowLoading";
 import NoMessages from "./NoMessage";
+import { handleApiError } from "@/utils/handleApiError";
 
 // Helper to add 5 hours 30 minutes to a Date
 const convertToIST = (utcStr: string): Date => {
@@ -78,12 +78,7 @@ const ChatWindow = ({
       queryClient.invalidateQueries({ queryKey: ["messages", conversationId] });
       refetch();
     },
-    onError: (error) => {
-      const axiosError = error as AxiosError;
-      const parsed = errorResponseSchema.safeParse(axiosError);
-      if (!parsed.success) toast.error(parsed.error.message);
-      else toast.error("Failed to send message");
-    },
+    onError: handleApiError,
   });
 
   const groupedMessages = useMemo(

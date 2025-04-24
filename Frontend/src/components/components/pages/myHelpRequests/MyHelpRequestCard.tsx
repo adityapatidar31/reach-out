@@ -17,6 +17,7 @@ import { updateHelpStatusById } from "@/services/apiService";
 import { toast } from "react-toastify";
 import { SyncLoader } from "react-spinners";
 import { useNavigate } from "react-router-dom";
+import { handleApiError } from "@/utils/handleApiError";
 
 interface MyHelpRequestCardProps {
   help: Help;
@@ -33,9 +34,7 @@ function MyHelpRequestCard({ help }: MyHelpRequestCardProps) {
     onSuccess: () => {
       toast.success("Status Updated Successfully");
     },
-    onError: () => {
-      toast.error("Failed to Update Status");
-    },
+    onError: handleApiError,
   });
 
   return (

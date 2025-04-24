@@ -23,6 +23,7 @@ import { Send } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { AxiosError } from "axios";
 import { Skeleton } from "@/components/ui/skeleton";
+import { handleApiError } from "@/utils/handleApiError";
 
 type HelpOfferCardProps = {
   offer: helpOfferWithUser;
@@ -41,9 +42,7 @@ function HelpOfferCard({ offer }: HelpOfferCardProps) {
         queryKey: ["help-offer-on-help", offer.helpId],
       });
     },
-    onError: () => {
-      toast.error("Failed to update help offer");
-    },
+    onError: handleApiError,
   });
 
   const { mutate: connectMutate, isPending: isConnectPending } = useMutation({
