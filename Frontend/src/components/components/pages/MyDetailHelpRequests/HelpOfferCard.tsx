@@ -11,7 +11,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { HelpOfferStatus } from "@/types/enums";
 import { format } from "date-fns";
-import { errorResponseSchema, helpOfferWithUser } from "@/schema/schema";
+import { helpOfferWithUser } from "@/schema/schema";
 import { useMutation } from "@tanstack/react-query";
 import {
   createConversation,
@@ -21,7 +21,6 @@ import { toast } from "react-toastify";
 import { queryClient } from "@/App";
 import { Send } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { AxiosError } from "axios";
 import { Skeleton } from "@/components/ui/skeleton";
 import { handleApiError } from "@/utils/handleApiError";
 
@@ -54,14 +53,7 @@ function HelpOfferCard({ offer }: HelpOfferCardProps) {
       navigate("/messages");
       toast.success("You can start conversation ");
     },
-    onError: (error) => {
-      const axiosError = error as AxiosError;
-      const apiError = axiosError.response?.data;
-
-      const parsed = errorResponseSchema.safeParse(apiError);
-      if (parsed.success) toast.error(parsed.data.message);
-      else toast.error("Failed to update help offer");
-    },
+    onError: handleApiError,
   });
 
   return (
