@@ -1,54 +1,96 @@
-# React + TypeScript + Vite
+---
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+````markdown
+# ReachOut Frontend
 
-Currently, two official plugins are available:
+This is the frontend of **ReachOut**, a community-based platform where users can request or offer help. Built with **React**, **TypeScript**, **Tailwind CSS**, and **ShadCN UI**, the application emphasizes clean design, responsiveness, and smooth user experience.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## Expanding the ESLint configuration
+## 🚀 Tech Stack
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- **React 19 + TypeScript**
+- **Tailwind CSS + ShadCN UI**
+- **React Query** – For data fetching and caching
+- **Redux Toolkit** – For state management
+- **React Hook Form + Zod** – For form handling and validation
+- **React Router DOM** – For routing
+- **Axios** – For API interaction
+- **WebSocket** – For real-time messaging
+- **React Toastify / React Spinners** – For notifications and loaders
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+---
+
+## 🔧 Project Setup
+
+1. **Install dependencies:**
+
+   ```bash
+   npm install
+   ```
+
+2. **Create a `.env` file in the root of the `frontend/` directory with the following environment variables:**
+
+   ```env
+   VITE_BASE_URL=your_local_backend_url
+   VITE_BASE_URL=your_production_backend_url
+   ```
+
+   > Replace the above values with your actual backend URLs.
+
+3. **Run development server:**
+
+   ```bash
+   npm run dev
+   ```
+
+4. **Build for production:**
+
+   ```bash
+   npm run build
+   ```
+
+---
+
+## 📁 Folder Structure
+
+```
+frontend/
+├── public/             # Static assets
+├── src/
+│   ├── components/     # Reusable UI components
+│   ├── features/       # Redux slices and features
+│   ├── hooks/          # Custom hooks
+│   ├── lib/            # API utilities and axios instance
+│   ├── pages/          # Application pages (routes)
+│   ├── router/         # React Router configuration
+│   ├── schemas/        # Zod schemas
+│   ├── store/          # Redux store
+│   ├── types/          # TypeScript types
+│   ├── App.tsx         # Root component
+│   └── main.tsx        # Entry point
+├── .env                # Environment variables
+├── tailwind.config.ts  # Tailwind config
+├── vite.config.ts      # Vite config
+└── README.md           # This file
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+---
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## 📦 Available Scripts
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
+```json
+{
+  "dev": "vite",
+  "build": "tsc -b && vite build",
+  "lint": "eslint .",
+  "preview": "vite preview"
+}
 ```
+
+---
+
+## 📄 Notes
+
+- Make sure the backend is running and accessible via the base URL configured in `.env`.
+- Uses modular design for better maintainability and scalability.

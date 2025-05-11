@@ -39,8 +39,9 @@ The backend is developed using **Java (Spring Boot)** and **PostgreSQL**. It fol
 
 ## 📁 Project Structure
 
+```
 ReachOut/
-
-├── frontend/ # React + TS + Tailwind app  
-├── backend/ # Spring Boot REST API  
-├── README.md # Project overview (you are here)
+├── frontend/              # React + TS + Tailwind app
+├── backend/               # Spring Boot REST API
+├── README.md              # Project overview (you are here)
+```
