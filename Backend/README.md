@@ -256,3 +256,83 @@ Each route includes:
 ```
 
 ---
+
+Here’s a README-style documentation snippet for your logout route that matches the structure of your other endpoints:
+
+---
+
+### 🔓 POST /api/v1/logout
+
+- **Description:**
+  Logs the user out by clearing the JWT cookie from the browser.
+
+- **Request:**
+  No request body required.
+
+- **Success Response:**
+
+```json
+{
+  "status": "success",
+  "message": "Logged out successfully"
+}
+```
+
+- **Error Response:**
+
+(No special error response handling needed unless something fails internally)
+
+```json
+{
+  "status": "Failed",
+  "message": "Error Message"
+}
+```
+
+---
+
+Here’s the documentation-style README entry for your /verify-token route:
+
+---
+
+### ✅ GET /api/v1/verify-token
+
+- **Description:**
+  Verifies the JWT token sent by the client (typically via cookie) and returns the associated user data if valid.
+
+- **Request:**
+  No request body required. JWT should be sent via cookie named access_token.
+
+- **Success Response (when token is valid):**
+
+```json
+{
+  "status": "success",
+  "data": {
+    "id": 1,
+    "name": "John Doe",
+    "email": "john@example.com",
+    "role": "USER"
+  }
+}
+```
+
+- **Success Response (when token is missing or invalid):**
+
+```json
+{
+  "status": "success",
+  "data": null
+}
+```
+
+- **Error Response:**
+
+```json
+{
+  "status": "Failed",
+  "message": "Error Message"
+}
+```
+
+---
