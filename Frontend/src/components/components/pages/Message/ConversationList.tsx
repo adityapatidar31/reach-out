@@ -1,4 +1,5 @@
 // components/chat/ConversationList.tsx
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { cn } from "@/lib/utils";
 import { Conversation } from "@/schema/schema";
 
@@ -38,11 +39,15 @@ const ConversationList = ({
               isSelected && "bg-muted"
             )}
           >
-            <img
-              src={displayImage}
-              alt={displayName}
-              className="w-10 h-10 rounded-full object-cover"
-            />
+            <Avatar>
+              <AvatarImage src={displayImage || undefined} />
+              <AvatarFallback>
+                {isCreator
+                  ? conversation.offererName[0]
+                  : conversation.helpCreatorName}
+              </AvatarFallback>
+            </Avatar>
+
             <div>
               <p className="font-medium">{displayName}</p>
               <p className="text-sm text-muted-foreground truncate">

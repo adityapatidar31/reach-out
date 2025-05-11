@@ -291,9 +291,6 @@ Here’s a README-style documentation snippet for your logout route that matches
 
 ---
 
-Here’s the documentation-style README entry for your /verify-token route:
-
----
 
 ### ✅ GET /api/v1/verify-token
 

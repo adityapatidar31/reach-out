@@ -191,7 +191,7 @@ export const conversationSchema = z.object({
   helpCreatorImageUrl: z.string().url(),
   helpOfferId: z.number(),
   offererName: z.string(),
-  offererImageUrl: z.string().url(),
+  offererImageUrl: z.string().url().optional(),
   createdAt: z.string(),
 });
 
