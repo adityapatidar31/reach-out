@@ -3,7 +3,6 @@ package com.reach.out.Services;
 import com.reach.out.Dto.Conversation.ConversationSummaryResponse;
 import com.reach.out.Dto.Conversation.CreateConversationRequest;
 import com.reach.out.Dto.Conversation.SendMessageRequest;
-import com.reach.out.Dto.HelpOfferResponse;
 import com.reach.out.Exceptions.ApiException;
 import com.reach.out.Mapper.ConversationMapper;
 import com.reach.out.Mapper.MessageMapper;
@@ -133,7 +132,7 @@ public class ConversationServiceImpl implements ConversationService{
         Long userId = AuthUtils.getCurrentUserIdOrThrow();
 
         // Fetch user
-        User user = AuthUtils.getCurrentUserOrThrow(userRepository);
+        AuthUtils.getCurrentUserOrThrow(userRepository);
 
 
         // Fetch conversations where user is requester or offerer
