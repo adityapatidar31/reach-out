@@ -131,3 +131,41 @@ out/
    ```bash
    mvn spring-boot:run
    ```
+
+Great! Here's the **second part** of your `README.md` for the **ReachOut backend**, focused on **Routes**:
+
+---
+
+## 📡 Routes
+
+### 🔐 Authenticated Routes
+
+These routes require a valid JWT token in the `Authorization` header.
+
+| Method | Endpoint                    | Description                              |
+| ------ | --------------------------- | ---------------------------------------- |
+| POST   | `/api/help`                 | Create a new help request                |
+| PUT    | `/api/help/{id}`            | Update an existing help request          |
+| DELETE | `/api/help/{id}`            | Delete a help request                    |
+| POST   | `/api/help-offers/{helpId}` | Offer help to a specific help request    |
+| GET    | `/api/user/me`              | Fetch current logged-in user's profile   |
+| PUT    | `/api/user/me`              | Update current user's profile            |
+| POST   | `/api/conversations/{id}`   | Create a conversation                    |
+| GET    | `/api/conversations`        | Get all conversations for logged-in user |
+| GET    | `/api/messages/{id}`        | Get messages for a specific conversation |
+| POST   | `/api/messages/{id}`        | Send a message in a conversation         |
+| POST   | `/api/logout`               | Log out the user                         |
+
+---
+
+### 🌐 Public Routes
+
+These routes are open to all users.
+
+| Method | Endpoint             | Description                         |
+| ------ | -------------------- | ----------------------------------- |
+| POST   | `/api/auth/register` | Register a new user                 |
+| POST   | `/api/auth/login`    | Login and receive JWT token         |
+| GET    | `/api/help`          | View all public help requests       |
+| GET    | `/api/help/{id}`     | Get details of a specific help post |
+| GET    | `/api/user/{userId}` | View public profile of any user     |
