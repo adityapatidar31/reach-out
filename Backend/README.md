@@ -142,19 +142,19 @@ Great! Here's the **second part** of your `README.md` for the **ReachOut backend
 
 These routes require a valid JWT token in the `Authorization` header.
 
-| Method | Endpoint                    | Description                              |
-| ------ | --------------------------- | ---------------------------------------- |
-| POST   | `/api/help`                 | Create a new help request                |
-| PUT    | `/api/help/{id}`            | Update an existing help request          |
-| DELETE | `/api/help/{id}`            | Delete a help request                    |
-| POST   | `/api/help-offers/{helpId}` | Offer help to a specific help request    |
-| GET    | `/api/user/me`              | Fetch current logged-in user's profile   |
-| PUT    | `/api/user/me`              | Update current user's profile            |
-| POST   | `/api/conversations/{id}`   | Create a conversation                    |
-| GET    | `/api/conversations`        | Get all conversations for logged-in user |
-| GET    | `/api/messages/{id}`        | Get messages for a specific conversation |
-| POST   | `/api/messages/{id}`        | Send a message in a conversation         |
-| POST   | `/api/logout`               | Log out the user                         |
+| Method | Endpoint                       | Description                              |
+| ------ | ------------------------------ | ---------------------------------------- |
+| POST   | `/api/v1/help`                 | Create a new help request                |
+| PUT    | `/api/v1/help/{id}`            | Update an existing help request          |
+| DELETE | `/api/v1/help/{id}`            | Delete a help request                    |
+| POST   | `/api/v1/help-offers/{helpId}` | Offer help to a specific help request    |
+| GET    | `/api/v1/user/me`              | Fetch current logged-in user's profile   |
+| PUT    | `/api/v1/user/me`              | Update current user's profile            |
+| POST   | `/api/v1/conversations/{id}`   | Create a conversation                    |
+| GET    | `/api/v1/conversations`        | Get all conversations for logged-in user |
+| GET    | `/api/v1/messages/{id}`        | Get messages for a specific conversation |
+| POST   | `/api/v1/messages/{id}`        | Send a message in a conversation         |
+| POST   | `/api/v1/logout`               | Log out the user                         |
 
 ---
 
@@ -162,10 +162,97 @@ These routes require a valid JWT token in the `Authorization` header.
 
 These routes are open to all users.
 
-| Method | Endpoint             | Description                         |
-| ------ | -------------------- | ----------------------------------- |
-| POST   | `/api/auth/register` | Register a new user                 |
-| POST   | `/api/auth/login`    | Login and receive JWT token         |
-| GET    | `/api/help`          | View all public help requests       |
-| GET    | `/api/help/{id}`     | Get details of a specific help post |
-| GET    | `/api/user/{userId}` | View public profile of any user     |
+| Method | Endpoint                | Description                         |
+| ------ | ----------------------- | ----------------------------------- |
+| POST   | `/api/v1/auth/sign-up`  | Register a new user                 |
+| POST   | `/api/v1/auth/login`    | Login and receive JWT token         |
+| GET    | `/api/v1/help`          | View all public help requests       |
+| GET    | `/api/v1/help/{id}`     | Get details of a specific help post |
+| GET    | `/api/v1/user/{userId}` | View public profile of any user     |
+
+## 📘 Routes Explanation
+
+This section describes how to interact with the API endpoints—what to send in the request body, and what to expect in the response.
+
+Each route includes:
+
+- 📥 **Request Body** – What the client should send (usually in JSON format).
+- 📤 **Successful Response** – The shape of the data returned on success.
+- ❌ **Error Response** – Typical error structure and example messages.
+
+> Example format:
+
+---
+
+### ➕ `POST /api/v1/sign-up`
+
+- **Request Body:**
+
+```json
+{
+  "name": "John Doe",
+  "email": "john@example.com",
+  "password": "yourpassword"
+}
+```
+
+- **Success Response:**
+
+```json
+{
+  "status": "success",
+  "user": {
+    "id": 1,
+    "name": "John Doe",
+    "email": "john@example.com"
+  },
+  "token": "jwt_token_here"
+}
+```
+
+- **Error Response:**
+
+```json
+{
+  "status": "Failed",
+  "message": "Error Message"
+}
+```
+
+---
+
+### 🔐 POST /api/v1/login
+
+- **Request Body:**
+
+```json
+{
+  "email": "john@example.com",
+  "password": "yourpassword"
+}
+```
+
+- **Success Response:**
+
+```json
+{
+  "status": "success",
+  "data": {
+    "id": 1,
+    "name": "John Doe",
+    "email": "john@example.com"
+  },
+  "token": "jwt_token_here"
+}
+```
+
+- **Error Response:**
+
+```json
+{
+  "status": "Failed",
+  "message": "Error Message"
+}
+```
+
+---
