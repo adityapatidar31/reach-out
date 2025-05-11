@@ -6,7 +6,6 @@ import com.reach.out.Model.User;
 import com.reach.out.Security.JwtUtil;
 import com.reach.out.Services.UserService;
 import com.reach.out.Utils.CookieUtils;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import org.springframework.http.MediaType;

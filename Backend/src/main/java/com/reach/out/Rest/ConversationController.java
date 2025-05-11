@@ -2,7 +2,6 @@ package com.reach.out.Rest;
 
 import com.reach.out.Dto.Conversation.*;
 import com.reach.out.Model.Conversation;
-import com.reach.out.Model.Message;
 import com.reach.out.Services.ConversationService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -12,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/api/v1/conversation")
